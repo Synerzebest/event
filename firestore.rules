@@ -1,0 +1,38 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Règle par défaut pour restreindre l'accès
+    match /{document=**} {
+      allow read, write: if request.auth != null;
+    }
+
+    // Règles pour la collection "events"
+    match /events/{eventId} {
+      // Lecture : tout le monde peut lire les événements
+      allow read: if true;
+
+      // Écriture : seul le créateur de l'événement ou un organisateur peut modifier l'événement
+      allow write: if request.auth != null && (request.auth.uid == resource.data.createdBy || request.auth.uid in resource.data.organizers);
+    }
+
+    // Règles pour la collection "tickets"
+    match /tickets/{ticketId} {
+      allow read: if request.auth != null && request.auth.uid == resource.data.userId;
+      allow write: if request.auth != null && request.auth.uid == resource.data.userId;
+    }
+
+
+    // Règles pour la collection "users"
+    match /users/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // For payments
+    match /checkout_sessions/{sessionId} {
+      allow read, write: if request.auth != null && request.auth.uid == resource.data.userId;
+    }
+  }
+}
