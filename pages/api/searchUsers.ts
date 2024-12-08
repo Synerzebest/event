@@ -1,17 +1,26 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { clerkClient } from '@clerk/nextjs/server';
+import { admin } from "@/lib/firebaseAdmin";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'GET') {
         const query = req.query.query as string || '';
 
         try {
-            // Récupérer la liste des utilisateurs
-            const { data: users } = await clerkClient.users.getUserList();
+            // Récupérer la liste des utilisateurs via Firebase Admin SDK
+            const userList: admin.auth.UserRecord[] = [];
+            const listUsers = async (nextPageToken?: string) => {
+                const result = await admin.auth().listUsers(1000, nextPageToken);  // Récupère les 1000 premiers utilisateurs
+                userList.push(...result.users);
+                if (result.pageToken) {
+                    await listUsers(result.pageToken);  // Récupérer la page suivante si elle existe
+                }
+            };
+
+            await listUsers();
 
             // Filtrer les utilisateurs selon la requête
-            const filteredUsers = users.filter(user => {
-                const fullName = `${user.firstName || ''} ${user.lastName || ''}`.trim(); // Combiner firstName et lastName
+            const filteredUsers = userList.filter(user => {
+                const fullName = `${user.displayName || ''}`.trim(); // Utilisation de displayName pour le nom complet
                 return fullName.toLowerCase().includes(query.toLowerCase());
             });
 

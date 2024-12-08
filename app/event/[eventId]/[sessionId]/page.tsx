@@ -3,12 +3,12 @@
 import { useParams } from "next/navigation"; 
 import { NextPage } from 'next';
 import { Navbar, EventComponent, Footer } from '@/components';
-import { useUser } from "@clerk/nextjs";
+import useFirebaseUser from "@/lib/useFirebaseUser";
 
 const PaymentSuccess: NextPage = () => {
     const { eventId, sessionId } = useParams() as { eventId: string, sessionId: string };
-    const { user } = useUser();
-    const userId = user?.id || "";
+    const { user } = useFirebaseUser();
+    const userId = user?.uid || "";
 
     return (
         <>
@@ -26,7 +26,7 @@ const PaymentSuccess: NextPage = () => {
 
                 <div className="mt-8 p-4 rounded-lg flex flex-col items-center">
                     <h2 className="text-xl font-semibold mb-4">Détails de l'événement</h2>
-                    <EventComponent eventId={eventId} userId={userId} />
+                    <EventComponent eventId={eventId} userId={userId} participateButton={true} />
                 </div>
             </div>
 

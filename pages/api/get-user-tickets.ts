@@ -33,12 +33,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         const q = query(ticketsRef, where("userId", "==", uid));
         const querySnapshot = await getDocs(q);
 
-        if (querySnapshot.empty) {
-            console.log("Aucun ticket trouvé pour l'utilisateur :", uid);
-        } else {
-            console.log(`${querySnapshot.size} tickets trouvés pour l'utilisateur : ${uid}`);
-        }
-
         const userTickets: Ticket[] = querySnapshot.docs.map(doc => ({
             id: doc.id,
             ...doc.data(),

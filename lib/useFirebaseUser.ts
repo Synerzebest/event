@@ -1,32 +1,75 @@
 import { useEffect, useState } from "react";
 import { onAuthStateChanged, User as FirebaseUser } from "firebase/auth";
-import { auth } from "./firebaseConfig";
+import { auth, db } from "./firebaseConfig"; // Assurez-vous que db est correctement configuré pour Firestore
+import { doc, getDoc } from "firebase/firestore";
 
-// Définis le type User avec les champs que tu veux utiliser
+// Définition du type User avec les champs nécessaires
 interface User {
   displayName: string | null;
   email: string | null;
   photoURL: string | null;
   uid: string;
+  stripeAccountId: string | null;
+  accountStatus?: string; // Optionnel si ce champ n'est pas toujours disponible
+  chargesEnabled?: boolean;
+  payoutsEnabled?: boolean;
 }
 
 const useFirebaseUser = () => {
-  const [user, setUser] = useState<User | null>(null); // Type explicite
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser: FirebaseUser | null) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser: FirebaseUser | null) => {
       if (currentUser) {
-        // Utilisation des propriétés de Firebase User
-        const { displayName, email, photoURL, uid } = currentUser;
-        setUser({ displayName, email, photoURL, uid });
+        try {
+          // Récupération des informations utilisateur depuis Firestore
+          const userDocRef = doc(db, "users", currentUser.uid); // Assurez-vous que "users" est bien la collection appropriée
+          const userDoc = await getDoc(userDocRef);
+
+          if (userDoc.exists()) {
+            const userData = userDoc.data();
+            setUser({
+              displayName: currentUser.displayName,
+              email: currentUser.email,
+              photoURL: currentUser.photoURL,
+              uid: currentUser.uid,
+              stripeAccountId: userData?.stripeAccountId || null,
+              accountStatus: userData?.accountStatus || "unknown",
+              chargesEnabled: userData?.chargesEnabled || false,
+              payoutsEnabled: userData?.payoutsEnabled || false,
+            });
+          } else {
+            console.warn("Aucun document Firestore trouvé pour cet utilisateur.");
+            setUser({
+              displayName: currentUser.displayName,
+              email: currentUser.email,
+              photoURL: currentUser.photoURL,
+              uid: currentUser.uid,
+              stripeAccountId: null,
+            });
+          }
+        } catch (error) {
+          console.error(
+            "Erreur lors de la récupération des données utilisateur depuis Firestore :",
+            error
+          );
+          // En cas d'erreur, définir un utilisateur par défaut basé sur Firebase
+          setUser({
+            displayName: currentUser.displayName,
+            email: currentUser.email,
+            photoURL: currentUser.photoURL,
+            uid: currentUser.uid,
+            stripeAccountId: null,
+          });
+        }
       } else {
-        setUser(null);
+        setUser(null); // Aucun utilisateur connecté
       }
-      setLoading(false);
+      setLoading(false); // Fin du chargement
     });
 
-    return () => unsubscribe();
+    return () => unsubscribe(); // Nettoyage lors du démontage
   }, []);
 
   return { user, loading };

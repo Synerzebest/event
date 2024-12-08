@@ -4,14 +4,14 @@ import { useEffect, useState, useRef } from "react";
 import { useParams } from "next/navigation"; 
 import { Navbar, Footer, Countdown, EventComponent } from "@/components";
 import { Spin } from 'antd';
-import { useUser } from "@clerk/nextjs";
+import useFirebaseUser from "@/lib/useFirebaseUser";
 
 const Page = () => {
     const { eventId } = useParams() as { eventId: string };
     const [event, setEvent] = useState<any>(null);
     const [loading, setLoading] = useState(true);
-    const { user } = useUser();
-    const userId = user?.id || "";
+    const { user } = useFirebaseUser();
+    const userId = user?.uid || "";
 
     useEffect(() => {
         const fetchEvent = async () => {

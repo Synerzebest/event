@@ -1,16 +1,3 @@
-export interface Event {
-    id: string;
-    title: string;
-    date: string;
-    place: string;
-    description: string;
-    images: string[];
-    currentGuests: number;
-    guests: number;
-    category: string;
-    organizers: string[];
-}
-
 export interface Participant {
     userId: string;
     timestamp: string; 
@@ -28,4 +15,17 @@ export interface Ticket {
     name: string;
     price: number;
     quantity: number;
+    sold: number
+}
+
+export interface Event {
+    id: string;
+    title: string;
+    description: string;
+    date: string;
+    place: string;
+    tickets: Ticket[]; 
+    organizers: string[];
+    imageUrl?: string;
+    [key: string]: any; 
 }

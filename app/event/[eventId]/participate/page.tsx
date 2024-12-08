@@ -11,6 +11,7 @@ import { LuCalendarDays } from "react-icons/lu";
 import { IoLocationOutline } from "react-icons/io5";
 import { Ticket } from "@/types/types";
 import { loadStripe } from '@stripe/stripe-js';
+import { motion } from "framer-motion";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!);
 
@@ -144,66 +145,86 @@ const Page = () => {
     return (
         <>
             <Navbar />
-            <div className="flex flex-col md:flex-row w-11/12 mx-auto gap-8 pt-10">
-                {/* Section de gauche : Détails du participant */}
-                <div className="w-full md:w-2/3 flex flex-col">
-                    <h3 className="text-2xl font-medium mb-4">Buy Ticket</h3>
-                    
+            <motion.div
+                className="flex flex-col md:flex-row w-11/12 mx-auto gap-8 pt-10"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, ease: "easeInOut" }}
+            >
+                <motion.div
+                    className="w-full md:w-2/3 flex flex-col bg-white p-8 shadow-lg rounded-xl"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                >
+                    <h3 className="text-3xl font-semibold mb-6 text-gray-800">Acheter un Ticket</h3>
+
                     {/* Choix du ticket */}
-                    <div className="flex flex-col w-full mb-6">
-                        <label className="text-sm font-medium text-gray-700">Select Ticket</label>
-                        <Select 
-                            placeholder="Select a ticket"
+                    <div className="flex flex-col w-full mb-8">
+                        <label className="text-lg font-medium text-gray-600 mb-2">Choisir un Ticket</label>
+                        <Select
+                            placeholder="Sélectionner un ticket"
                             value={selectedTicket}
                             onChange={handleTicketChange}
-                            className="rounded-md shadow-sm border-gray-300"
+                            className="rounded-md border border-gray-300 shadow focus:ring focus:ring-blue-500"
+                            size="large"
                         >
                             {event.tickets.map((ticket) => (
                                 <Select.Option key={ticket.name} value={ticket.name} disabled={ticket.quantity <= 0}>
-                                    <span className="font-semibold">{ticket.name} - {ticket.price}€</span>
-                                    <span className="text-gray-500"> ({ticket.quantity > 0 ? `${ticket.quantity} available` : "Sold Out"})</span>
+                                    <div className="flex justify-between items-center">
+                                    <span>{ticket.name}</span>
+                                    <span className="text-gray-500">
+                                        {ticket.quantity > 0 ? `${ticket.quantity} disponibles` : "Épuisé"}
+                                    </span>
+                                    </div>
                                 </Select.Option>
                             ))}
                         </Select>
                     </div>
-    
-                    <Button 
-                        type="primary" 
-                        className="mt-4 px-4 py-2" 
+
+                    <Button
+                        type="primary"
+                        className="w-full py-4 mt-4 bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 transition-all rounded-lg"
+                        size="large"
                         onClick={handleCheckout}
                         disabled={!selectedTicket}
-                    >   
-                        Confirm Registration ({selectedTicketPrice ? `${selectedTicketPrice}€` : 'Select a ticket'})
+                    >
+                        Confirm Registration {selectedTicketPrice ? `(${selectedTicketPrice} €)` : ""}
                     </Button>
-                </div>
-    
+                </motion.div>
+
                 {/* Section de droite : Détails de l'événement */}
-                <div className="w-full md:w-1/3 flex flex-col p-4 border border-gray-300 rounded-lg">
-                    <h2 className="text-3xl font-semibold mb-2 text-center">{event.title}</h2>
-                    <div className="overflow-hidden rounded-md mb-4">
+                <motion.div
+                    className="w-full md:w-1/3 bg-white p-6 border border-gray-200 shadow-lg rounded-xl"
+                    initial={{ scale: 0.9 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.3 }}
+                >
+                    <h2 className="text-3xl font-bold mb-4 text-center text-gray-800">{event.title}</h2>
+                    <div className="overflow-hidden rounded-lg mb-6">
                         {event.images.length > 0 && (
                             <Image
-                                src={event.images[0]} // Utilisation de la première image
-                                alt={event.title}
-                                width={500}
-                                height={300}
-                                className="w-full h-auto"
+                            src={event.images[0]}
+                            alt={event.title}
+                            width={500}
+                            height={300}
+                            className="w-full h-auto object-cover transition-transform duration-500 hover:scale-105"
                             />
                         )}
                     </div>
-    
-                    <div className="flex flex-col mb-2">
-                        <div className="flex items-center mb-1">
-                            <LuCalendarDays className="mr-2" />
+
+                    <div className="flex flex-col gap-2 text-gray-600">
+                        <div className="flex items-center mb-2">
+                            <LuCalendarDays className="mr-2 text-blue-500" />
                             <span>{formattedDate}</span>
                         </div>
                         <div className="flex items-center">
-                            <IoLocationOutline className="mr-2" />
+                            <IoLocationOutline className="mr-2 text-green-500" />
                             <span>{event.place}</span>
                         </div>
                     </div>
-                </div>
-            </div>
+                </motion.div>
+            </motion.div>
             <Footer />
         </>
     );

@@ -15,25 +15,25 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="w-full flex justify-between items-center py-4 sm:px-12 px-none bg-blue-500 z-10">
+    <nav className="w-[98%] rounded-xl mx-auto mt-2 flex justify-between items-center py-2 sm:px-12 px-4 bg-blue-500 z-10">
         <div>
             <Link href="/">
-                <p className="text-4xl text-white px-4 py-2 rounded-xl">EventEase</p>
+                <p className="text-4xl text-white px-4 py-2 rounded-xl font-bold">EventEase</p>
             </Link>
         </div>
 
         <div className="hidden md:flex"> {/* Menu desktop */}
             <ul className="flex gap-4 items-center">
-                <li className="cursor-pointer text-xl text-white hover:bg-blue-600 duration-300 py-2 px-4 rounded-lg">
+                <li className="font-bold cursor-pointer text-xl text-white hover:bg-blue-600 duration-300 py-2 px-4 rounded-lg">
                     <Link href="/">Home</Link>
                 </li>
-                <li className="cursor-pointer text-xl text-white hover:bg-blue-600 duration-300 py-2 px-4 rounded-lg">
+                <li className="font-bold cursor-pointer text-xl text-white hover:bg-blue-600 duration-300 py-2 px-4 rounded-lg">
                     <Link href="/explore">Explore</Link>
                 </li>
             {isSignedIn ? (
                 <>
                     <li>
-                        <Link href="/eventlab" className="cursor-pointer text-xl text-white hover:bg-blue-600 duration-300 py-2 px-4 rounded-lg">
+                        <Link href="/eventlab" className="font-bold cursor-pointer text-xl text-white hover:bg-blue-600 duration-300 py-2 px-4 rounded-lg">
                             EventLab
                         </Link>
                     </li>
@@ -43,10 +43,10 @@ const Navbar = () => {
                 </>
             ) : (
                 <>
-                    <li className="cursor-pointer text-xl text-white hover:bg-blue-600 duration-300 py-2 px-4 rounded-lg">
+                    <li className="font-bold cursor-pointer text-xl text-white hover:bg-blue-600 duration-300 py-2 px-4 rounded-lg">
                     <Link href="/auth/signin">Signin</Link>
                     </li>
-                    <li className="cursor-pointer text-xl text-white hover:bg-blue-600 duration-300 py-2 px-4 rounded-lg">
+                    <li className="font-bold cursor-pointer text-xl text-white hover:bg-blue-600 duration-300 py-2 px-4 rounded-lg">
                     <Link href="/auth/signup">Signup</Link>
                     </li>
                 </>
@@ -62,29 +62,30 @@ const Navbar = () => {
 
         {/* Menu déroulant pour mobile */}
         {isOpen && (
-            <div className="absolute top-20 left-0 w-full bg-blue-500 md:hidden z-10 flex flex-col gap-4 px-4 py-2">
-                <Link href="/" className="cursor-pointer text-xl text-white hover:bg-blue-600 duration-300 py-2 w-full text-left">
+            <div className="absolute rounded-xl top-[5.5rem] left-1/2 transform -translate-x-1/2 w-[98%] bg-blue-500 md:hidden z-10 flex flex-col gap-4 px-4 py-2">
+
+                <Link href="/" className="px-4 rounded-lg font-bold cursor-pointer text-xl text-white hover:bg-blue-600 duration-300 py-2 w-fit text-left">
                     Home
                 </Link>
 
                 {isSignedIn ? (
                     <>
-                        <Link href="/explore" className="cursor-pointer text-xl text-white hover:bg-blue-600 duration-300 py-2 w-full text-left">
+                        <Link href="/explore" className="px-4 rounded-lg font-bold cursor-pointer text-xl text-white hover:bg-blue-600 duration-300 py-2 w-fit text-left">
                             Explore
                         </Link>
-                        <Link href="/eventlab" className="cursor-pointer text-xl text-white hover:bg-blue-600 duration-300 py-2 w-full text-left">
+                        <Link href="/eventlab" className="px-4 rounded-lg font-bold cursor-pointer text-xl text-white hover:bg-blue-600 duration-300 py-2 w-fit text-left">
                             EventLab
                         </Link>
-                        <div className="text-white">
+                        <div className="text-white pl-4">
                             <UserButton />
                         </div>
                     </>
                 ) : (
                     <>
-                        <Link href="/sign-in" className="cursor-pointer text-xl text-white hover:bg-blue-600 duration-300 py-2 w-full text-left">
+                        <Link href="/sign-in" className="px-4 rounded-lg font-bold cursor-pointer text-xl text-white hover:bg-blue-600 duration-300 py-2 w-fit text-left">
                             Signin
                         </Link>
-                        <Link href="/sign-up" className="cursor-pointer text-xl text-white hover:bg-blue-600 duration-300 py-2 w-full text-left">
+                        <Link href="/sign-up" className="px-4 rounded-lg font-bold cursor-pointer text-xl text-white hover:bg-blue-600 duration-300 py-2 w-fit text-left">
                             Signup
                         </Link>
                     </>

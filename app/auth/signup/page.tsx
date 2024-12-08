@@ -35,7 +35,8 @@ const Signup = () => {
             await setDoc(doc(db, "users", user.uid), {
                 name: name,
                 email: email,
-                createdAt: new Date()
+                createdAt: new Date(),
+                stripeConfigured: false
             });
 
             // Redirige vers le tableau de bord
@@ -58,7 +59,8 @@ const Signup = () => {
                 await setDoc(userDocRef, {
                     name: user.displayName || "",
                     email: user.email,
-                    createdAt: new Date()
+                    createdAt: new Date(),
+                    stripeConfigured: false
                 });
             }
 

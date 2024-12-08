@@ -4,11 +4,13 @@ import Image from "next/image";
 import React, { useState, useEffect, useRef } from "react";
 import { Skeleton, notification } from "antd";
 import useFirebaseUser from "@/lib/useFirebaseUser";
-import { Event, Participant, User } from '@/types/types';
+import { Event } from '@/types/types';
 import EventPopup from "./EventPopup";
+import EditEventPopup from "./EditEventPopup";
 import UserTickets from "./UserTickets";
 import { FaUser, FaHeart } from "react-icons/fa";
 import { FaShare } from "react-icons/fa6";
+import { IoIosSettings } from "react-icons/io";
 
 
 export default function Dashboard() {
@@ -17,6 +19,7 @@ export default function Dashboard() {
     const [likedEvents, setLikedEvents] = useState<string[]>([]);
     const [menuOpenEventId, setMenuOpenEventId] = useState<string | null>(null); 
     const menuRef = useRef<HTMLDivElement>(null);
+    const [editEvent, setEditEvent] = useState<Event | null>(null); 
 
     useEffect(() => {
         // Vérifier si on est dans le navigateur (côté client)
@@ -123,6 +126,22 @@ export default function Dashboard() {
         });
     };
 
+    const handleEditEvent = (event: Event) => {
+        setEditEvent(event);
+    };
+
+    const handleCloseEditPopup = () => {
+        setEditEvent(null);
+    };
+
+    const updateEvent = (updatedEvent: Event) => {
+        setEvents((prevEvents) =>
+            prevEvents.map((event) =>
+                event.id === updatedEvent.id ? { ...event, ...updatedEvent } : event
+            )
+        );
+    };
+
     return (
         <div className="container mx-auto py-16">
             <section className="py-16">
@@ -180,25 +199,34 @@ export default function Dashboard() {
                                     <div className="p-4">
                                         <div className="flex justify-between items-center mb-2">
                                             <h3 className="font-bold text-xl">{event.title}</h3>
-                                            <div className="border border-blue-600 text-blue-600 text-sm font-bold py-1 px-2 rounded flex items-center gap-1">
+                                            <div className="border border-blue-600 text-blue-600 text-sm font-bold py-1 px-2 rounded flex items-center gap-1 whitespace-nowrap">
                                                 {event.currentGuests !== undefined ? event.currentGuests : 0} / {event.guestLimit} <FaUser />
                                             </div>
                                         </div>
                                         <p className="text-gray-600">{new Date(event.date).toLocaleDateString('fr-FR')} | {event.place}</p>
                                         <p className="text-gray-700 mt-2">{event.description}</p>
-                                        <div className="flex gap-4 mt-4">
-                                            <button
-                                                className="mt-4 bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600"
-                                                onClick={() => handleManageEvent(event.id)}
-                                            >
-                                                Manage Event
-                                            </button>
-                                            <button
-                                                onClick={() => handleLike(event.id)}
-                                                className={`p-2 rounded ${isLiked ? 'text-red-500' : 'text-gray-400'}`}
-                                            >
-                                                <FaHeart size={24} className={`transition-colors duration-200 ${isLiked ? 'fill-current' : ''}`} />
-                                            </button>
+                                        <div className="flex justify-between items-center gap-4 mt-4">
+                                            <div className="flex items-center gap-4">
+                                                <button
+                                                    className=" bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600"
+                                                    onClick={() => handleManageEvent(event.id)}
+                                                >
+                                                    Manage Event
+                                                </button>
+                                                <button
+                                                    onClick={() => handleLike(event.id)}
+                                                    className={`${isLiked ? 'text-red-500' : 'text-gray-400'}`}
+                                                >
+                                                    <FaHeart size={24} className={`transition-colors duration-200 ${isLiked ? 'fill-current' : ''}`} />
+                                                </button>
+                                            </div>
+                                            {event.createdBy === userId && (
+                                                <div>
+                                                    <button className="p-2 rounded-full hover:bg-gray-100 duration-300" onClick={() => handleEditEvent(event)}>
+                                                        <IoIosSettings size={25} className="text-gray-500" />
+                                                    </button>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -207,6 +235,14 @@ export default function Dashboard() {
                     )}
                 </div>
                 </section>
+
+                {editEvent && (
+                    <EditEventPopup
+                        event={editEvent}
+                        onClose={handleCloseEditPopup}
+                        onUpdateEvent={updateEvent}
+                    />
+                )}
 
                 {selectedEvent && (
                     <EventPopup
@@ -248,8 +284,8 @@ export default function Dashboard() {
                                             <div className="p-4">
                                                 <div className="flex justify-between items-center mb-2">
                                                     <h3 className="font-bold text-xl">{event.title}</h3>
-                                                    <div className="border border-blue-600 text-blue-600 text-sm font-bold py-1 px-2 rounded flex items-center gap-1">
-                                                        {event.currentGuests !== undefined ? event.currentGuests : 0} / {event.guests} <FaUser />
+                                                    <div className="border border-blue-600 text-blue-600 text-sm font-bold py-1 px-2 rounded flex items-center gap-1 whitespace-nowrap">
+                                                        {event.currentGuests !== undefined ? event.currentGuests : 0} / {event.guestLimit} <FaUser />
                                                     </div>
                                                 </div>
                                                 <p className="text-gray-600">{new Date(event.date).toLocaleDateString('fr-FR')} | {event.place}</p>

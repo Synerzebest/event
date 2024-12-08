@@ -4,12 +4,12 @@ import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from 'react-icons/f
 
 const Footer = () => {
     return (
-        <footer className="bg-gray-900 text-white py-12 relative top-64">
+        <footer className="bg-blue-500 text-white py-12 mx-4 mb-[16.5rem] rounded-xl relative top-64">
             <div className="container mx-auto flex flex-wrap justify-between items-start space-y-8 md:space-y-0">
                 {/* Section 1: Company Logo and Info */}
                 <div className="w-full md:w-1/3 flex flex-col items-center md:items-start text-center md:text-left">
                     <h2 className="text-3xl font-bold mb-4">EventEase</h2>
-                    <p className="text-gray-400">
+                    <p className="text-white">
                         Simplifying event management and making your events a success.
                     </p>
                 </div>
@@ -62,8 +62,8 @@ const Footer = () => {
             </div>
 
             {/* Bottom Section */}
-            <div className="mt-12 text-center border-t border-gray-700 pt-6">
-                <p className="text-sm text-gray-500">
+            <div className="mt-12 text-center border-t border-white pt-6">
+                <p className="text-sm text-white">
                     © 2024 EventEase. All Rights Reserved.
                 </p>
             </div>

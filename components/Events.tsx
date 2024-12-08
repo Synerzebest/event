@@ -32,13 +32,29 @@ const Events = () => {
                         'Content-Type': 'application/json'
                     },
                 });
-
+    
                 if (!response.ok) {
                     throw new Error("Failed to fetch events");
                 }
-
+    
                 const data = await response.json();
-                setEvents(data);
+    
+                // Filtrer les événements pour ne garder que ceux dont la date n'est pas passée
+                const currentDate = new Date().getTime(); // Date actuelle en millisecondes
+    
+                const filteredEvents = data.filter((event: any) => {
+                    const eventDate = new Date(event.date).getTime();
+                    return eventDate >= currentDate; // Ne garder que les événements futurs ou en cours
+                });
+    
+                // Trier les événements par date, les plus récents d'abord
+                const sortedEvents = filteredEvents.sort((a: any, b: any) => {
+                    const dateA = new Date(a.date).getTime(); 
+                    const dateB = new Date(b.date).getTime(); 
+                    return dateB - dateA;  
+                });
+    
+                setEvents(sortedEvents);
             } catch (error) {
                 console.error("Error fetching events:", error);
             } finally {
@@ -47,6 +63,7 @@ const Events = () => {
         };
         fetchEvents();
     }, []);
+    
 
     return (
         <div className="container mx-auto py-16">

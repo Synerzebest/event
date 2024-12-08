@@ -31,20 +31,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 const tickets: Ticket[] = eventData.tickets || [];
 
                 // Trouver le ticket correspondant
-                const ticket = tickets.find(t => t.name === selectedTicket);
-                if (!ticket) {
+                const ticketIndex = tickets.findIndex(t => t.name === selectedTicket);
+                if (ticketIndex === -1) {
                     throw new Error('Ticket not found');
                 }
 
+                const ticket = tickets[ticketIndex];
                 const updatedQuantity = ticket.quantity - 1;
+                
+                // Vérifier si des tickets sont encore disponibles
                 if (updatedQuantity < 0) {
                     throw new Error('Not enough tickets available');
                 }
 
-                // Mettre à jour les tickets avec la quantité décrémentée
-                const updatedTickets = tickets.map(t => 
-                    t.name === selectedTicket 
-                        ? { ...t, quantity: updatedQuantity } 
+                // Incrémenter le champ "sold" du ticket
+                const updatedSold = ticket.sold + 1;
+
+                // Mettre à jour les tickets avec la quantité décrémentée et sold incrémenté
+                const updatedTickets = tickets.map((t, index) => 
+                    index === ticketIndex 
+                        ? { ...t, quantity: updatedQuantity, sold: updatedSold } 
                         : t
                 );
 
@@ -55,7 +61,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 });
             });
 
-            return res.status(200).json({ success: true, message: "api called" });
+            return res.status(200).json({ success: true, message: "Ticket sold successfully" });
         } catch (error) {
             console.error('Error updating event:', error);
             return res.status(500).json({ error: 'Error updating event', details: error.message });

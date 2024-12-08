@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Navbar, EventComponent, Footer } from '@/components';
-import { useUser } from "@clerk/nextjs";
+import useFirebaseUser from "@/lib/useFirebaseUser";
 import { message } from 'antd';
 import Link from "next/link";
 
@@ -11,8 +11,8 @@ const PaymentSuccess = () => {
     const searchParams = useSearchParams();
     const sessionId = searchParams ? searchParams.get('session_id') : null;
     const eventId = searchParams ? searchParams.get('eventId') : null;
-    const { user } = useUser();
-    const userId = user?.id || "";
+    const { user } = useFirebaseUser();
+    const userId = user?.uid || "";
     const [hasUpdated, setHasUpdated] = useState(false);
 
     useEffect(() => {
@@ -78,17 +78,14 @@ const PaymentSuccess = () => {
     return (
         <>
             <Navbar />
-            <div className="w-11/12 md:w-[80%] relative top-12 mx-auto p-6 text-center border border-gray-300 rounded-lg shadow-lg bg-gray-50">
-                <h1 className="text-2xl font-bold text-green-600">Merci pour votre achat !</h1>
-                <p className="mt-4 text-lg text-gray-700 font-bold">
-                    Votre paiement pour l'événement a été traité avec succès.
-                </p>
-                <p className="mt-2 text-lg text-gray-700 font-bold">
+            <div className="w-11/12 md:w-[80%] relative top-12 mx-auto p-6 border border-gray-300 rounded-lg shadow-lg bg-gray-50">
+                <h1 className="text-2xl font-bold text-green-600 text-center">Everything went well!</h1>
+                <p className="mt-2 text-lg text-gray-700 font-bold text-center">
                     Thanks for your trust
                 </p>
 
                 <div className="mt-8 p-4 rounded-lg flex flex-col items-center">
-                    <h2 className="text-xl font-semibold mb-4">Détails de l'événement</h2>
+                    <h2 className="text-xl font-semibold mb-4">Event details</h2>
                     <EventComponent eventId={eventId!} userId={userId} participateButton={false} />
                 </div>
 

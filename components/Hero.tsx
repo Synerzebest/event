@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const heroImage = "/images/hero.png";
 
@@ -14,7 +15,7 @@ const Hero = () => {
                 <p className="text-lg sm:text-xl md:text-2xl">
                     EventEase helps you create, organize, and manage your events, whether parties, conferences or weddings.
                 </p>
-                <button className="text-xl text-white bg-blue-500 border-none mt-8 py-4 px-6 font-bold rounded-xl hover:bg-blue-600 hover:scale-110 duration-300">Start Now</button>
+                <Link href="/explore" className="text-xl text-white bg-blue-500 border-none mt-8 py-4 px-6 font-bold rounded-xl hover:bg-blue-600 duration-300">Explorer les événements</Link>
             </div>
 
             <div className="relative w-full lg:w-[30%] h-[350px] z-10">

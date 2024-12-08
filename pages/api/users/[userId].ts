@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { clerkClient } from "@clerk/nextjs/server"; // Assurez-vous d'importer clerkClient
+import { auth } from "@/lib/firebaseAdmin";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     // Vérifier la méthode de la requête
@@ -15,19 +15,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     try {
-        // Récupérer les détails de l'utilisateur à partir de Clerk
-        const user = await clerkClient.users.getUser(userId as string);
+        // Récupérer les détails de l'utilisateur via Firebase
+        const userRecord = await auth.getUser(userId as string);
 
-        // Vérifier si l'utilisateur existe
-        if (!user) {
+        if (!userRecord) {
             return res.status(404).json({ message: "User not found" });
         }
 
-        // Extraire les détails nécessaires
-        const { fullName, imageUrl, emailAddresses } = user;
+        const { displayName, photoURL, email, uid } = userRecord;
 
         // Retourner les détails de l'utilisateur
-        res.status(200).json({ name: fullName, imageUrl, userId, mail: emailAddresses });
+        res.status(200).json({ name: displayName, imageUrl: photoURL, userId: uid, email: email });
 
     } catch (error) {
         console.error("An error occurred while fetching user details", error);

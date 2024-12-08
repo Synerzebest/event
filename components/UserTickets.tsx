@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Spin, Button, Modal } from "antd";
+import { Spin, Button, Modal, Skeleton } from "antd";
 import { Event } from "@/types/types";
 import { format } from "date-fns";
 import Image from "next/image";
 import { LuCalendarDays } from "react-icons/lu";
 import { IoLocationOutline } from "react-icons/io5";
-import { db } from "@/lib/firebaseConfig"; // Assurez-vous que la config Firebase est bien configurée
+import { db } from "@/lib/firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 import QRCode from 'qrcode';
-import { getAuth } from "firebase/auth";  // Importer Firebase Authentication
+import { getAuth } from "firebase/auth";
 
 interface Ticket {
     id: string;
@@ -29,7 +29,6 @@ const UserTickets = ({ userId }: { userId: string }) => {
     useEffect(() => {
         const fetchUserTickets = async () => {
             try {
-                // Récupérer le token d'authentification de l'utilisateur
                 const auth = getAuth();
                 const user = auth.currentUser;
 
@@ -37,9 +36,8 @@ const UserTickets = ({ userId }: { userId: string }) => {
                     throw new Error("User not authenticated");
                 }
 
-                const token = await user.getIdToken();  // Récupérer le token d'authentification
+                const token = await user.getIdToken();
 
-                // Effectuer la requête API avec l'en-tête Authorization
                 const response = await fetch(`/api/get-user-tickets`, {
                     method: 'GET',
                     headers: {
@@ -52,7 +50,10 @@ const UserTickets = ({ userId }: { userId: string }) => {
                 }
 
                 const data: Ticket[] = await response.json();
-                setTickets(data);
+
+                const sortedTickets = data.sort((a, b) => Number(a.used) - Number(b.used));
+
+                setTickets(sortedTickets);
             } catch (error) {
                 setError(error.message);
             } finally {
@@ -88,7 +89,6 @@ const UserTickets = ({ userId }: { userId: string }) => {
     const handleShowQRCode = async (ticket: Ticket) => {
         setSelectedTicketId(ticket.id);
 
-        // Vérifiez si le ticket est valide et non utilisé
         const ticketRef = doc(db, "tickets", ticket.id);
         const ticketSnapshot = await getDoc(ticketRef);
 
@@ -103,7 +103,6 @@ const UserTickets = ({ userId }: { userId: string }) => {
             return;
         }
 
-        // Générer le QR code avec les informations de validation
         const qrData = JSON.stringify({ eventId: ticket.eventId, ticketId: ticket.id, userId: ticket.userId });
         const qrCodeUrl = await QRCode.toDataURL(qrData);
         setQrCode(prev => ({ ...prev, [ticket.id]: qrCodeUrl }));
@@ -122,27 +121,42 @@ const UserTickets = ({ userId }: { userId: string }) => {
     return (
         <div className="mb-12">
             {tickets.length > 0 ? (
-                <ul className="flex flex-wrap items-start gap-4">
+                <ul className="no-scrollbar flex overflow-x-auto sm:overflow-x-hidden sm:flex-wrap items-start gap-4 scroll-snap-x-mandatory scroll-snap-type-x-mandatory py-4 px-2">
                     {tickets.map(ticket => (
-                        <li key={ticket.id} className="border rounded mb-2 w-11/12 mx-auto sm:mx-0 sm:w-1/2 md:w-1/3 lg:w-1/4 flex flex-col gap-4">
+                        <li 
+                            key={ticket.id} 
+                            className="border rounded mb-2 w-[350px] flex-none flex flex-col gap-4 scroll-snap-start"
+                        >
                             {events[ticket.eventId] ? (
                                 <>
                                     <div>
                                         <Image 
                                             alt={`${events[ticket.eventId].title}`} 
                                             src={`${events[ticket.eventId].images[0]}`} 
-                                            width={350}
-                                            height={200}
-                                            className="object-cover rounded-t-lg w-auto h-auto"
+                                            width={250}
+                                            height={140}
+                                            className="object-cover rounded-t-lg w-full h-full"
                                         />
                                     </div>
                                     <div className="px-4 mb-4 flex flex-col gap-4">
-                                        <p className="text-lg font-bold">{events[ticket.eventId].title}</p>
-                                        <p className="flex items-center gap-2">
+                                        <div className="w-full flex items-center justify-between">
+                                            <p className="text-lg font-bold">{events[ticket.eventId].title}</p>
+
+                                            {ticket.used ? (
+                                                <p className="text-xs font-semibold text-red-600 bg-red-100 px-3 py-1 rounded-full border border-red-300 w-fit">
+                                                    Utilisé
+                                                </p>
+                                            ) : (
+                                                <>
+                                                </>
+                                            )}
+                                        </div>
+                                        
+                                        <p className="flex items-center gap-2 text-sm sm:text-base">
                                             <LuCalendarDays />
                                             {format(new Date(events[ticket.eventId].date), 'dd MMMM yyyy')}
                                         </p>
-                                        <p className="flex items-center gap-2">
+                                        <p className="flex items-center gap-2 text-sm sm:text-base">
                                             <IoLocationOutline />
                                             {events[ticket.eventId].place}
                                         </p>
@@ -152,13 +166,17 @@ const UserTickets = ({ userId }: { userId: string }) => {
                                     </div>
                                 </>
                             ) : (
-                                <p>Chargement des détails de l'événement...</p>
+                                <div className="flex flex-col gap-4 px-4 py-6">
+                                    <Skeleton.Input active size="small" className="w-full" />
+                                    <Skeleton active paragraph={{ rows: 2 }} className="w-full" />
+                                    <Skeleton.Button active size="default" className="w-full" />
+                                </div>
                             )}
                         </li>
                     ))}
                 </ul>
             ) : (
-                <p>You don&apos;t have any ticket yet.</p>
+                <p>You don't have any ticket yet.</p>
             )}
 
             {/* Popup Modal pour le QR Code */}
@@ -177,8 +195,8 @@ const UserTickets = ({ userId }: { userId: string }) => {
                         <Image
                             src={qrCode[selectedTicketId] as string}
                             alt={`QR Code for Ticket ${selectedTicketId}`}
-                            width={160}  // largeur ajustée
-                            height={160} // hauteur ajustée
+                            width={160}
+                            height={160}
                             className="rounded-lg"
                         />
                     </div>

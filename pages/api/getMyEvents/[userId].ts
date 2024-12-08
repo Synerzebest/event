@@ -16,8 +16,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
         const eventsCollection = collection(db, "events");
         
-        // Query pour récupérer les événements créés par l'utilisateur avec userId
-        const q = query(eventsCollection, where("createdBy", "==", userId));
+        // Query pour récupérer les événements que l'utilisateur peut gérer
+        const q = query(eventsCollection, where("organizers", "array-contains", userId));
         const querySnapshot = await getDocs(q);
 
         const userEvents = querySnapshot.docs.map((doc) => ({
