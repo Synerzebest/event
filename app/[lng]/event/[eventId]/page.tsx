@@ -1,17 +1,27 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "next/navigation"; 
 import { Navbar, Footer, Countdown, EventComponent } from "@/components";
 import { Spin } from 'antd';
 import useFirebaseUser from "@/lib/useFirebaseUser";
+import { useTranslation } from '../../../i18n';
 
-const Page = () => {
+interface PageProps {
+    params: {
+      lng: string
+    }
+}
+
+const Page = ({ params: { lng } }: PageProps) => {
     const { eventId } = useParams() as { eventId: string };
     const [event, setEvent] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const { user } = useFirebaseUser();
     const userId = user?.uid || "";
+
+    const [isLoading, setIsLoading] = useState(true)
+    const { t, i18n } = useTranslation(lng, 'common')
 
     useEffect(() => {
         const fetchEvent = async () => {
@@ -36,25 +46,35 @@ const Page = () => {
         fetchEvent();
     }, [eventId]);
 
+    useEffect(() => {
+        if (i18n) {
+          setIsLoading(false)
+        }
+      }, [i18n])
+    
+      if (isLoading) {
+        return <div className="w-screen h-screen flex items-center justify-center text-4xl text-white px-4 py-2 font-bold">Eventease</div>
+      }
+
     return (
         <>
             {loading ? (
                 <>
-                    <Navbar />
+                    <Navbar lng={lng}/>
                     <div className="w-full flex justify-center relative top-24">
                         <Spin size="large" />
                     </div>
                 </>
             ) : !event ? (
                 <>
-                    <Navbar />
+                    <Navbar lng={lng}/>
                     <div className="w-full flex justify-center relative top-24">
                         <p>Nothing to see here</p>
                     </div>
                 </>
             ) : (
                 <>
-                    <Navbar />
+                    <Navbar lng={lng}/>
                     <div className="w-full flex flex-col items-center gap-32">
                         <div>
                             <Countdown eventDate={event.date} />

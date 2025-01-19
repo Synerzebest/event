@@ -1,18 +1,20 @@
 import React from 'react';
 import Image from "next/image";
+import { useTranslation } from "../app/i18n";
 
 const backup = "/images/backup.png";
 const security = "/images/security.png";
 const support = "/images/support.png";
 
-const ReliabilitySection = () => {
+const ReliabilitySection = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
+    const { t } = useTranslation(lng, "common");
     return (
         <section className="py-16 bg-gray-50 relative top-64">
             <div className="container mx-auto">
                 {/* Title */}
-                <h2 className="text-4xl font-bold text-center mb-8">Reliability & Security</h2>
+                <h2 className="text-4xl font-bold text-center mb-8">{t('security_title')}</h2>
                 <p className="text-center text-lg text-gray-600 mb-12">
-                    Your Events, Safely Managed. Every Time.
+                    {t('security_subtitle')}
                 </p>
                 
                 {/* Feature Cards */}
@@ -27,9 +29,9 @@ const ReliabilitySection = () => {
                             objectFit="contain" 
                             className="mb-4"
                         />
-                        <h3 className="text-2xl font-bold">Data Protection</h3>
+                        <h3 className="text-2xl font-bold">{t('data_title')}</h3>
                         <p className="text-gray-600 mt-2 mx-4">
-                            All your event data is protected with state-of-the-art encryption. We use advanced security protocols to ensure that your information remains confidential and secure.
+                            {t('data_subtitle')}
                         </p>
                     </div>
 
@@ -43,9 +45,9 @@ const ReliabilitySection = () => {
                             objectFit="contain" 
                             className="mb-4"
                         />
-                        <h3 className="text-2xl font-bold">Regular Backups</h3>
+                        <h3 className="text-2xl font-bold">{t('backups_title')}</h3>
                         <p className="text-gray-600 mt-2 mx-4">
-                            We perform regular backups of all your event data to ensure that nothing is ever lost. In case of any issues, your events are safely stored and can be restored instantly.
+                            {t('backups_subtitle')}
                         </p>
                     </div>
 
@@ -59,9 +61,9 @@ const ReliabilitySection = () => {
                             objectFit="contain" 
                             className="mb-4"
                         />
-                        <h3 className="text-2xl font-bold">24/7 Support</h3>
+                        <h3 className="text-2xl font-bold">{t('support_title')}</h3>
                         <p className="text-gray-600 mt-2 mx-4">
-                            Our support team is available 24/7 to assist you with any issues. Whether it's a technical problem or a simple question, we're here to help you keep your events running smoothly.
+                            {t('support_subtitle')}
                         </p>
                     </div>
                 </div>

@@ -190,7 +190,7 @@ const EditEventPopup: React.FC<EditEventPopupProps> = ({ event, onClose, onUpdat
                         {fileList.length === 0 && (
                             <div>
                                 <PlusOutlined />
-                                <p className="mt-2 text-sm text-gray-600">Upload Event Photo</p>
+                                <p className="mt-2 text-sm text-gray-600">Update Event Photo</p>
                             </div>
                         )}
                     </Upload>

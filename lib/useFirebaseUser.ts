@@ -9,10 +9,13 @@ interface User {
   email: string | null;
   photoURL: string | null;
   uid: string;
-  stripeAccountId: string | null;
+  stripeAccountId?: string | null;
   accountStatus?: string; // Optionnel si ce champ n'est pas toujours disponible
   chargesEnabled?: boolean;
   payoutsEnabled?: boolean;
+  stripeCustomerId?: string | null;
+  subscription?: string | null;
+  subscriptionId?: string;
 }
 
 const useFirebaseUser = () => {
@@ -38,6 +41,9 @@ const useFirebaseUser = () => {
               accountStatus: userData?.accountStatus || "unknown",
               chargesEnabled: userData?.chargesEnabled || false,
               payoutsEnabled: userData?.payoutsEnabled || false,
+              stripeCustomerId: userData?.stripeCustomerId || null,
+              subscription: userData?.subscription || null,
+              subscriptionId: userData?.subscriptionId || null,
             });
           } else {
             console.warn("Aucun document Firestore trouvé pour cet utilisateur.");
@@ -47,6 +53,8 @@ const useFirebaseUser = () => {
               photoURL: currentUser.photoURL,
               uid: currentUser.uid,
               stripeAccountId: null,
+              stripeCustomerId: null,
+              subscription: "starter"
             });
           }
         } catch (error) {
@@ -61,6 +69,8 @@ const useFirebaseUser = () => {
             photoURL: currentUser.photoURL,
             uid: currentUser.uid,
             stripeAccountId: null,
+            stripeCustomerId: null,
+            subscription: "starter"
           });
         }
       } else {

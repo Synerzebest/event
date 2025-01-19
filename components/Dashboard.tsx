@@ -15,6 +15,7 @@ import { IoIosSettings } from "react-icons/io";
 
 export default function Dashboard() {
     const [events, setEvents] = useState<any[]>([]);
+    const [myEvents, setMyEvents] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true); 
     const [likedEvents, setLikedEvents] = useState<string[]>([]);
     const [menuOpenEventId, setMenuOpenEventId] = useState<string | null>(null); 
@@ -95,7 +96,7 @@ export default function Dashboard() {
             try {
                 const response = await fetch(`/api/getMyEvents/${userId}`);
                 const data = await response.json();
-                setEvents(data);
+                setMyEvents(data);
             } catch (error) {
                 console.error("Error fetching events:", error);
             } finally {
@@ -160,10 +161,10 @@ export default function Dashboard() {
                                 </div>
                             </div>
                         ))
-                    ) : events.length === 0 ? (
+                    ) : myEvents.length === 0 ? (
                         <div className="text-center text-gray-500 text-xl">You don&apos;t have any event yet.</div>
                     ) : (
-                        events.map(event => {
+                        myEvents.map(event => {
                             const isLiked = likedEvents.includes(event.id); 
                             const isMenuOpen = menuOpenEventId === event.id; // Check if the current event's menu is open
                             return (

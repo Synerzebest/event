@@ -1,13 +1,22 @@
 "use client"
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Navbar, Footer, Dashboard, CreateEventForm } from '@/components';
-import useFirebaseUser from '@/lib/useFirebaseUser'; // Utilisation du hook pour récupérer l'utilisateur
+import useFirebaseUser from '@/lib/useFirebaseUser'; 
+import { useTranslation } from '../../i18n'
 
-export default function Home() {
-  const { user, loading } = useFirebaseUser();  // Récupère l'utilisateur et l'état de chargement
-  const router = useRouter();  // Utilisation de useRouter pour rediriger
+interface PageProps {
+  params: {
+    lng: string
+  }
+}
+
+export default function Page({ params: { lng } }: PageProps) {
+  const { user, loading } = useFirebaseUser(); 
+  const router = useRouter(); 
+  const [isLoading, setIsLoading] = useState(true)
+  const { t, i18n } = useTranslation(lng, 'common')
 
   useEffect(() => {
     if (!loading && !user) {
@@ -15,6 +24,16 @@ export default function Home() {
       router.push('/auth/signin');
     }
   }, [user, loading, router]);
+
+  useEffect(() => {
+    if (i18n) {
+      setIsLoading(false)
+    }
+  }, [i18n])
+
+  if (isLoading) {
+    return <div className="w-screen h-screen flex items-center justify-center text-4xl text-white px-4 py-2 font-bold">Eventease</div>
+  }
 
   if (!user && loading) {
     return(
@@ -30,7 +49,7 @@ export default function Home() {
 
   return (
     <>
-      <Navbar />
+      <Navbar lng={lng} />
       <CreateEventForm />
       <Dashboard />
       <Footer />

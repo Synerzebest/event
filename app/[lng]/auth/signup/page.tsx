@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { Input, Button, Alert, Typography, Divider } from "antd";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
+import useLanguage from "@/lib/useLanguage";
 
 const { Title } = Typography;
 
@@ -16,6 +17,7 @@ const Signup = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState<string | null>(null);
+    const lng = useLanguage();
     const router = useRouter();
 
     // Inscription avec email et mot de passe
@@ -36,11 +38,12 @@ const Signup = () => {
                 name: name,
                 email: email,
                 createdAt: new Date(),
-                stripeConfigured: false
+                stripeConfigured: false,
+                subscription: "starter"
             });
 
             // Redirige vers le tableau de bord
-            router.push("/dashboard");
+            router.push(`/${lng}/eventlab`);
         } catch (err) {
             setError((err as Error).message);
         }
@@ -60,11 +63,12 @@ const Signup = () => {
                     name: user.displayName || "",
                     email: user.email,
                     createdAt: new Date(),
-                    stripeConfigured: false
+                    stripeConfigured: false,
+                    subscription: "starter"
                 });
             }
 
-            router.push("/eventlab");
+            router.push(`/${lng}/eventlab`);
         } catch (err) {
             setError((err as Error).message);
         }

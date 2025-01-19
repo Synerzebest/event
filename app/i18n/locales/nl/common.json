@@ -1,0 +1,112 @@
+{
+  "title": "Home",
+  "explore": "Ontdekken",
+  "hero_title": "Creëer, organiseer en beheer eenvoudig uw evenementen",
+  "hero_subtitle": "Eventease helpt u bij het creëren, organiseren en beheren van uw evenementen, of het nu gaat om feesten, conferenties of bruiloften",
+  "hero_button": "Evenementen verkennen",
+  "subhero_title": "Ontdek de kenmerken van EventEase",
+  "subhero_subtitle": "Stroomlijn uw evenementenplanningsproces met onze krachtige tools die zijn ontworpen voor efficiëntie en gebruiksgemak.",
+  "learn_more": "Leer meer",
+  "features": [
+    {
+        "title": "Evenementbeheer",
+        "description": "Maak en beheer eenvoudig uw evenementen vanaf één platform.",
+        "image": "/images/eventmanagment.png"
+    },
+    {
+        "title": "Evenementplanning",
+        "description": "Plan uw evenementen efficiënt met onze intuïtieve tools.",
+        "image": "/images/eventplanning.png"
+    },
+    {
+        "title": "Aangepaste uitnodigingen",
+        "description": "Stuur gepersonaliseerde uitnodigingen naar uw gasten.",
+        "image": "/images/custominvitations.png"
+    },
+    {
+        "title": "RSVP-tracking",
+        "description": "Houd moeiteloos de reacties van uw gasten bij.",
+        "image": "/images/rsvp.png"
+    },
+    {
+        "title": "Evenementherinneringen",
+        "description": "Stuur automatisch herinneringen naar uw gasten voor het evenement.",
+        "image": "/images/reminders.png"
+    },
+    {
+        "title": "Budgetbeheer",
+        "description": "Houd uw evenementuitgaven bij met onze budgetteringstools.",
+        "image": "/images/budget.png"
+    }
+  ],
+  "security_title": "Betrouwbaarheid en veiligheid",
+  "security_subtitle": "Uw evenementen, veilig beheerd. Elke keer.",
+  "data_title": "Gegevensbescherming", 
+  "data_subtitle": "Al uw evenementgegevens worden beschermd met de modernste encryptie. We gebruiken geavanceerde beveiligingsprotocollen om ervoor te zorgen dat uw informatie vertrouwelijk en veilig blijft.",
+  "backups_title": "Regelmatige back-ups",
+  "backups_subtitle": "We maken regelmatig back-ups van al uw evenementgegevens om ervoor te zorgen dat er nooit iets verloren gaat. In geval van problemen worden uw evenementen veilig opgeslagen en kunnen ze onmiddellijk worden hersteld.",
+  "support_title": "24/7 Assistent",
+  "support_subtitle": "Ons ondersteuningsteam is 24/7 beschikbaar om u te helpen bij eventuele problemen. Of het nu een technisch probleem is of een simpele vraag, wij zijn er om u te helpen uw evenementen soepel te laten verlopen.",
+  "choose_plan": "Kies uw abonnement",
+  "choose_plan_button": "Abonneren",
+  "starter_plan_description": "Voor kleinschalige evenementen",
+  "starter_plan_commission": "15% commissie op elke ticketverkoop",
+  "starter_plan_advantage": "Basis ondersteuning",
+  "premium_plan_description": "Voor grotere evenementen",
+  "premium_plan_commission": "10% commissie op elke ticketverkoop",
+  "premium_plan_advantage": "Prioritaire ondersteuning",
+  "pro_plan_description": "Voor grootschalige evenementen",
+  "pro_plan_commission": "5% commissie op elke ticketverkoop",
+  "pro_plan_advantage": "Toegewijde ondersteuning",
+  "active_subscription_message": "U heeft al een actief abonnement. Om van abonnement te veranderen, dient u eerst uw huidige abonnement op te zeggen.",
+  "active_plan": "Actief",
+  "default_plan": "Standaard Plan",
+  "disabled_plan": "Onbeschikbaar",
+  "faq": {
+    "title": "Veelgestelde vragen",
+    "subtitle": "Vind antwoorden op veelgestelde vragen over EventEase.",
+    "items": {
+      "1": {
+        "header": "Hoe maak ik een evenement aan?",
+        "content": "Om een evenement aan te maken, klikt u eenvoudig op de knop 'Evenement aanmaken' op het dashboard en volgt u de instructies op het scherm om de benodigde gegevens in te voeren, zoals de naam van het evenement, de datum en de locatie."
+      },
+      "2": {
+        "header": "Zijn mijn gegevens veilig?",
+        "content": "Absoluut. We gebruiken geavanceerde encryptieprotocollen om ervoor te zorgen dat uw gegevens te allen tijde vertrouwelijk en veilig blijven. We maken ook regelmatig back-ups om gegevensverlies te voorkomen."
+      },
+      "3": {
+        "header": "Hoe kan ik de reacties op uitnodigingen volgen?",
+        "content": "Nadat u uw uitnodigingen heeft verzonden, kunt u de RSVP-antwoorden in realtime volgen via uw evenementbeheer-dashboard. U ontvangt ook meldingen wanneer iemand een antwoord geeft."
+      },
+      "4": {
+        "header": "Wat als ik hulp nodig heb bij mijn evenement?",
+        "content": "Ons ondersteuningsteam is 24/7 beschikbaar om u te helpen. U kunt contact met ons opnemen via livechat, e-mail of telefoon voor hulp met de installatie of het beheer van uw evenement."
+      }
+    }
+  },
+  "testimonials_title": "Wat Onze Gebruikers Zeggen",
+  "testimonials": [
+    {
+      "name": "Karl Johnson",
+      "title": "Evenementplanner",
+      "content": "EventEase heeft een revolutie teweeggebracht in de manier waarop ik mijn evenementen beheer. Alles is zo gestroomlijnd en gemakkelijk te gebruiken!",
+      "image": "/images/firstuser.png"
+    },
+    {
+      "name": "Michael Lee",
+      "title": "Bruiloft Coördinator",
+      "content": "Ik vind het geweldig hoe gemakkelijk het is om elk detail van mijn evenementen te organiseren. Het scheelt mij uren werk!",
+      "image": "/images/thirduser.png"
+    },
+    {
+      "name": "Sara Martinez",
+      "title": "Manager bedrijfsevenementen",
+      "content": "De budgetbeheertool is een redder in nood. Ik hoef me geen zorgen meer te maken over te hoge uitgaven!",
+      "image": "/images/seconduser.png"
+    }
+  ],
+  "upcoming_events": "Komende Evenementen",
+  "events_availability": "Geen evenementen beschikbaar",
+  "past_events_show": "Alles zien",
+  "past_events_hide": "Verbergen"
+}

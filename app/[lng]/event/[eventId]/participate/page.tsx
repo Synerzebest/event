@@ -12,6 +12,7 @@ import { IoLocationOutline } from "react-icons/io5";
 import { Ticket } from "@/types/types";
 import { loadStripe } from '@stripe/stripe-js';
 import { motion } from "framer-motion";
+import useLanguage from "@/lib/useLanguage";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!);
 
@@ -31,6 +32,8 @@ const Page = () => {
     const [selectedTicketPrice, setSelectedTicketPrice] = useState<number | null>(null);
     const { user } = useFirebaseUser();
     const userId = user?.uid || "";
+
+    const lng = useLanguage();
 
     const handleCheckout = async () => {
         const stripe = await stripePromise;
@@ -68,6 +71,7 @@ const Page = () => {
                 ticket: { 
                     name: selectedTicketData.name,
                     price: selectedTicketData.price,
+                    quantity: selectedTicketData.quantity
                 },
                 userId: userId,
                 eventId: eventId,
@@ -121,7 +125,7 @@ const Page = () => {
     if (loading) {
         return (
             <>
-                <Navbar />
+                <Navbar lng={lng} />
                 <div className="w-full flex justify-center relative top-24">
                     <Spin size="large" />
                 </div>
@@ -132,7 +136,7 @@ const Page = () => {
     if (!event) {
         return (
             <>
-                <Navbar />
+                <Navbar lng={lng} />
                 <div className="w-full flex justify-center relative top-24">
                     <p>Nothing to see here</p>
                 </div>
@@ -144,7 +148,7 @@ const Page = () => {
 
     return (
         <>
-            <Navbar />
+            <Navbar lng={lng} />
             <motion.div
                 className="flex flex-col md:flex-row w-11/12 mx-auto gap-8 pt-10"
                 initial={{ opacity: 0, y: 50 }}

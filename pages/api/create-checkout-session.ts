@@ -2,9 +2,9 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
 import { firestore } from '@/lib/firebaseAdmin';
 
-async function getOrganizerStripeAccountId(eventId: string): Promise<string> {
+async function getOrganizerDetails(eventId: string): Promise<{ stripeAccountId: string, subscriptionId: string }> {
   try {
-    // Récupérer les détails de l'événement pour obtenir l'ID de l'organisateur
+    // Get event details
     const eventRef = firestore.collection('events').doc(eventId);
     const eventDoc = await eventRef.get();
 
@@ -18,7 +18,7 @@ async function getOrganizerStripeAccountId(eventId: string): Promise<string> {
       throw new Error('Organizer user ID not found');
     }
 
-    // Récupérer l'ID Stripe Connect de l'organisateur à partir de la collection users
+    // Get event organizer from users collection
     const userRef = firestore.collection('users').doc(organizerUserId);
     const userDoc = await userRef.get();
 
@@ -27,12 +27,13 @@ async function getOrganizerStripeAccountId(eventId: string): Promise<string> {
     }
 
     const stripeAccountId = userDoc.data()?.stripeAccountId;
+    const subscriptionId = userDoc.data()?.subscriptionId;
 
     if (!stripeAccountId) {
       throw new Error('Stripe account ID not found for the user');
     }
 
-    return stripeAccountId;
+    return { stripeAccountId, subscriptionId };
   } catch (error) {
     console.error('Error fetching organizer Stripe account ID:', error);
     throw error;
@@ -51,10 +52,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const { ticket, userId, eventId } = req.body;
 
   try {
-    // Récupérer l'ID du compte Stripe Connect de l'organisateur
-    const organizerStripeAccountId = await getOrganizerStripeAccountId(eventId);
+    // Récupérer les détails de l'organisateur (Stripe Account ID et Subscription ID)
+    const { stripeAccountId, subscriptionId } = await getOrganizerDetails(eventId);
 
-    // Créer la session de paiement
+    let applicationFeePercentage = 0.15; // Par défaut pour 'starter'
+
+    if (subscriptionId) {
+      // Récupérer les détails de l'abonnement via Stripe
+      const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+      const plan = subscription.items.data[0].price.metadata.nickname || 'starter'; // Si pas de plan, utiliser "starter"
+      console.log(plan)
+
+      if (plan.toLowerCase() === 'premium') {
+        applicationFeePercentage = 0.10; // Premium : 10%
+      } else if (plan.toLowerCase() === 'pro') {
+        applicationFeePercentage = 0.05; // Pro : 5%
+      }
+    } else {
+      console.log('L’organisateur est sur le plan Starter (aucun abonnement trouvé).');
+    }
+    console.log(`Frais d'application calculés : ${applicationFeePercentage * 100}%`);
+
+    // Créer une session de paiement avec les frais d'application calculés dynamiquement
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [
@@ -64,19 +83,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             product_data: {
               name: ticket.name,
             },
-            unit_amount: Math.round(ticket.price * 100), // prix en centimes
+            unit_amount: Math.round(ticket.price * 100),
           },
           quantity: 1,
         },
       ],
+      metadata: {
+        event_id: eventId,
+        ticket_name: ticket.name,
+        ticket_quantity: ticket.quantity
+      },
       payment_intent_data: {
-        application_fee_amount: Math.round(ticket.price * 100 * 0.1), // 10% de commission pour vous
+        application_fee_amount: Math.round(ticket.price * 100 * applicationFeePercentage),
         transfer_data: {
-          destination: organizerStripeAccountId, // ID du compte Stripe Connect de l'organisateur
+          destination: stripeAccountId, // ID du compte Stripe Connect de l'organisateur
         },
       },
       mode: 'payment',
-      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/payment-success?session_id={CHECKOUT_SESSION_ID}&eventId=${eventId}`,
+      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/success?session_id={CHECKOUT_SESSION_ID}&eventId=${eventId}`,
       cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/cancel`,
     });
 
@@ -87,4 +111,3 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.status(500).json({ error: 'An error occurred while creating the checkout session.' });
   }
 }
-

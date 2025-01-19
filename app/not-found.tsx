@@ -1,9 +1,7 @@
 "use client"
 
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-
-const errorImage = "/images/404.png";
+import { motion } from "framer-motion";
+import Link from "next/link";
 
 const NotFound = () => {
     return (
@@ -45,15 +43,6 @@ const NotFound = () => {
                     Back Home
                 </Link>
             </motion.div>
-
-            <motion.img
-                src={errorImage}
-                alt="404 image"
-                className="max-w-xs mt-10"
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 1, duration: 0.5 }}
-            />
         </div>
     );
 };

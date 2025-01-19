@@ -176,7 +176,7 @@ const UserTickets = ({ userId }: { userId: string }) => {
                     ))}
                 </ul>
             ) : (
-                <p>You don't have any ticket yet.</p>
+                <p className="text-start text-gray-500 text-xl">You don't have any ticket yet.</p>
             )}
 
             {/* Popup Modal pour le QR Code */}

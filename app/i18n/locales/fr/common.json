@@ -1,0 +1,112 @@
+{
+  "title": "Accueil",
+  "explore": "Explorer",
+  "hero_title": "Créez, Organisez & Gérez vos événements simplement",
+  "hero_subtitle": "Eventease vous aide à créer, organiser et gérer vos événements, que ce soient des soirées, des conférences ou des mariages",
+  "hero_button": "Explorer les événements",
+  "subhero_title": "Découvrez les fonctionnalités d'EventEase",
+  "subhero_subtitle": "Rationalisez votre processus de planification d’événements grâce à nos outils puissants conçus pour être efficaces et faciles à utiliser.",
+  "features": [
+    {
+      "title": "Gestion d'événements",
+      "description": "Créez et gérez facilement vos événements depuis une seule plateforme.",
+      "image": "/images/eventmanagment.png"
+    },
+    {
+      "title": "Planification d'événements",
+      "description": "Planifiez vos événements efficacement avec nos outils intuitifs.",
+      "image": "/images/eventplanning.png"
+    },
+    {
+      "title": "Invitations personnalisées",
+      "description": "Envoyez des invitations personnalisées à vos invités.",
+      "image": "/images/custominvitations.png"
+    },
+    {
+      "title": "Suivi des RSVP",
+      "description": "Suivez facilement les réponses de vos invités.",
+      "image": "/images/rsvp.png"
+    },
+    {
+      "title": "Rappels d'événements",
+      "description": "Envoyez automatiquement des rappels à vos invités avant l'événement.",
+      "image": "/images/reminders.png"
+    },
+    {
+      "title": "Gestion de budget",
+      "description": "Gardez le contrôle de vos dépenses événementielles avec nos outils de gestion.",
+      "image": "/images/budget.png"
+    }
+  ],
+  "learn_more": "En savoir plus",
+  "security_title": "Fiabilité et sécurité",
+  "security_subtitle": "Vos événements, en toute sécurité. Tout le temps.",
+  "data_title": "Protection des données", 
+  "data_subtitle": "Toutes vos données sont protégées. Nous utilisons des protocoles de sécurité avancés pour garantir que vos informations restent confidentielles et sécurisées.",
+  "backups_title": "Sauvegardes régulières",
+  "backups_subtitle": "Nous sauvegardons régulièrement toutes les données de vos événements. En cas de problème, vos événements sont stockés en toute sécurité et peuvent être restaurés immédiatement.",
+  "support_title": "Assistance 24/7",
+  "support_subtitle": "Notre équipe d'assistance est disponible 24h/24 et 7j/7 pour vous aider en cas de problème. Qu'il s'agisse d'un problème technique ou d'une simple question, nous sommes là pour vous aider au bon déroulement de vos événements.",
+  "choose_plan": "Choisissez votre abonnement",
+  "choose_plan_button": "S'abonner",
+  "starter_plan_description": "Pour les événements en petit comité",
+  "starter_plan_commission": "15% de commission sur chaque vente de ticket",
+  "starter_plan_advantage": "Assistance basique",
+  "premium_plan_description": "Pour des événements plus importants",
+  "premium_plan_commission": "10% de commission sur chaque vente de ticket",
+  "premium_plan_advantage": "Assistance prioritaire",
+  "pro_plan_description": "Pour les événements de grande envergure",
+  "pro_plan_commission": "5% de commission sur chaque vente de ticket",
+  "pro_plan_advantage": "Assistance dédiée",
+  "active_subscription_message": "Vous avez déjà un abonnement actif. Pour changer d'abonnement, veuillez d'abord résilier votre abonnement actuel.",
+  "active_plan": "Actif",
+  "default_plan": "Par défaut",
+  "disabled_plan": "Désactivé",
+  "faq": {
+    "title": "Questions fréquemment posées",
+    "subtitle": "Trouvez des réponses aux questions courantes sur EventEase.",
+    "items": {
+      "1": {
+        "header": "Comment puis-je créer un événement ?",
+        "content": "Pour créer un événement, cliquez simplement sur le bouton 'Créer un événement' sur le tableau de bord et suivez les instructions à l'écran pour entrer les détails nécessaires, tels que le nom de l'événement, la date et le lieu."
+      },
+      "2": {
+        "header": "Mes données sont-elles sécurisées ?",
+        "content": "Absolument. Nous utilisons des protocoles de cryptage de pointe pour garantir que vos données restent confidentielles et sécurisées en tout temps. Nous effectuons également des sauvegardes régulières pour éviter toute perte de données."
+      },
+      "3": {
+        "header": "Comment puis-je suivre les réponses aux invitations ?",
+        "content": "Une fois vos invitations envoyées, vous pouvez suivre les réponses aux RSVP en temps réel depuis votre tableau de bord de gestion d'événements. Vous recevrez également des notifications dès qu'une réponse est enregistrée."
+      },
+      "4": {
+        "header": "Que faire si j'ai besoin d'aide pour mon événement ?",
+        "content": "Notre équipe d'assistance est disponible 24/7 pour vous aider. Vous pouvez nous contacter par chat en direct, par e-mail ou par téléphone pour toute question concernant l'installation ou la gestion de votre événement."
+      }
+    }
+  },
+  "testimonials_title": "Avis de nos utilisateurs",
+  "testimonials": [
+    {
+      "name": "Karl Johnson",
+      "title": "Planificateur d'événements",
+      "content": "EventEase a révolutionné la façon dont je gère mes événements. Tout est si simple à utiliser !",
+      "image": "/images/firstuser.png"
+    },
+    {
+      "name": "Michael Lee",
+      "title": "Coordonnateur de mariage",
+      "content": "J’aime la facilité avec laquelle il est possible d’organiser chaque détail de mes événements. Cela me fait gagner des heures de travail !",
+      "image": "/images/thirduser.png"
+    },
+    {
+      "name": "Sara Martinez",
+      "title": "Responsable des événements corporatifs",
+      "content": "L’outil de gestion budgétaire est une bouée de sauvetage. Je n'ai plus à m'inquiéter des dépenses excessives !",
+      "image": "/images/seconduser.png"
+    }
+  ],
+  "upcoming_events": "Événements à venir",
+  "events_availability": "Aucun événement disponible",
+  "past_events_show": "Voir les événements passés",
+  "past_events_hide": "Masquer les événements passés"
+}

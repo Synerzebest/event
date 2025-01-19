@@ -5,7 +5,7 @@ import useFirebaseUser from "@/lib/useFirebaseUser";
 import Image from "next/image";
 import Link from "next/link";
 
-const UserButton: React.FC = () => {
+const UserButton: React.FC<{ lng: string }> = ({ lng }) => {
   const { user, loading } = useFirebaseUser();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -75,7 +75,7 @@ const UserButton: React.FC = () => {
   }
 
   return (
-    <div className="relative inline-block text-left" ref={menuRef}>
+    <div className="relative inline-block text-left z-10" ref={menuRef}>
       {user ? (
         <div onClick={() => setIsMenuOpen((prev) => !prev)}>
           <Image
@@ -109,11 +109,20 @@ const UserButton: React.FC = () => {
               </button>
             ) : (
               <Link
-                href="/account"
+                href={`/${lng}/account`}
                 className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               >
                 Payment Account
               </Link>
+            )}
+
+            {user.subscriptionId ? (
+              <Link href={`/${lng}/cancel-subscription`} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                Cancel Subscription
+              </Link>
+            ) : (
+              <>
+              </>
             )}
 
             {/* Lien de déconnexion */}
