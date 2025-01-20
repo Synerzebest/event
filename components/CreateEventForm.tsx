@@ -9,6 +9,8 @@ import { addDoc, collection } from "firebase/firestore";
 import { db, storage } from "@/lib/firebaseConfig";
 import { UploadFile } from "antd/es/upload/interface";
 import dayjs from 'dayjs';
+import { useTranslation } from "../app/i18n"
+import useLanguage from "@/lib/useLanguage";
 
 
 const { TextArea } = Input;
@@ -41,6 +43,8 @@ type Ticket = {
 };
 
 const CreateEventForm: React.FC = () => {
+    const lng = useLanguage();
+    const { t } = useTranslation(lng, "common");
     const { user } = useFirebaseUser();
     const [fileList, setFileList] = useState<UploadFile[]>([]);
     const [uploading, setUploading] = useState(false);
@@ -195,7 +199,7 @@ const CreateEventForm: React.FC = () => {
             
             <div className="w-full flex flex-col md:flex-row bg-white p-8 rounded-lg shadow-lg gap-8 sm:gap-0 border border-gray-300">
                 <div className="w-full md:w-1/2 flex flex-col gap-4 pr-4">
-                    <p className="text-2xl font-bold mb-2 text-blue-500">Event Details</p>
+                    <p className="text-2xl font-bold mb-2 text-blue-500">{t('event_details')}</p>
                     <Input 
                         className="rounded-md shadow-sm border-gray-300 focus:border-blue-500" 
                         name="title" 
@@ -244,37 +248,37 @@ const CreateEventForm: React.FC = () => {
                                   <div className="flex items-end gap-4">
                                       <div className="flex flex-col w-full gap-2">
                                           <label className="block text-sm font-medium text-gray-700">
-                                              Ticket Name
+                                              {t('ticket_name')}
                                           </label>
                                           <Input 
                                               value={ticket.name} 
                                               onChange={(e) => updateTicket(index, "name", e.target.value)} 
-                                              placeholder="Ticket Name" 
+                                              placeholder={`${t('ticket_name')}`}
                                               required 
                                           />
                                       </div>
                                       <div className="flex flex-col w-1/3 gap-2">
                                           <label className="block text-sm font-medium text-gray-700">
-                                              Price (€)
+                                              {t('price')} (€)
                                           </label>
                                           <InputNumber
                                               value={ticket.price}
                                               onChange={(value) => updateTicket(index, "price", value)}
                                               min={0}
-                                              placeholder="Price"
+                                              placeholder={`${t('price')}`}
                                               required
                                               className="w-full"
                                           />
                                       </div>
                                       <div className="flex flex-col w-1/3 gap-2">
                                           <label className="block text-sm font-medium text-gray-700">
-                                              Quantity
+                                              {t('quantity')}
                                           </label>
                                           <InputNumber
                                               value={ticket.quantity}
                                               onChange={(value) => updateTicket(index, "quantity", value)}
                                               min={1}
-                                              placeholder="Quantity"
+                                              placeholder={`${t('quantity')}`}
                                               required
                                               className="w-full"
                                           />
@@ -285,7 +289,7 @@ const CreateEventForm: React.FC = () => {
                                           onClick={() => removeTicket(index)} 
                                           icon={<PlusOutlined />}
                                       >
-                                          Remove
+                                          {t('remove')}
                                       </Button>
                                   </div>
                               </div>
@@ -296,33 +300,33 @@ const CreateEventForm: React.FC = () => {
                               onClick={addTicket}
                               className="border-gray-400 text-gray-600"
                           >
-                              Add Ticket
+                              {t('add_ticket')}
                           </Button>
                           </>
                         ) : (
                             <p className="text-red-500">
-                                You need to verify your account and enable charges and payouts to create a paid event.
+                                {t('stripe_alert')}
                             </p>
                         )}
                     </div>
                 </div>
 
                 <div className="w-full md:w-1/2 flex flex-col gap-4">
-                    <p className="text-2xl font-bold mb-2 text-blue-500">Event Privacy & Guests</p>
+                    <p className="text-2xl font-bold mb-2 text-blue-500">{t('event_privacy_guests')}</p>
                     <Radio.Group
                         value={formData.privacy}
                         onChange={(e) => setFormData({...formData, privacy: e.target.value})}
                         className="mb-4"
                     >
-                        <Radio value="public">Public</Radio>
-                        <Radio value="private">Private</Radio>
+                        <Radio value="public">{t('public')}</Radio>
+                        <Radio value="private">{t('private')}</Radio>
                     </Radio.Group>
-                    <p className="text-xl font-bold mb-2 text-blue-500">Guest Limit</p>
+                    <p className="text-xl font-bold mb-2 text-blue-500">{t('guest_limit')}</p>
                     <InputNumber 
                         value={guestLimit} 
                         onChange={handleGuestsChange} 
                         min={1} 
-                        placeholder="Guest Limit" 
+                        placeholder={t('guest_limit')}
                         className="w-full mb-4" 
                     />
                     <Upload

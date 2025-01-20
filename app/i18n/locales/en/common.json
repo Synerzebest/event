@@ -113,5 +113,16 @@
   "success_message": "Everything went well !",
   "success_submessage": "You can now access your ticket in your eventlab page. We look forward to seeing you at the event!",
   "subscription_success_submessage": "You can now enjoy your subscription !",
-  "subscription_tip": "You can cancel it anytime by clicking on your profile picture."
+  "subscription_tip": "You can cancel it anytime by clicking on your profile picture.",
+  "event_details": "Event Details",
+  "ticket_name": "Ticket Name",
+  "price": "Price",
+  "quantity": "Quantity",
+  "remove": "Remove",
+  "add_ticket": "Add ticket",
+  "stripe_alert": "You need to verify your account and enable charges and payouts to create a paid event.",
+  "event_privacy_guests": "Event Privacy & Guests",
+  "guest_limit": "Guest Limit",
+  "public": "Public",
+  "private": "Private"
 }

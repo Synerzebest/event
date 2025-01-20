@@ -113,5 +113,16 @@
   "success_message": "Alles ging goed !",
   "success_submessage": "U hebt nu toegang tot uw ticket op uw eventlab-pagina. Wij zien u graag op het evenement!",
   "subscription_success_submessage": "U kunt nu genieten van uw abonnement!",
-  "subscription_tip": "Je kunt het op elk gewenst moment annuleren door op je profielfoto te klikken."
+  "subscription_tip": "Je kunt het op elk gewenst moment annuleren door op je profielfoto te klikken.",
+  "event_details": "Evenementdetails",
+  "ticket_name": "Ticketnaam",
+  "price": "Prijs",
+  "quantity": "Hoeveelheid",
+  "remove": "Verwijderen",
+  "add_ticket": "Kaartje toevoegen",
+  "stripe_alert": "Je moet je account verifiëren en kosten en uitbetalingen inschakelen om een ​​betaald evenement te kunnen maken.",
+  "event_privacy_guests": "Evenementprivacy en gasten",
+  "guest_limit": "Gastenlimiet",
+  "public": "Publiek",
+  "private": "Privé"
 }

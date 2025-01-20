@@ -113,5 +113,16 @@
   "success_message": "Tout s'est bien passé !",
   "success_submessage": "Vous pouvez maintenant voir votre ticket sur votre page eventlab. On vous attend à l'événement !",
   "subscription_success_submessage": "Profitez dès à présent de votre abonnement !",
-  "subscription_tip": "Annulez le à tout moment en appuyant sur votre photo de profil."
+  "subscription_tip": "Annulez le à tout moment en appuyant sur votre photo de profil.",
+  "event_details": "Détails de l'événement",
+  "ticket_name": "Nom du ticket",
+  "price": "Prix",
+  "quantity": "Quantité",
+  "remove": "Retirer",
+  "add_ticket": "Ajouter un ticket",
+  "stripe_alert": "Vous devez vérifier votre compte et activer les frais et les paiements pour créer un événement payant.",
+  "event_privacy_guests": "Confidentialité",
+  "guest_limit": "Limite d'invités",
+  "public": "Publique",
+  "private": "Privé"
 }
