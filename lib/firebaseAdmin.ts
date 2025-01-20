@@ -1,5 +1,5 @@
 import admin from 'firebase-admin';
-import * as serviceAccount from "@/secrets/eventease-fd5ce-firebase-adminsdk-aax14-fde62160d6.json";
+import * as serviceAccount from "../secrets/eventease-fd5ce-firebase-adminsdk-aax14-fde62160d6.json"
 
 if (!admin.apps.length) {
   admin.initializeApp({
