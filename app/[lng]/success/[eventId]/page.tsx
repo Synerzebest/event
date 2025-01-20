@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Confetti from 'react-confetti';
 import { motion } from 'framer-motion';
 import { Navbar, EventComponent, Footer } from '@/components';
@@ -28,7 +28,7 @@ const Page = () => {
     }, []);
 
     return (
-        <>
+        <Suspense>
             <Navbar lng={lng} />
             
             <motion.div
@@ -85,7 +85,7 @@ const Page = () => {
                 </motion.div>
             </motion.div>
             <Footer />
-        </>
+        </Suspense>
     );
 };
 
