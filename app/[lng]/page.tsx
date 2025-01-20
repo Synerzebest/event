@@ -1,8 +1,8 @@
 "use client"
 
-import { useState, useEffect } from 'react'
-import { Navbar, Hero, SubHero, Testimonials, PricingTable, ReliabilitySection, FAQSection, Footer } from '@/components'
-import { useTranslation } from '../i18n'
+import { useState, useEffect } from 'react';
+import { Navbar, Hero, SubHero, Testimonials, PricingTable, ReliabilitySection, FAQSection, Footer } from '@/components';
+import { useTranslation } from '../i18n';
 
 interface HomeProps {
   params: {

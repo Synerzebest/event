@@ -1,5 +1,5 @@
 import { db } from '@/lib/firebaseConfig';
-import { doc, getDoc, runTransaction } from 'firebase/firestore';
+import { doc, runTransaction } from 'firebase/firestore';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { Ticket } from "@/types/types";
 

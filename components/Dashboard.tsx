@@ -14,8 +14,8 @@ import { IoIosSettings } from "react-icons/io";
 
 
 export default function Dashboard() {
-    const [events, setEvents] = useState<any[]>([]);
-    const [myEvents, setMyEvents] = useState<any[]>([]);
+    const [events, setEvents] = useState<Event[]>([]);
+    const [myEvents, setMyEvents] = useState<Event[]>([]);
     const [loading, setLoading] = useState<boolean>(true); 
     const [likedEvents, setLikedEvents] = useState<string[]>([]);
     const [menuOpenEventId, setMenuOpenEventId] = useState<string | null>(null); 
@@ -147,7 +147,7 @@ export default function Dashboard() {
         <div className="container mx-auto py-16">
             <section className="py-16">
                 <h2 className="text-3xl sm:text-2xl text-center sm:text-start font-bold mb-8">My Tickets</h2>
-                <UserTickets userId={userId} />
+                <UserTickets />
 
                 <h2 className="text-3xl sm:text-2xl text-center sm:text-start font-bold mb-8">Your Events</h2>
                 <div className="flex flex-wrap gap-8 justify-center sm:justify-start">

@@ -62,6 +62,7 @@
   "active_plan": "Actief",
   "default_plan": "Standaard Plan",
   "disabled_plan": "Onbeschikbaar",
+  "signin_to_subscribe": "Log in om u te abonneren",
   "faq": {
     "title": "Veelgestelde vragen",
     "subtitle": "Vind antwoorden op veelgestelde vragen over EventEase.",
@@ -108,5 +109,9 @@
   "upcoming_events": "Komende Evenementen",
   "events_availability": "Geen evenementen beschikbaar",
   "past_events_show": "Alles zien",
-  "past_events_hide": "Verbergen"
+  "past_events_hide": "Verbergen",
+  "success_message": "Alles ging goed !",
+  "success_submessage": "U hebt nu toegang tot uw ticket op uw eventlab-pagina. Wij zien u graag op het evenement!",
+  "subscription_success_submessage": "U kunt nu genieten van uw abonnement!",
+  "subscription_tip": "Je kunt het op elk gewenst moment annuleren door op je profielfoto te klikken."
 }

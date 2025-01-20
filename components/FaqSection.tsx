@@ -6,7 +6,7 @@ import { useTranslation } from "../app/i18n";
 const { Panel } = Collapse;
 
 const FAQSection = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
-  const { t, i18n } = useTranslation(lng, "common");
+  const { t } = useTranslation(lng, "common");
 
   return (
     <section className="py-16 bg-white relative top-64">

@@ -4,11 +4,12 @@ import React, { useState } from "react";
 import useFirebaseUser from "@/lib/useFirebaseUser";
 import { Input, DatePicker, Radio, InputNumber, Upload, Button, notification, Select } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { addDoc, collection } from "firebase/firestore";
 import { db, storage } from "@/lib/firebaseConfig";
-import { UploadFile } from "antd/es/upload";
+import { UploadFile } from "antd/es/upload/interface";
 import dayjs from 'dayjs';
+
 
 const { TextArea } = Input;
 
@@ -43,7 +44,7 @@ const CreateEventForm: React.FC = () => {
     const { user } = useFirebaseUser();
     const [fileList, setFileList] = useState<UploadFile[]>([]);
     const [uploading, setUploading] = useState(false);
-    const [eventDate, setEventDate] = useState<any>(null);
+    const [eventDate, setEventDate] = useState<dayjs.Dayjs | null>(null);
     const [tickets, setTickets] = useState<Ticket[]>([]);
     const [guestLimit, setGuestLimit] = useState<number>(1);
     const [formData, setFormData] = useState({
@@ -71,14 +72,18 @@ const CreateEventForm: React.FC = () => {
         setTickets(newTickets);
     };
 
-    const handleUpload = async (file: any) => {
+    const handleUpload = async (file: UploadFile) => {
+        if (!file.originFileObj) {
+            return Promise.reject("No file to upload");
+        }
+    
         const storageRef = ref(storage, `events/${file.uid}`);
         const uploadTask = uploadBytesResumable(storageRef, file.originFileObj);
-
-        return new Promise((resolve, reject) => {
+    
+        return new Promise<string>((resolve, reject) => {
             uploadTask.on(
                 "state_changed",
-                (snapshot) => {},
+                () => {},
                 (error) => {
                     console.error("Upload error:", error);
                     reject(error);
@@ -134,35 +139,6 @@ const CreateEventForm: React.FC = () => {
           }
       
           const imageURLs = await Promise.all(fileList.map((file) => handleUpload(file)));
-      
-          // Création des tickets dans Stripe et dans Firestore
-          const ticketIds = await Promise.all(
-            tickets.map(async (ticket) => {
-              // Créer les produits et prix Stripe pour chaque ticket
-              const productRes = await fetch('/api/stripe/create-tickets', {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                  tickets: [{
-                    name: ticket.name,
-                    price: ticket.price,
-                    quantity: ticket.quantity,
-                  }],
-                  eventId: "temporaryEventId", // Utiliser un identifiant temporaire pour la création avant l'enregistrement dans Firestore
-                  userId: user?.uid,
-                }),
-              });
-      
-              const productData = await productRes.json();
-              if (!productRes.ok) {
-                throw new Error(productData.message || "Failed to create product in Stripe");
-              }
-      
-              return productData.tickets[0]; // Retourner l'objet ticket pour l'utiliser dans Firestore
-            })
-          );
       
           const totalTickets = tickets.reduce((sum, ticket) => sum + ticket.quantity, 0);
           const remainingPlaces = formData.guestLimit - totalTickets;

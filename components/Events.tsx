@@ -40,8 +40,6 @@ const Events = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
 
                 const data = await response.json();
 
-                const currentDate = new Date().getTime(); // Date actuelle en millisecondes
-
                 // Trier les événements par date, les plus récents d'abord
                 const sortedEvents = data.sort((a: any, b: any) => {
                     const dateA = new Date(a.date).getTime();

@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { db } from '@/lib/firebaseConfig';
 import { collection, getDocs } from '@firebase/firestore';
+import { Event } from "@/types/types";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== "GET") {
@@ -12,13 +13,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
         const q = collection(db, 'events'); // Collection d'événements
         const querySnapshot = await getDocs(q);
-        const events: any[] = [];
+        const events: Event[] = []; // Utiliser le type Event
 
         querySnapshot.forEach((doc) => {
             events.push({
                 id: doc.id,
                 ...doc.data(),
-            });
+            } as Event); // Assurez-vous de caster chaque événement au type Event
         });
 
         // Filtrer par catégorie si spécifiée

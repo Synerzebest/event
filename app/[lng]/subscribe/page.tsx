@@ -1,11 +1,10 @@
 "use client"
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import useFirebaseUser from '@/lib/useFirebaseUser';
 
 const Page = () => {
-    const router = useRouter();
     const searchParams = useSearchParams();
     const { user } = useFirebaseUser();
     const [isUserLoaded, setIsUserLoaded] = useState(false); // Ajouter un état pour suivre si l'utilisateur est chargé

@@ -62,6 +62,7 @@
   "active_plan": "Actif",
   "default_plan": "Par défaut",
   "disabled_plan": "Désactivé",
+  "signin_to_subscribe": "Connectez-vous pour vous abonner",
   "faq": {
     "title": "Questions fréquemment posées",
     "subtitle": "Trouvez des réponses aux questions courantes sur EventEase.",
@@ -108,5 +109,9 @@
   "upcoming_events": "Événements à venir",
   "events_availability": "Aucun événement disponible",
   "past_events_show": "Voir les événements passés",
-  "past_events_hide": "Masquer les événements passés"
+  "past_events_hide": "Masquer les événements passés",
+  "success_message": "Tout s'est bien passé !",
+  "success_submessage": "Vous pouvez maintenant voir votre ticket sur votre page eventlab. On vous attend à l'événement !",
+  "subscription_success_submessage": "Profitez dès à présent de votre abonnement !",
+  "subscription_tip": "Annulez le à tout moment en appuyant sur votre photo de profil."
 }

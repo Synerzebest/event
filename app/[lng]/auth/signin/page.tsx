@@ -7,14 +7,17 @@ import { useRouter } from "next/navigation";
 import { Input, Button, Alert, Typography, Divider } from "antd";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
+import { BackgroundLines } from "@/components/ui/background-lines";
+import useLanguage from "@/lib/useLanguage";
 
 const { Title } = Typography;
 
-const page = () => {
+const Signin = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
+    const lng = useLanguage();
 
     const handleSignin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -23,7 +26,7 @@ const page = () => {
         try {
             await signInWithEmailAndPassword(auth, email, password);
             // Redirige vers la page d'accueil ou le tableau de bord après connexion réussie
-            router.push("/eventlab");
+            router.push(`/${lng}/eventlab`);
         } catch (err) {
             setError((err as Error).message);
         }
@@ -32,70 +35,70 @@ const page = () => {
     const handleGoogleSignin = async () => {
         try {
             await signInWithPopup(auth, googleProvider);
-            router.push("/eventlab");
+            router.push(`/${lng}/eventlab`);
         } catch (err) {
             setError((err as Error).message);
         }
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-100">
-            <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-lg">
-                <Title level={2} className="text-center">
-                Welcome back to Eventease
-                </Title>
+        <BackgroundLines className="flex items-center justify-center">                
+                <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-lg relative z-10">
+                    <Title level={2} className="text-center">
+                    Welcome back to Eventease
+                    </Title>
 
-                {error && <Alert message={error} type="error" showIcon />}
+                    {error && <Alert message={error} type="error" showIcon />}
 
-                <form onSubmit={handleSignin} className="space-y-4">
-                    <Input
-                        type="email"
-                        placeholder="Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                        className="w-full"
-                        size="large"
-                    />
-                    <Input.Password
-                        placeholder="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        className="w-full"
-                        size="large"
-                    />
+                    <form onSubmit={handleSignin} className="space-y-4">
+                        <Input
+                            type="email"
+                            placeholder="Email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                            className="w-full"
+                            size="large"
+                        />
+                        <Input.Password
+                            placeholder="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                            className="w-full"
+                            size="large"
+                        />
+
+                        <Button
+                            type="primary"
+                            htmlType="submit"
+                            className="w-full mt-4"
+                            size="large"
+                        >
+                        Signin
+                        </Button>
+                    </form>
+
+                    <Divider>Or</Divider>
 
                     <Button
-                        type="primary"
-                        htmlType="submit"
-                        className="w-full mt-4"
+                        onClick={handleGoogleSignin}
+                        type="default"
+                        className="w-full flex items-center justify-center space-x-2"
                         size="large"
                     >
-                    Signin
+                        <FcGoogle className="text-xl" />
+                        <span>Signin with Google</span>
                     </Button>
-                </form>
-
-                <Divider>Or</Divider>
-
-                <Button
-                    onClick={handleGoogleSignin}
-                    type="default"
-                    className="w-full flex items-center justify-center space-x-2"
-                    size="large"
-                >
-                    <FcGoogle className="text-xl" />
-                    <span>Signin with Google</span>
-                </Button>
 
 
-                <p className="text-center text-gray-500">
-                Not member ?{" "}
-                <Link href="/auth/signup" className="text-blue-500 hover:underline hover:text-blue-700">Signup</Link>
-                </p>
-            </div>
-        </div>
+                    <p className="text-center text-gray-500">
+                    Not member ?{" "}
+                    <Link href="/auth/signup" className="text-blue-500 hover:underline hover:text-blue-700">Signup</Link>
+                    </p>
+                </div>
+        </BackgroundLines>
     );
 };
 
-export default page;
+export default Signin;

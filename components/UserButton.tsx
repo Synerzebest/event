@@ -4,13 +4,14 @@ import { auth } from "@/lib/firebaseConfig";
 import useFirebaseUser from "@/lib/useFirebaseUser";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const UserButton: React.FC<{ lng: string }> = ({ lng }) => {
   const { user, loading } = useFirebaseUser();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [stripeUrl, setStripeUrl] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   const handleStripeConnect = async () => {
     if (!user?.uid) return;
@@ -32,7 +33,6 @@ const UserButton: React.FC<{ lng: string }> = ({ lng }) => {
       const data = await response.json();
 
       if (data.url) {
-        setStripeUrl(data.url);
         window.location.href = data.url;
       }
     } catch (error) {
@@ -46,6 +46,7 @@ const UserButton: React.FC<{ lng: string }> = ({ lng }) => {
   const handleSignOut = async () => {
     await signOut(auth);
     setIsMenuOpen(false);
+    router.push('/')
   };
 
   // Fermer le menu lorsqu'on clique en dehors

@@ -10,9 +10,9 @@ interface PageProps {
   }
 }
 
-const page = ({ params: { lng } } : PageProps) => {
+const Explore = ({ params: { lng } } : PageProps) => {
   const [isLoading, setIsLoading] = useState(true)
-    const { t, i18n } = useTranslation(lng, 'common')
+    const { i18n } = useTranslation(lng, 'common')
 
   useEffect(() => {
     if (i18n) {
@@ -33,4 +33,4 @@ const page = ({ params: { lng } } : PageProps) => {
     )
 }
 
-export default page
+export default Explore;

@@ -10,6 +10,7 @@ import { LuCalendarDays } from "react-icons/lu";
 import { IoLocationOutline } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 import { motion } from 'framer-motion';
+import { Event } from "@/types/types"; 
 
 interface EventComponentProps {
     eventId: string,
@@ -19,7 +20,7 @@ interface EventComponentProps {
 
 const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, participateButton }) => {
     const [loading, setLoading] = useState(true);
-    const [event, setEvent] = useState<any>(null);
+    const [event, setEvent] = useState<Event>();
     const [likedEvents, setLikedEvents] = useState<string[]>([]);
     const [menuOpen, setMenuOpen] = useState(false); 
     const menuRef = useRef<HTMLDivElement>(null);

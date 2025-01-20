@@ -9,8 +9,6 @@ import { FaMagnifyingGlass } from "react-icons/fa6";
 import useFirebaseUser from '@/lib/useFirebaseUser';
 import { EventComponent } from '.';
 
-const { Option } = Select;
-
 const categories = [
     { value: "music", label: "Music" },
     { value: "art", label: "Art" },
@@ -39,19 +37,9 @@ const SearchAndFilters = () => {
     const [showFilters, setShowFilters] = useState(false);
     const [events, setEvents] = useState<Event[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
-    const [likedEvents, setLikedEvents] = useState<string[]>([]);
     const [hasSearched, setHasSearched] = useState<boolean>(false);
     const filterRef = useRef<HTMLDivElement>(null);
     const [dropdownVisible, setDropdownVisible] = useState<boolean>(false);
-
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const storedLikedEvents = localStorage.getItem('likedEventIds');
-            if (storedLikedEvents) {
-                setLikedEvents(JSON.parse(storedLikedEvents));
-            }
-        }
-    }, []);
 
     // Handle event search
     const handleSearch = async () => {

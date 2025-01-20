@@ -6,7 +6,7 @@ import useAuth from "@/lib/useAuth";
 import UserButton from "./UserButton";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { useTranslation } from "../app/i18n";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { MdLanguage } from "react-icons/md";
 
 interface NavbarProps {
@@ -14,10 +14,9 @@ interface NavbarProps {
 }
 
 const Navbar = ({ lng }: NavbarProps) => {
-  const { isSignedIn, loading } = useAuth();
+  const { isSignedIn } = useAuth();
   const { t, i18n } = useTranslation(lng, ['common']);
   const router = useRouter();
-  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -26,13 +25,20 @@ const Navbar = ({ lng }: NavbarProps) => {
   }
 
   const handleChangeLanguage = (newLng: string) => {
-    if (pathname && i18n) {
-      // Assurez-vous que l'URL commence par une langue
-      const newPath = pathname.replace(/^\/(en|fr|nl)/, `/${newLng}`);
-      i18n.changeLanguage(newLng); // Change la langue dans i18n
-      router.push(newPath); // Redirige vers la nouvelle URL
+    if (i18n) {
+      // Change la langue via i18n
+      i18n.changeLanguage(newLng);
+  
+      // Utilise useRouter pour rediriger vers la même page avec la nouvelle langue
+      const currentPath = window.location.pathname;
+      const newPath = currentPath.replace(/^\/(en|fr|nl)/, `/${newLng}`);
+      
+      // Redirige vers la nouvelle URL sans recharger la page
+      router.push(newPath);
     }
   };
+  
+  
   
 
   const toggleMenu = () => {

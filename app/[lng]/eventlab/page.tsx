@@ -16,7 +16,7 @@ export default function Page({ params: { lng } }: PageProps) {
   const { user, loading } = useFirebaseUser(); 
   const router = useRouter(); 
   const [isLoading, setIsLoading] = useState(true)
-  const { t, i18n } = useTranslation(lng, 'common')
+  const { i18n } = useTranslation(lng, 'common')
 
   useEffect(() => {
     if (!loading && !user) {

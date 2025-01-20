@@ -41,7 +41,7 @@ async function getOrganizerDetails(eventId: string): Promise<{ stripeAccountId: 
 }
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-09-30.acacia',
+  apiVersion: '2024-12-18.acacia',
 });
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -49,10 +49,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ error: `Method ${req.method} not allowed.` });
   }
 
-  const { ticket, userId, eventId } = req.body;
+  const { ticket, eventId, userId } = req.body;
 
   try {
-    // Récupérer les détails de l'organisateur (Stripe Account ID et Subscription ID)
+    if (ticket.price === 0) {
+      // Pas de gestion Stripe pour les événements gratuits
+      return res.status(200).json({
+        message: 'Cet événement est gratuit. Aucune session de paiement n’est nécessaire.',
+      });
+    }
+
+    // Récupérer les détails de l'organisateur
     const { stripeAccountId, subscriptionId } = await getOrganizerDetails(eventId);
 
     let applicationFeePercentage = 0.15; // Par défaut pour 'starter'
@@ -60,8 +67,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (subscriptionId) {
       // Récupérer les détails de l'abonnement via Stripe
       const subscription = await stripe.subscriptions.retrieve(subscriptionId);
-      const plan = subscription.items.data[0].price.metadata.nickname || 'starter'; // Si pas de plan, utiliser "starter"
-      console.log(plan)
+      const plan = subscription.items.data[0].price.metadata.nickname || 'starter';
 
       if (plan.toLowerCase() === 'premium') {
         applicationFeePercentage = 0.10; // Premium : 10%
@@ -71,9 +77,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     } else {
       console.log('L’organisateur est sur le plan Starter (aucun abonnement trouvé).');
     }
+
     console.log(`Frais d'application calculés : ${applicationFeePercentage * 100}%`);
 
-    // Créer une session de paiement avec les frais d'application calculés dynamiquement
+    // Créer une session de paiement avec Stripe
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [
@@ -91,7 +98,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       metadata: {
         event_id: eventId,
         ticket_name: ticket.name,
-        ticket_quantity: ticket.quantity
+        ticket_quantity: ticket.quantity,
+        user_id: userId
       },
       payment_intent_data: {
         application_fee_amount: Math.round(ticket.price * 100 * applicationFeePercentage),
@@ -100,14 +108,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         },
       },
       mode: 'payment',
-      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/success?session_id={CHECKOUT_SESSION_ID}&eventId=${eventId}`,
+      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/success/${eventId}?sessionId={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/cancel`,
     });
 
-    // Retourner l'ID de la session de paiement à l'utilisateur
     res.status(200).json({ id: session.id });
   } catch (error) {
     console.error('Error creating checkout session:', error);
     res.status(500).json({ error: 'An error occurred while creating the checkout session.' });
   }
 }
+

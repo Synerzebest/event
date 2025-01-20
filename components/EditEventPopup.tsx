@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { Spin, notification, Upload, DatePicker } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import Image from "next/image";
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "@/lib/firebaseConfig";
 import { UploadFile } from "antd/es/upload";
 import dayjs from "dayjs";
@@ -21,18 +21,21 @@ const EditEventPopup: React.FC<EditEventPopupProps> = ({ event, onClose, onUpdat
     const [place, setPlace] = useState(event.place);
     const [description, setDescription] = useState(event.description);
     const [eventDate, setEventDate] = useState(dayjs(event.date)); 
-    const [image, setImage] = useState(event.images[0] || "");
     const [loading, setLoading] = useState(false);
     const [fileList, setFileList] = useState<UploadFile[]>([]);
 
-    const handleUpload = async (file: any) => {
+    const handleUpload = async (file: UploadFile) => {
+        if (!file.originFileObj) {
+            throw new Error("No file selected for upload.");
+        }
+    
         const storageRef = ref(storage, `events/${file.uid}`);
         const uploadTask = uploadBytesResumable(storageRef, file.originFileObj);
-
-        return new Promise((resolve, reject) => {
+    
+        return new Promise<string>((resolve, reject) => {
             uploadTask.on(
                 "state_changed",
-                (snapshot) => {},
+                () => {},
                 (error) => {
                     console.error("Upload error:", error);
                     reject(error);
@@ -51,7 +54,7 @@ const EditEventPopup: React.FC<EditEventPopupProps> = ({ event, onClose, onUpdat
         try {
             const imageURLs = fileList.length > 0 
             ? await Promise.all(fileList.map((file) => handleUpload(file))) 
-            : [image];
+            : []; // Use empty array if no new image is selected
 
             const updatedEvent = {
                 ...event,
@@ -59,7 +62,7 @@ const EditEventPopup: React.FC<EditEventPopupProps> = ({ event, onClose, onUpdat
                 place,
                 description,
                 date: eventDate.toISOString(), // Convertir la date en format ISO avec dayjs
-                images: imageURLs,
+                images: imageURLs.length > 0 ? imageURLs : event.images, // Keep existing images if no new image
             };
 
             const response = await fetch(`/api/updateEvent/${event.id}`, {
@@ -162,10 +165,10 @@ const EditEventPopup: React.FC<EditEventPopupProps> = ({ event, onClose, onUpdat
 
                 <div className="mb-6">
                     <label className="block text-sm font-medium mb-2 text-gray-700">Event Image</label>
-                    {image && (
+                    {fileList.length > 0 && (
                         <div className="mb-3">
                             <Image
-                                src={image}
+                                src={fileList[0].url || ""}
                                 alt="Event"
                                 className="w-full h-48 object-cover rounded-lg"
                                 width={200}

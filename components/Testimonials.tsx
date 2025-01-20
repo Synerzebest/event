@@ -55,7 +55,7 @@ const Testimonials = ({ lng } : TestimonialsProps) => {
                                 </div>
                                 <h3 className="font-bold text-xl">{testimonial.name}</h3>
                                 <p className="text-sm text-gray-500">{testimonial.title}</p>
-                                <p className="mt-4 text-gray-700 italic">"{testimonial.content}"</p>
+                                <p className="mt-4 text-gray-700 italic">&quot;{testimonial.content}&quot;</p>
                             </div>
                     </div>
                 ))}

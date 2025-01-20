@@ -9,6 +9,7 @@ import { Input, Button, Alert, Typography, Divider } from "antd";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 import useLanguage from "@/lib/useLanguage";
+import { BackgroundLines } from "@/components/ui/background-lines";
 
 const { Title } = Typography;
 
@@ -75,72 +76,74 @@ const Signup = () => {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-100">
-            <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-lg">
-                <Title level={2} className="text-center">
-                    Inscription à Eventease
-                </Title>
+        <BackgroundLines className="flex items-center justify-center">                
+            <div className="flex items-center justify-center min-h-screen relative z-10">
+                <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-lg">
+                    <Title level={2} className="text-center">
+                        Inscription à Eventease
+                    </Title>
 
-                {error && <Alert message={error} type="error" showIcon />}
+                    {error && <Alert message={error} type="error" showIcon />}
 
-                <form onSubmit={handleSignup} className="space-y-4">
-                    <Input
-                        type="text"
-                        placeholder="Name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        required
-                        className="w-full"
-                        size="large"
-                    />
-                    <Input
-                        type="email"
-                        placeholder="Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                        className="w-full"
-                        size="large"
-                    />
-                    <Input.Password
-                        placeholder="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        className="w-full"
-                        size="large"
-                    />
+                    <form onSubmit={handleSignup} className="space-y-4">
+                        <Input
+                            type="text"
+                            placeholder="Name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            required
+                            className="w-full"
+                            size="large"
+                        />
+                        <Input
+                            type="email"
+                            placeholder="Email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                            className="w-full"
+                            size="large"
+                        />
+                        <Input.Password
+                            placeholder="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                            className="w-full"
+                            size="large"
+                        />
+
+                        <Button
+                            type="primary"
+                            htmlType="submit"
+                            className="w-full mt-4"
+                            size="large"
+                        >
+                            Signup
+                        </Button>
+                    </form>
+
+                    <Divider>Or</Divider>
 
                     <Button
-                        type="primary"
-                        htmlType="submit"
-                        className="w-full mt-4"
+                        onClick={handleGoogleSignup}
+                        type="default"
+                        className="w-full flex items-center justify-center space-x-2"
                         size="large"
                     >
-                        Signup
+                        <FcGoogle className="text-xl" />
+                        <span>Signup with Google</span>
                     </Button>
-                </form>
 
-                <Divider>Or</Divider>
-
-                <Button
-                    onClick={handleGoogleSignup}
-                    type="default"
-                    className="w-full flex items-center justify-center space-x-2"
-                    size="large"
-                >
-                    <FcGoogle className="text-xl" />
-                    <span>Signup with Google</span>
-                </Button>
-
-                <p className="text-center text-gray-500">
-                    Already Member ?{" "}
-                    <Link href="/auth/signin" className="text-blue-500 hover:underline hover:text-blue-700">
-                        Signin
-                    </Link>
-                </p>
+                    <p className="text-center text-gray-500">
+                        Already Member ?{" "}
+                        <Link href="/auth/signin" className="text-blue-500 hover:underline hover:text-blue-700">
+                            Signin
+                        </Link>
+                    </p>
+                </div>
             </div>
-        </div>
+        </BackgroundLines>
     );
 };
 

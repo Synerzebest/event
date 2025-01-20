@@ -17,7 +17,7 @@ interface Ticket {
     used: boolean;
 }
 
-const UserTickets = ({ userId }: { userId: string }) => {
+const UserTickets = () => {
     const [tickets, setTickets] = useState<Ticket[]>([]);
     const [events, setEvents] = useState<{ [key: string]: Event }>({});
     const [loading, setLoading] = useState<boolean>(true);
@@ -93,6 +93,7 @@ const UserTickets = ({ userId }: { userId: string }) => {
         const ticketSnapshot = await getDoc(ticketRef);
 
         if (!ticketSnapshot.exists()) {
+            console.log(error)
             setError("Ticket non valide");
             return;
         }
@@ -176,7 +177,7 @@ const UserTickets = ({ userId }: { userId: string }) => {
                     ))}
                 </ul>
             ) : (
-                <p className="text-start text-gray-500 text-xl">You don't have any ticket yet.</p>
+                <p className="text-start text-gray-500 text-xl">You don&apos;t have any ticket yet.</p>
             )}
 
             {/* Popup Modal pour le QR Code */}

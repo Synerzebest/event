@@ -3,7 +3,7 @@ import Stripe from 'stripe';
 import { firestore } from '@/lib/firebaseAdmin';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-09-30.acacia',
+  apiVersion: '2024-12-18.acacia',
 });
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -52,13 +52,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         },
       ],
       mode: 'subscription',
-      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/success/subscription/{CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/cancel`,
-      customer: customerId, // Lier le Customer Stripe à la session de paiement
+      customer: customerId,
       metadata: {
-        user_id: userId, // Optionnel, mais utile pour identifier l'utilisateur
+        user_id: userId,
       },
     });
+    
 
     // Retourner l'ID de la session de paiement à l'utilisateur
     res.status(200).json({ id: session.id, url: session.url });

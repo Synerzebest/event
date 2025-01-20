@@ -6,6 +6,7 @@ import { Navbar, Footer, Countdown, EventComponent } from "@/components";
 import { Spin } from 'antd';
 import useFirebaseUser from "@/lib/useFirebaseUser";
 import { useTranslation } from '../../../i18n';
+import { Event } from "@/types/types";
 
 interface PageProps {
     params: {
@@ -15,13 +16,13 @@ interface PageProps {
 
 const Page = ({ params: { lng } }: PageProps) => {
     const { eventId } = useParams() as { eventId: string };
-    const [event, setEvent] = useState<any>(null);
+    const [event, setEvent] = useState<Event>();
     const [loading, setLoading] = useState(true);
     const { user } = useFirebaseUser();
     const userId = user?.uid || "";
 
     const [isLoading, setIsLoading] = useState(true)
-    const { t, i18n } = useTranslation(lng, 'common')
+    const { i18n } = useTranslation(lng, 'common')
 
     useEffect(() => {
         const fetchEvent = async () => {

@@ -13,6 +13,7 @@ import { Ticket } from "@/types/types";
 import { loadStripe } from '@stripe/stripe-js';
 import { motion } from "framer-motion";
 import useLanguage from "@/lib/useLanguage";
+import { useRouter } from "next/navigation";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!);
 
@@ -32,66 +33,110 @@ const Page = () => {
     const [selectedTicketPrice, setSelectedTicketPrice] = useState<number | null>(null);
     const { user } = useFirebaseUser();
     const userId = user?.uid || "";
+    const router = useRouter();
+    const [processing, setProcessing] = useState<boolean>(false);
 
     const lng = useLanguage();
 
     const handleCheckout = async () => {
-        const stripe = await stripePromise;
-
-        if (!stripe) {
-            console.error('Stripe has not been initialized.');
-            message.error('Une erreur s\'est produite lors de l\'initialisation de Stripe.');
-            return;
-        }
-
+        setProcessing(true)
         if (!selectedTicket) {
-            message.error('Please select a ticket before proceeding.');
+            message.error('Veuillez sélectionner un ticket avant de continuer.');
+            setProcessing(false);
             return;
         }
-
+    
         if (!event || !event.tickets) {
-            message.error('Event data is not available.');
+            message.error('Les données de l’événement ne sont pas disponibles.');
+            setProcessing(false);
             return;
         }
-
+    
         const selectedTicketData = event.tickets.find(ticket => ticket.name === selectedTicket);
-
+    
         if (!selectedTicketData) {
-            message.error('Selected ticket not found.');
+            message.error('Le ticket sélectionné est introuvable.');
+            setProcessing(false);
             return;
         }
-
-        // Créer une session de paiement
-        const response = await fetch('/api/create-checkout-session', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                ticket: { 
-                    name: selectedTicketData.name,
-                    price: selectedTicketData.price,
-                    quantity: selectedTicketData.quantity
-                },
-                userId: userId,
-                eventId: eventId,
-            }),
-        });
-
-        const session = await response.json();
-
-        if (response.ok) {
-            const result = await stripe.redirectToCheckout({ sessionId: session.id });
-
-            if (result.error) {
-                console.error(result.error.message);
-                message.error('Une erreur s\'est produite lors de la redirection vers le paiement.');
+    
+        // Gestion des tickets gratuits
+        if (selectedTicketData.price === 0) {
+            try {
+                const response = await fetch('/api/tickets/free', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        eventId,
+                        ticketName: selectedTicketData.name,
+                        userId,
+                    }),
+                });
+    
+                if (response.ok) {
+                    message.success('Votre inscription pour cet événement gratuit a été confirmée.');
+                    router.push(`/success/${eventId}`);
+                } else {
+                    const error = await response.json();
+                    message.error(`Erreur : ${error.message || 'Impossible de compléter la demande.'}`);
+                }
+            } catch (error) {
+                console.error('Erreur lors de la gestion des tickets gratuits:', error);
+                message.error('Une erreur s\'est produite lors de la réservation du ticket gratuit.');
             }
-        } else {
-            console.error(session.error);
-            message.error('Une erreur s\'est produite lors de la création de la session de paiement.');
+            setProcessing(false);
+            return;
+        }
+    
+        // Gestion des tickets payants
+        const stripe = await stripePromise;
+    
+        if (!stripe) {
+            console.error('Stripe n’a pas été initialisé.');
+            message.error('Une erreur s\'est produite lors de l\'initialisation de Stripe.');
+            setProcessing(false);
+            return;
+        }
+    
+        try {
+            const response = await fetch('/api/create-checkout-session', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    ticket: {
+                        name: selectedTicketData.name,
+                        price: selectedTicketData.price,
+                        quantity: selectedTicketData.quantity,
+                    },
+                    userId,
+                    eventId,
+                }),
+            });
+    
+            const session = await response.json();
+    
+            if (response.ok) {
+                const result = await stripe.redirectToCheckout({ sessionId: session.id });
+    
+                if (result.error) {
+                    console.error(result.error.message);
+                    message.error('Une erreur s\'est produite lors de la redirection vers le paiement.');
+                }
+            } else {
+                console.error(session.error);
+                message.error('Une erreur s\'est produite lors de la création de la session de paiement.');
+            }
+        } catch (error) {
+            console.error('Erreur lors de la création de la session de paiement:', error);
+            message.error('Une erreur s\'est produite lors du paiement.');
         }
     };
+    
+    
 
     useEffect(() => {
         const fetchEvent = async () => {
@@ -188,12 +233,16 @@ const Page = () => {
 
                     <Button
                         type="primary"
-                        className="w-full py-4 mt-4 bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 transition-all rounded-lg"
+                        className="w-full py-4 mt-4 from-blue-500 blue-600 transition-all rounded-lg"
                         size="large"
                         onClick={handleCheckout}
-                        disabled={!selectedTicket}
+                        disabled={!selectedTicket || processing} // Désactive le bouton si un ticket n'est pas sélectionné ou si on est en train de traiter
                     >
-                        Confirm Registration {selectedTicketPrice ? `(${selectedTicketPrice} €)` : ""}
+                        {processing ? (
+                            <Spin size="small" /> // Affiche un spinner pendant le traitement
+                        ) : (
+                            `Confirm Registration ${selectedTicketPrice ? `(${selectedTicketPrice} €)` : ""}`
+                        )}
                     </Button>
                 </motion.div>
 

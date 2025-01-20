@@ -17,11 +17,25 @@ interface EventPopupProps {
     onClose: () => void;
 }
 
+interface User {
+    uid: string;
+    name: string;
+    email: string;
+    photoURL: string;
+    displayName: string;
+}
+
+interface Organizer {
+    id: string;
+    name: string;
+    imageUrl: string;
+}
+
 const EventPopup: React.FC<EventPopupProps> = ({ event, onClose }) => {
-    const [organizers, setOrganizers] = useState<any[]>([]);
+    const [organizers, setOrganizers] = useState<Organizer[]>([]);
     const [loadingOrganizers, setLoadingOrganizers] = useState<boolean>(true);
     const [searchQuery, setSearchQuery] = useState<string>('');
-    const [users, setUsers] = useState<any[]>([]);
+    const [users, setUsers] = useState<User[]>([]);
     const [showScanner, setShowScanner] = useState<boolean>(false);
 
     // Calculate event revenue
@@ -212,12 +226,13 @@ const EventPopup: React.FC<EventPopupProps> = ({ event, onClose }) => {
             }));
             
             setTicketsSummary(summary);
+            console.log(ticketsSummary)
 
             // Calculer le revenu total
             const total = summary.reduce((acc, ticket) => acc + ticket.revenue, 0);
             setTotalRevenue(total);
         }
-    }, [event.tickets]);
+    }, [event.tickets, ticketsSummary]);
 
     const formattedDate = format(new Date(event.date), 'dd MMMM yyyy');
 
