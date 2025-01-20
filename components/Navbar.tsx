@@ -170,13 +170,13 @@ const Navbar = ({ lng }: NavbarProps) => {
           ) : (
             <>
               <Link
-                href="/sign-in"
+                href="/auth/sign-in"
                 className="px-4 rounded-lg font-bold cursor-pointer text-xl text-white hover:bg-blue-600 duration-300 py-2 w-fit text-left"
               >
                 Signin
               </Link>
               <Link
-                href="/sign-up"
+                href="/auth/sign-up"
                 className="px-4 rounded-lg font-bold cursor-pointer text-xl text-white hover:bg-blue-600 duration-300 py-2 w-fit text-left"
               >
                 Signup
