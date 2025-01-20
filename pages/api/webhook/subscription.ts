@@ -42,8 +42,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         try {
           await updateUserSubscription(customerId, subscriptionId);
           console.log(`Abonnement ${subscriptionId} ajouté pour le client ${customerId}.`);
-        } catch (error) {
-          console.error(`Erreur lors de la mise à jour de l'abonnement : ${error.message}`);
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            console.error(`Erreur lors de la mise à jour de l'abonnement : ${error.message}`);
+          } else {
+            console.error('Erreur inconnue lors de la mise à jour de l\'abonnement');
+          }
         }
       }
       break;
@@ -68,8 +72,12 @@ async function updateUserSubscription(customerId: string, subscriptionId: string
     await userDoc.ref.update({ subscriptionId: subscriptionId });
 
     console.log(`Mise à jour réussie pour l'utilisateur ${userDoc.id} avec l'abonnement ${subscriptionId}`);
-  } catch (error) {
-    console.error(`Erreur lors de la mise à jour de l'utilisateur : ${error.message}`);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error(`Erreur lors de la mise à jour de l'utilisateur : ${error.message}`);
+    } else {
+      console.error('Erreur inconnue lors de la mise à jour de l\'utilisateur');
+    }
     throw error;
   }
 }

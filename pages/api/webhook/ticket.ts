@@ -59,8 +59,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           await ticketRef.set(ticketData);
 
           console.log(`Ticket payé réservé pour l'événement ${eventId}.`);
-        } catch (error) {
-          console.error(`Erreur lors de la mise à jour des tickets ou de l'enregistrement du ticket : ${error.message}`);
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            console.error(`Erreur lors de la mise à jour des tickets ou de l'enregistrement du ticket : ${error.message}`);
+          } else {
+            console.error('Erreur inconnue lors de la mise à jour des tickets ou de l\'enregistrement du ticket');
+          }
         }
       }
       break;
@@ -109,8 +113,12 @@ async function updateEventAndTicketQuantities(eventId: string, ticketName: strin
     });
 
     console.log(`Quantité du ticket ${ticketName} mise à jour : ${ticket.quantity} restants, ${ticket.sold} vendus.`);
-  } catch (error) {
-    console.error(`Erreur lors de la mise à jour des tickets : ${error.message}`);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error(`Erreur lors de la mise à jour des tickets : ${error.message}`);
+    } else {
+      console.error('Erreur inconnue lors de la mise à jour des tickets');
+    }
     throw error;
   }
 }

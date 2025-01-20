@@ -1,8 +1,5 @@
-"use client";
-
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { useTranslation } from "../app/i18n";
 
 interface SubHeroProps {
@@ -14,25 +11,38 @@ interface SubHeroProps {
 const SubHero = ({ title, subtitle, lng }: SubHeroProps) => {
   const { t, i18n } = useTranslation(lng, "common");
   const [features, setFeatures] = useState<
-    Array<{ title: string; description: string; image: string }> | null
-  >(null);
+    Array<{ title: string; description: string; image: string }>
+  >([]); // Initialiser avec un tableau vide
+
+  const prevFeaturesRef = useRef<Array<{ title: string; description: string; image: string }> | null>(null);
+
+  // Utilisation de useCallback pour éviter la recréation de la fonction t à chaque rendu
+  const getTranslatedFeatures = useCallback(() => {
+    return t("features", { returnObjects: true }) as
+      | Array<{ title: string; description: string; image: string }>
+      | null;
+  }, [t]); // Dépendance uniquement sur `t`, ce qui évite des changements inutiles
 
   useEffect(() => {
     if (i18n) {
       // Récupération des traductions
-      const translatedFeatures = t("features", { returnObjects: true }) as
-        | Array<{ title: string; description: string; image: string }>
-        | null;
+      const translatedFeatures = getTranslatedFeatures();
 
-      if (Array.isArray(translatedFeatures)) {
+      // Vérifier si les traductions ont changé
+      if (
+        translatedFeatures &&
+        Array.isArray(translatedFeatures) && // Vérification que c'est bien un tableau
+        (!prevFeaturesRef.current || JSON.stringify(translatedFeatures) !== JSON.stringify(prevFeaturesRef.current))
+      ) {
         setFeatures(translatedFeatures);
+        prevFeaturesRef.current = translatedFeatures; // Mémoriser les traductions actuelles
       } else {
-        console.error("Features is not an array. Check your translations or configuration!");
+        console.error("Features is not an array or has not changed.");
       }
     }
-  }, [i18n]);
+  }, [i18n, getTranslatedFeatures]); // Se déclenche uniquement si `i18n` ou `getTranslatedFeatures` change
 
-  if (!features) {
+  if (features.length === 0) {
     return (
       <div className="w-full h-40 flex items-center justify-center text-xl font-bold">
         Loading features...
@@ -63,9 +73,6 @@ const SubHero = ({ title, subtitle, lng }: SubHeroProps) => {
               </div>
               <div className="p-6">
                 <p className="text-gray-700 mb-4">{feature.description}</p>
-                <Link href="/learn-more" className="text-blue-500 font-bold hover:underline">
-                  {t('learn_more')}
-                </Link>
               </div>
             </div>
           ))}

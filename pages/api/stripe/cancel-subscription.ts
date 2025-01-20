@@ -4,7 +4,7 @@ import { db } from "@/lib/firebaseConfig";
 import { doc, updateDoc, deleteField } from "firebase/firestore";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-    apiVersion: "2024-09-30.acacia"
+    apiVersion: "2024-12-18.acacia"
 });
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

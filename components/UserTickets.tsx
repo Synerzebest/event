@@ -31,38 +31,43 @@ const UserTickets = () => {
             try {
                 const auth = getAuth();
                 const user = auth.currentUser;
-
+    
                 if (!user) {
                     throw new Error("User not authenticated");
                 }
-
+    
                 const token = await user.getIdToken();
-
+    
                 const response = await fetch(`/api/get-user-tickets`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`,
                     },
                 });
-
+    
                 if (!response.ok) {
                     throw new Error('An error occurred while fetching tickets');
                 }
-
+    
                 const data: Ticket[] = await response.json();
-
+    
                 const sortedTickets = data.sort((a, b) => Number(a.used) - Number(b.used));
-
+    
                 setTickets(sortedTickets);
-            } catch (error) {
-                setError(error.message);
+            } catch (error: unknown) {
+                if (error instanceof Error) {
+                    setError(error.message); // Ici on s'assure que `error` est bien une instance de `Error`
+                } else {
+                    setError("An unknown error occurred"); // Cas où `error` n'est pas une instance de `Error`
+                }
             } finally {
                 setLoading(false);
             }
         };
-
+    
         fetchUserTickets();
     }, []);
+    
 
     useEffect(() => {
         const fetchEvents = async () => {

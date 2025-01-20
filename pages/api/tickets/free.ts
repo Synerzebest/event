@@ -1,6 +1,13 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { firestore } from '@/lib/firebaseAdmin';
 
+
+interface Ticket {
+    name: string;
+    quantity: number;
+    sold: number;
+}
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== 'POST') {
         res.setHeader('Allow', ['POST']);
@@ -29,7 +36,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             return res.status(400).json({ message: 'Aucun ticket disponible pour cet événement.' });
         }
 
-        const ticket = tickets.find((t: any) => t.name === ticketName);
+        const ticket = tickets.find((t: Ticket) => t.name === ticketName);
 
         if (!ticket) {
             return res.status(404).json({ message: `Ticket "${ticketName}" introuvable.` });

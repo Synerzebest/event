@@ -31,6 +31,14 @@ interface Organizer {
     imageUrl: string;
 }
 
+interface TicketSummary {
+    name: string;
+    price: number;
+    quantity: number;
+    sold: number;
+    revenue: number;
+}
+
 const EventPopup: React.FC<EventPopupProps> = ({ event, onClose }) => {
     const [organizers, setOrganizers] = useState<Organizer[]>([]);
     const [loadingOrganizers, setLoadingOrganizers] = useState<boolean>(true);
@@ -40,7 +48,7 @@ const EventPopup: React.FC<EventPopupProps> = ({ event, onClose }) => {
 
     // Calculate event revenue
     const [totalRevenue, setTotalRevenue] = useState<number>(0);
-    const [ticketsSummary, setTicketsSummary] = useState<any[]>([]);
+    const [ticketsSummary, setTicketsSummary] = useState<TicketSummary[]>([]);
 
     const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 

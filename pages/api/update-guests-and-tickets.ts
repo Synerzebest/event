@@ -62,9 +62,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             });
 
             return res.status(200).json({ success: true, message: "Ticket sold successfully" });
-        } catch (error) {
-            console.error('Error updating event:', error);
-            return res.status(500).json({ error: 'Error updating event', details: error.message });
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                console.error('Error updating event:', error);
+                return res.status(500).json({ error: 'Error updating event', details: error.message });
+            } else {
+                // Cas où `error` n'est pas une instance de `Error`
+                console.error('Unknown error:', error);
+                return res.status(500).json({ error: 'Error updating event', details: 'Unknown error' });
+            }
         }
     } else {
         res.setHeader('Allow', ['POST']);

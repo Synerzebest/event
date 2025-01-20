@@ -9,8 +9,8 @@ import useFirebaseUser from '@/lib/useFirebaseUser';
 import { useTranslation } from '../../../i18n';
 
 const Page = () => {
-    const [showConfetti, setShowConfetti] = useState(true);
-    const [confettiCount, setConfettiCount] = useState(200);
+    const [showConfetti] = useState(true);
+    const [confettiCount] = useState(200);
     const [windowDimensions, setWindowDimensions] = useState({ width: 0, height: 0 });
     const { lng, eventId } = useParams() as { lng: string, eventId: string };
     const { user } = useFirebaseUser();

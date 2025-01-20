@@ -1,28 +1,19 @@
-"use client";
+"use client"
 
 import React, { useEffect, useState } from 'react';
 import { Skeleton, Button } from 'antd';
 import useFirebaseUser from '@/lib/useFirebaseUser';
 import { EventComponent } from '.';
 import { useTranslation } from "../app/i18n";
+import { Event } from "@/types/types";
 
 const Events = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
     const { t } = useTranslation(lng, "common");
     const { user } = useFirebaseUser();
     const userId = user?.uid || "";
-    const [events, setEvents] = useState<any[]>([]);
+    const [events, setEvents] = useState<Event[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const [likedEvents, setLikedEvents] = useState<string[]>([]);
     const [showPastEvents, setShowPastEvents] = useState<boolean>(false);
-
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const storedLikedEvents = localStorage.getItem('likedEventIds');
-            if (storedLikedEvents) {
-                setLikedEvents(JSON.parse(storedLikedEvents));
-            }
-        }
-    }, []);
 
     useEffect(() => {
         const fetchEvents = async () => {
@@ -38,10 +29,10 @@ const Events = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
                     throw new Error('Failed to fetch events');
                 }
 
-                const data = await response.json();
+                const data: Event[] = await response.json();
 
                 // Trier les événements par date, les plus récents d'abord
-                const sortedEvents = data.sort((a: any, b: any) => {
+                const sortedEvents = data.sort((a, b) => {
                     const dateA = new Date(a.date).getTime();
                     const dateB = new Date(b.date).getTime();
                     return dateB - dateA;
@@ -58,7 +49,7 @@ const Events = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
     }, []);
 
     const currentDate = new Date().getTime();
-    const filteredEvents = events.filter((event: any) => {
+    const filteredEvents = events.filter((event) => {
         const eventDate = new Date(event.date).getTime();
         return showPastEvents || eventDate >= currentDate;
     });

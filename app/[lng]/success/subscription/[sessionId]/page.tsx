@@ -3,16 +3,15 @@
 import { useState, useEffect } from 'react';
 import Confetti from 'react-confetti';
 import { motion } from 'framer-motion';
-import { Navbar, EventComponent, Footer } from '@/components';
+import { Navbar, Footer } from '@/components';
 import { useParams } from 'next/navigation';
-import useFirebaseUser from '@/lib/useFirebaseUser';
 import { useTranslation } from '../../../../i18n';
 
 const Page = () => {
-    const [showConfetti, setShowConfetti] = useState(true);
-    const [confettiCount, setConfettiCount] = useState(200);
+    const [showConfetti] = useState(true);
+    const [confettiCount] = useState(200);
     const [windowDimensions, setWindowDimensions] = useState({ width: 0, height: 0 });
-    const { lng, session_id } = useParams() as { lng: string, session_id: string };
+    const { lng } = useParams() as { lng: string };
     const { t } = useTranslation(lng, "common");
 
     // On s'assure que le code qui dépend de `window` est exécuté uniquement côté client
