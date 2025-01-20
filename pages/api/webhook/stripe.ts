@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { buffer } from 'micro';
 import Stripe from 'stripe';
 import { firestore } from '@/lib/firebaseAdmin';
-import { Ticket } from "@/types/types"
+import { Ticket } from "@/types/types"; // Assure-toi que le type Ticket est bien défini
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: '2024-12-18.acacia',
@@ -65,14 +65,16 @@ async function handleTicketPurchase(session: Stripe.Checkout.Session) {
 
   if (eventId && ticketName && ticketQuantity) {
     try {
+      // Mise à jour de l'événement et des quantités de tickets
       await updateEventAndTicketQuantities(eventId, ticketName);
 
+      // Création du ticket pour l'utilisateur
       const ticketData = {
         eventId: eventId,
         name: ticketName,
         price: ticketPrice,
         purchaseDate: new Date().toISOString(),
-        used: false,
+        used: false, // Le ticket n'est pas utilisé par défaut
         userId: userId,
       };
 
