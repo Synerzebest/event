@@ -1,6 +1,6 @@
 [
     {
-      "origin": ["http://localhost:3000"],
+      "origin": ["http://localhost:3000", "https://event-beta-bice.vercel.app"],
       "method": ["GET", "POST", "PUT", "DELETE"],
       "maxAgeSeconds": 3600
     }

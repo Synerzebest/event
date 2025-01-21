@@ -8,6 +8,8 @@ import { Select, Spin } from 'antd';
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import useFirebaseUser from '@/lib/useFirebaseUser';
 import { EventComponent } from '.';
+import { useTranslation } from '@/app/i18n';
+import useLanguage from '@/lib/useLanguage';
 
 const categories = [
     { value: "music", label: "Music" },
@@ -40,6 +42,8 @@ const SearchAndFilters = () => {
     const [hasSearched, setHasSearched] = useState<boolean>(false);
     const filterRef = useRef<HTMLDivElement>(null);
     const [dropdownVisible, setDropdownVisible] = useState<boolean>(false);
+    const lng = useLanguage();
+    const { t } = useTranslation(lng, "common");
 
     // Handle event search
     const handleSearch = async () => {
@@ -100,7 +104,7 @@ const SearchAndFilters = () => {
                     type="text"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder="Search for events..."
+                    placeholder={`${t("search_placeholder")}`}
                     className="w-full px-4 py-3 border-none bg-gray-100 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-300 ease-in-out"
                 />
                 <button

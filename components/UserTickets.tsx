@@ -9,6 +9,8 @@ import { db } from "@/lib/firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 import QRCode from 'qrcode';
 import { getAuth } from "firebase/auth";
+import useLanguage from "@/lib/useLanguage";
+import { useTranslation } from "app/i18n";
 
 interface Ticket {
     id: string;
@@ -25,6 +27,8 @@ const UserTickets = () => {
     const [qrCode, setQrCode] = useState<{ [key: string]: string | null }>({});
     const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
     const [selectedTicketId, setSelectedTicketId] = useState<string | null>(null);
+    const lng = useLanguage();
+    const { t } = useTranslation(lng, "common");
 
     useEffect(() => {
         const fetchUserTickets = async () => {
@@ -99,13 +103,13 @@ const UserTickets = () => {
 
         if (!ticketSnapshot.exists()) {
             console.log(error)
-            setError("Ticket non valide");
+            setError(`${t('unvalid_ticket')}`);
             return;
         }
 
         const ticketData = ticketSnapshot.data();
         if (ticketData.used) {
-            setError("Ticket déjà utilisé");
+            setError(`${t('already_used_ticket')}`);
             return;
         }
 
@@ -150,7 +154,7 @@ const UserTickets = () => {
 
                                             {ticket.used ? (
                                                 <p className="text-xs font-semibold text-red-600 bg-red-100 px-3 py-1 rounded-full border border-red-300 w-fit">
-                                                    Utilisé
+                                                    {t('used_ticket_badge')}
                                                 </p>
                                             ) : (
                                                 <>
@@ -167,7 +171,7 @@ const UserTickets = () => {
                                             {events[ticket.eventId].place}
                                         </p>
                                         <Button type="primary" onClick={() => handleShowQRCode(ticket)}>
-                                            Show QR Code
+                                            {t('show_qr_code')}
                                         </Button>
                                     </div>
                                 </>
@@ -182,7 +186,7 @@ const UserTickets = () => {
                     ))}
                 </ul>
             ) : (
-                <p className="text-start text-gray-500 text-xl">You don&apos;t have any ticket yet.</p>
+                <p className="text-center sm:text-start text-gray-500 text-xl">{t('no_ticket_yet')}</p>
             )}
 
             {/* Popup Modal pour le QR Code */}
@@ -192,7 +196,7 @@ const UserTickets = () => {
                 onCancel={handleCloseModal}
                 footer={[
                     <Button key="close" onClick={handleCloseModal}>
-                        Fermer
+                        {t('close')}
                     </Button>
                 ]}
             >
@@ -207,7 +211,7 @@ const UserTickets = () => {
                         />
                     </div>
                 ) : (
-                    <p>Chargement du QR code...</p>
+                    <p>{t('qr_code_loading')}</p>
                 )}
             </Modal>
         </div>

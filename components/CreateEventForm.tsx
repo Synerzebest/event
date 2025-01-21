@@ -204,14 +204,14 @@ const CreateEventForm: React.FC = () => {
                         className="rounded-md shadow-sm border-gray-300 focus:border-blue-500" 
                         name="title" 
                         onChange={(e) => setFormData({...formData, title: e.target.value})} 
-                        placeholder="Title" 
+                        placeholder={`${t('form_title')}`} 
                         required 
                     />
                     <Input 
                         className="rounded-md shadow-sm border-gray-300 focus:border-blue-500" 
                         name="place" 
                         onChange={(e) => setFormData({...formData, place: e.target.value})} 
-                        placeholder="Place" 
+                        placeholder={`${t('form_place')}`} 
                         required 
                     />
                     <DatePicker 
@@ -225,14 +225,14 @@ const CreateEventForm: React.FC = () => {
                         className="rounded-md shadow-sm border-gray-300 focus:border-blue-500" 
                         name="description" 
                         onChange={(e) =>  setFormData({...formData, description: e.target.value})} 
-                        placeholder="Description" 
+                        placeholder={`${t('form_description')}`} 
                         autoSize 
                         required 
                     />
                     <Select
                         className="rounded-md shadow-sm border-gray-300 focus:border-blue-500"
                         showSearch
-                        placeholder="Category"
+                        placeholder={`${t('form_category')}`}
                         optionFilterProp="label"
                         onChange={(value) => setFormData({...formData, category: value})}
                         options={categories}
@@ -245,54 +245,55 @@ const CreateEventForm: React.FC = () => {
                             <>
                             {tickets.map((ticket, index) => (
                               <div key={index} className="flex flex-col gap-2 border-b border-gray-300 pb-4 mb-4">
-                                  <div className="flex items-end gap-4">
-                                      <div className="flex flex-col w-full gap-2">
-                                          <label className="block text-sm font-medium text-gray-700">
-                                              {t('ticket_name')}
-                                          </label>
-                                          <Input 
-                                              value={ticket.name} 
-                                              onChange={(e) => updateTicket(index, "name", e.target.value)} 
-                                              placeholder={`${t('ticket_name')}`}
-                                              required 
-                                          />
-                                      </div>
-                                      <div className="flex flex-col w-1/3 gap-2">
-                                          <label className="block text-sm font-medium text-gray-700">
-                                              {t('price')} (€)
-                                          </label>
-                                          <InputNumber
-                                              value={ticket.price}
-                                              onChange={(value) => updateTicket(index, "price", value)}
-                                              min={0}
-                                              placeholder={`${t('price')}`}
-                                              required
-                                              className="w-full"
-                                          />
-                                      </div>
-                                      <div className="flex flex-col w-1/3 gap-2">
-                                          <label className="block text-sm font-medium text-gray-700">
-                                              {t('quantity')}
-                                          </label>
-                                          <InputNumber
-                                              value={ticket.quantity}
-                                              onChange={(value) => updateTicket(index, "quantity", value)}
-                                              min={1}
-                                              placeholder={`${t('quantity')}`}
-                                              required
-                                              className="w-full"
-                                          />
-                                      </div>
-                                      <Button 
-                                          type="dashed" 
-                                          danger 
-                                          onClick={() => removeTicket(index)} 
-                                          icon={<PlusOutlined />}
-                                      >
-                                          {t('remove')}
-                                      </Button>
-                                  </div>
+                              <div className="flex flex-col lg:flex-row lg:items-end lg:gap-4 gap-2">
+                                <div className="flex flex-col w-full gap-2">
+                                  <label className="block text-sm font-medium text-gray-700">
+                                    {t('ticket_name')}
+                                  </label>
+                                  <Input 
+                                    value={ticket.name} 
+                                    onChange={(e) => updateTicket(index, "name", e.target.value)} 
+                                    placeholder={`${t('ticket_name')}`}
+                                    required 
+                                  />
+                                </div>
+                                <div className="flex flex-col w-full md:w-1/3 gap-2">
+                                  <label className="block text-sm font-medium text-gray-700">
+                                    {t('price')} (€)
+                                  </label>
+                                  <InputNumber
+                                    value={ticket.price}
+                                    onChange={(value) => updateTicket(index, "price", value)}
+                                    min={0}
+                                    placeholder={`${t('price')}`}
+                                    required
+                                    className="w-full"
+                                  />
+                                </div>
+                                <div className="flex flex-col w-full md:w-1/3 gap-2">
+                                  <label className="block text-sm font-medium text-gray-700">
+                                    {t('quantity')}
+                                  </label>
+                                  <InputNumber
+                                    value={ticket.quantity}
+                                    onChange={(value) => updateTicket(index, "quantity", value)}
+                                    min={1}
+                                    placeholder={`${t('quantity')}`}
+                                    required
+                                    className="w-full"
+                                  />
+                                </div>
+                                <Button 
+                                  type="dashed" 
+                                  danger 
+                                  onClick={() => removeTicket(index)} 
+                                  icon={<PlusOutlined />}
+                                >
+                                  {t('remove')}
+                                </Button>
                               </div>
+                            </div>
+                            
                           ))}
                           <Button 
                               type="dashed" 
@@ -340,14 +341,14 @@ const CreateEventForm: React.FC = () => {
                             }
                         }}
                         beforeUpload={() => false} // Empêche l'upload automatique
-                        listType="picture-card" // Style de vignette
+                        listType="picture-card"
                         maxCount={1}
                         accept="image/*"
                     >
                         {fileList.length === 0 && (
                             <div>
                                 <PlusOutlined />
-                                <p className="mt-2 text-sm text-gray-600">Upload Event Photo</p>
+                                <p className="mt-2 text-sm text-gray-600">{t('upload_event_photo')}</p>
                             </div>
                         )}
                     </Upload>
@@ -359,7 +360,7 @@ const CreateEventForm: React.FC = () => {
                         disabled={uploading}
                         className="mt-4 w-full"
                     >
-                        Create Event
+                        {t('create_event_button')}
                     </Button>
                 </div>
             </div>

@@ -5,6 +5,7 @@ import useFirebaseUser from "@/lib/useFirebaseUser";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "@/app/i18n";
 
 const UserButton: React.FC<{ lng: string }> = ({ lng }) => {
   const { user, loading } = useFirebaseUser();
@@ -12,6 +13,7 @@ const UserButton: React.FC<{ lng: string }> = ({ lng }) => {
   const [isLoading, setIsLoading] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const { t } = useTranslation(lng, "common");
 
   const handleStripeConnect = async () => {
     if (!user?.uid) return;
@@ -106,20 +108,20 @@ const UserButton: React.FC<{ lng: string }> = ({ lng }) => {
                 className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 disabled={isLoading}
               >
-                {isLoading ? "Setting up..." : "Setup Stripe Account"}
+                {isLoading ? `${t('setting_up_loading')}` : `${t('setting_up')}`}
               </button>
             ) : (
               <Link
                 href={`/${lng}/account`}
                 className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               >
-                Payment Account
+                {t('payment_account')}
               </Link>
             )}
 
             {user.subscriptionId ? (
               <Link href={`/${lng}/cancel-subscription`} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                Cancel Subscription
+                {t('cancel_subscription')}
               </Link>
             ) : (
               <>
@@ -131,7 +133,7 @@ const UserButton: React.FC<{ lng: string }> = ({ lng }) => {
               onClick={handleSignOut}
               className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
             >
-              Sign Out
+              {t('sign_out')}
             </button>
           </div>
         </div>
