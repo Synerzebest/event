@@ -124,5 +124,7 @@
   "event_privacy_guests": "Confidentialité",
   "guest_limit": "Limite d'invités",
   "public": "Publique",
-  "private": "Privé"
+  "private": "Privé",
+  "copy_event_link": "Copier le lien",
+  "participate": "Participer"
 }

@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { buffer } from 'micro';
 import Stripe from 'stripe';
 import { firestore } from '@/lib/firebaseAdmin';
-import { Ticket } from "@/types/types"; // Assure-toi que le type Ticket est bien défini
+import { Ticket } from "@/types/types";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: '2024-12-18.acacia',

@@ -37,9 +37,6 @@ const Navbar = ({ lng }: NavbarProps) => {
       router.push(newPath);
     }
   };
-  
-  
-  
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);

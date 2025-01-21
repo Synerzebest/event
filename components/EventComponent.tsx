@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
-import { FaUser, FaHeart } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
 import { format } from "date-fns";
 import { notification } from 'antd';
 import { FaShare } from "react-icons/fa6";
@@ -11,6 +11,9 @@ import { IoLocationOutline } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 import { motion } from 'framer-motion';
 import { Event } from "@/types/types"; 
+import { useTranslation } from "app/i18n"
+import useLanguage from "@/lib/useLanguage";
+import { Spin } from "antd";
 
 interface EventComponentProps {
     eventId: string,
@@ -21,10 +24,12 @@ interface EventComponentProps {
 const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, participateButton }) => {
     const [loading, setLoading] = useState(true);
     const [event, setEvent] = useState<Event>();
-    const [likedEvents, setLikedEvents] = useState<string[]>([]);
     const [menuOpen, setMenuOpen] = useState(false); 
     const menuRef = useRef<HTMLDivElement>(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const router = useRouter();
+    const lng = useLanguage();
+    const { t } = useTranslation(lng, 'common');
 
     useEffect(() => {
         const fetchEvent = async () => {
@@ -62,22 +67,6 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
         };
     }, [menuOpen]);
 
-    useEffect(() => {
-        const storedLikedEvents = localStorage.getItem('likedEventIds');
-        if (storedLikedEvents) {
-            setLikedEvents(JSON.parse(storedLikedEvents));
-        }
-    }, []);
-
-    const handleLike = (eventId: string) => {
-        const updatedLikedEvents = likedEvents.includes(eventId)
-            ? likedEvents.filter(id => id !== eventId)
-            : [...likedEvents, eventId];
-
-        setLikedEvents(updatedLikedEvents);
-        localStorage.setItem('likedEventIds', JSON.stringify(updatedLikedEvents));
-    };
-
     const handleCopyLink = (eventId: string) => {
         const eventUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/event/${eventId}`;
         navigator.clipboard.writeText(eventUrl);
@@ -88,11 +77,19 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
         });
     };
 
-    const handleParticipateClick = () => {
-        if (userId) {
-            router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/event/${eventId}/participate`);
-        } else {
-            router.push('/auth/signin');
+    const handleParticipateClick = async () => {
+        setIsSubmitting(true);
+        try {
+            if (userId) {
+                await new Promise((resolve) => setTimeout(resolve, 500));
+                await router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/event/${eventId}/participate`);
+            } else {
+                router.push('/auth/signin');
+            }
+        } catch (error) {
+            console.error("Error during participation:", error);
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -112,17 +109,16 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
     }
 
     const formattedDate = format(new Date(event.date), 'dd MMMM yyyy');
-    const isLiked = likedEvents.includes(event.id);
 
     return (
         <motion.div 
-            className="relative flex-1 min-w-[320px] max-w-[350px] rounded-xl shadow-xl bg-white"
+            className="relative flex-1 min-w-[320px] max-w-[350px] rounded-xl shadow-xl bg-white overflow-hidden"
             transition={{ type: 'spring', stiffness: 300 }}
         >
             {menuOpen && (
                 <motion.div 
                     ref={menuRef}
-                    className="absolute top-[-3rem] z-10 right-2 bg-white border rounded-lg shadow-lg p-2"
+                    className="absolute top-[-3rem] z-20 right-2 bg-white border rounded-lg shadow-lg p-2"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
@@ -132,7 +128,7 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
                         className="text-gray-800 text-sm px-4 py-2 hover:bg-gray-100 w-full text-left"
                         onClick={() => handleCopyLink(event.id)}
                     >
-                        Copy Event Link
+                        {t('copy_event_link')}
                     </button>
                 </motion.div>
             )}
@@ -142,7 +138,7 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
                 alt={event.title}
                 width={350}
                 height={200}
-                className="object-cover rounded-t-xl w-auto h-auto"
+                className="object-cover w-auto h-auto max-h-[250px] mx-auto"
             />
 
             <button
@@ -166,21 +162,19 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
                 {participateButton && (
                     <div className="flex gap-4 mt-4">
                         <motion.button
-                            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition-all duration-200 transform hover:scale-105"
+                            className={`bg-blue-500 text-white font-bold py-2 px-4 rounded-lg transition-all duration-200 transform flex items-center justify-center gap-2 ${
+                                isSubmitting ? "bg-gray-200 text-blue-500 cursor-not-allowed" : "hover:bg-blue-400"
+                            }`}
                             onClick={handleParticipateClick}
-                            whileTap={{ scale: 0.95 }} // Réduit la taille lors du clic
+                            disabled={isSubmitting} 
                         >
-                            Participate
-                        </motion.button>
-
-                        <motion.button
-                            onClick={() => handleLike(event.id)}
-                            className={`p-3 rounded-full transition-all duration-200 focus:outline-none ${isLiked ? 'text-red-500' : 'text-gray-500'}`}
-                            whileTap={{ scale: 0.9 }} // Réduit la taille lors du clic
-                        >
-                            <FaHeart 
-                                className={`w-6 h-6 ${isLiked ? 'fill-red-500' : 'fill-gray-500'} transform transition-all duration-300`} 
-                            />
+                            {isSubmitting ? (
+                                <>
+                                    {t('participate')} <Spin size="small" />
+                                </>
+                            ) : (
+                                t('participate')
+                            )}
                         </motion.button>
                     </div>
                 )}

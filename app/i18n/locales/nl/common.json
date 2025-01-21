@@ -124,5 +124,7 @@
   "event_privacy_guests": "Evenementprivacy en gasten",
   "guest_limit": "Gastenlimiet",
   "public": "Publiek",
-  "private": "Privé"
+  "private": "Privé",
+  "copy_event_link": "Kopieer Link",
+  "participate": "Deelnemen"
 }
