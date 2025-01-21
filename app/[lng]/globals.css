@@ -13,3 +13,25 @@
         scrollbar-width: none;  /* Firefox */
   }
 }
+
+.logo_svg_path {
+    fill: transparent;
+    stroke: #fff;
+    stroke-width: 2;
+    stroke-dasharray: 150;
+    stroke-dashoffset: 150;
+    animation: textAnimation 1.3s ease-in-out forwards;
+}
+
+@keyframes textAnimation {
+    0% {
+        stroke-dashoffset: 150;
+    }
+    80% {
+        fill: transparent;
+        stroke-dashoffset: 0;
+    }
+    100% {
+        fill: #fff;
+    }
+}

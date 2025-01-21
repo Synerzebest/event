@@ -271,7 +271,7 @@ export default function Dashboard() {
                             ))
                         ) : (
                             likedEvents.length === 0 ? (
-                                <div className="text-gray-500 text-xl">{t('no_favorite_events')}</div>
+                                <div className="text-gray-500 text-xl sm:text-start text-center">{t('no_favorite_events')}</div>
                             ) : (
                                 likedEvents.map((eventId) => {
                                     const event = events.find((e) => e.id === eventId);
