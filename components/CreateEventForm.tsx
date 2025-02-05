@@ -194,7 +194,7 @@ const CreateEventForm: React.FC = () => {
     return (
         <div className="w-[95%] sm:w-3/4 mx-auto relative top-24 flex flex-col gap-8 mb-24">
             <div className="text-center">
-                <p className="text-[2.5rem] sm:text-7xl font-bold bg-gradient-to-tl from-blue-800 via-blue-500 to-zinc-400 bg-clip-text text-transparent">Create Your Event</p>
+                <p className="text-[2.5rem] sm:text-7xl font-bold bg-gradient-to-tl from-blue-800 via-blue-500 to-zinc-400 bg-clip-text text-transparent">{t('create_your_event')}</p>
             </div>
             
             <div className="w-full flex flex-col md:flex-row bg-white p-8 rounded-lg shadow-lg gap-8 sm:gap-0 border border-gray-300">

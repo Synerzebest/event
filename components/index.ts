@@ -12,6 +12,8 @@ import CreateEventForm from "./CreateEventForm";
 import Events from "./Events";
 import Countdown from "./Countdown";
 import EventComponent from "./EventComponent";
+import PaymentDashboard from "./PaymentDashboard";
+import Transactions from "./Transactions"
 
 export {
     Navbar,
@@ -27,5 +29,7 @@ export {
     CreateEventForm,
     Events,
     Countdown,
-    EventComponent
+    EventComponent,
+    PaymentDashboard,
+    Transactions
 }

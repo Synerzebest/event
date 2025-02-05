@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react";
 import { stripe } from "@/lib/stripeConfig"; 
 import useFirebaseUser from "@/lib/useFirebaseUser";
-import { Navbar } from "@/components";
+import { Navbar, PaymentDashboard, Transactions, Footer } from "@/components";
 import { db } from "@/lib/firebaseConfig"; 
 import { doc, updateDoc } from "firebase/firestore";
-import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 const StripeOnboarding: React.FC = () => {
   const { user, loading } = useFirebaseUser();
@@ -85,45 +85,27 @@ const StripeOnboarding: React.FC = () => {
   return (
     <>
       <Navbar lng={lng} />
-      <motion.div
-        className="flex flex-col items-center justify-center min-h-screen bg-gray-50 px-4"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
-        transition={{ duration: 0.5 }}
-      >
-        <motion.div
-          className="max-w-md w-full bg-white rounded-lg shadow-md p-6 space-y-4"
-          initial={{ scale: 0.9 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 0.3 }}
-        >
-          <h1 className="text-2xl font-semibold text-gray-800 text-center">
-            Stripe Account Setup
-          </h1>
-          <p className="text-sm text-gray-600 text-center">{statusMessage}</p>
-          {stripeUrl && (
-            <motion.div
-              className="mt-4"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-            >
-              <p className="text-sm text-gray-700 text-center">
-                Please complete your account verification by visiting the link below:
-              </p>
-              <a
-                href={stripeUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block mt-2 text-center text-blue-500 hover:underline"
-              >
-                Complete your Stripe verification
-              </a>
-            </motion.div>
-          )}
-        </motion.div>
-      </motion.div>
+
+      <div className="w-screen relative top-12 flex flex-col items-center  gap-4">
+
+        {stripeUrl && (
+          <Link
+            href={stripeUrl}
+            className="bg-blue-600 text-white px-4 py-2 rounded-md"
+          >
+            Complete Stripe Setup
+          </Link>
+        )}
+      
+        {statusMessage && <p className="text-[1.5rem] text-center sm:text-4xl font-bold bg-gradient-to-tl from-blue-800 via-blue-500 to-blue-500 bg-clip-text text-transparent">{statusMessage}</p>}
+
+
+        <PaymentDashboard />
+
+        <Transactions />
+      </div>
+
+      <Footer />
     </>
   );
 };

@@ -29,3 +29,20 @@ export interface Event {
     imageUrl?: string;
     [key: string]: any; 
 }
+
+export interface BankAccount {
+    id: string;
+    bank_name?: string;
+    last4: string;
+    country: string;
+    currency: string;
+}
+
+export interface Transaction {
+    id: string;
+    amount: number;
+    currency: string;
+    description?: string;
+    created: number;
+}
+  
