@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import Image from 'next/image';
 import { useTranslation } from "../app/i18n";
+import { AnimatedTestimonials } from "./ui/animated-testimonials";
 
 interface TestimonialsProps {
   lng: "fr" | "en" | "nl";
@@ -54,25 +54,18 @@ const Testimonials = ({ lng }: TestimonialsProps) => {
   return (
     <div className="py-20 relative top-64">
       <h2 className="text-center text-4xl font-bold mb-12">{t('testimonials_title')}</h2>
-      
-      <div className="flex flex-wrap justify-center gap-8">
-        {testimonials.map((testimonial, index) => (
-          <div key={index} className="max-w-sm w-full lg:w-1/3 p-4 hover:scale-105 duration-300">
-            <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center">
-              <div className="relative w-24 h-24 rounded-full overflow-hidden mb-4">
-                <Image
-                  src={testimonial.image}
-                  alt={testimonial.name}
-                  width={400}
-                  height={300}
-                />
-              </div>
-              <h3 className="font-bold text-xl">{testimonial.name}</h3>
-              <p className="text-sm text-gray-500">{testimonial.title}</p>
-              <p className="mt-4 text-gray-700 italic">&quot;{testimonial.content}&quot;</p>
-            </div>
-          </div>
-        ))}
+          
+      <div className="max-w-4xl mx-auto">
+        <AnimatedTestimonials
+          testimonials={testimonials.map((testimonial) => ({
+            name: testimonial.name,
+            position: testimonial.title,
+            quote: testimonial.content,
+            image: testimonial.image,
+            designation: testimonial.title,
+            src: testimonial.image
+          }))}
+        />
       </div>
     </div>
   );
