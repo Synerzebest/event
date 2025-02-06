@@ -205,8 +205,8 @@ const UserTickets = () => {
                         <Image
                             src={qrCode[selectedTicketId] as string}
                             alt={`QR Code for Ticket ${selectedTicketId}`}
-                            width={160}
-                            height={160}
+                            width={600}
+                            height={600}
                             className="rounded-lg"
                         />
                     </div>
