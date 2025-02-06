@@ -20,6 +20,7 @@
     "autoprefixer": "^10.4.20",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
+    "extract-colors": "^4.1.1",
     "firebase": "^10.14.1",
     "firebase-admin": "^12.6.0",
     "framer-motion": "^11.18.1",

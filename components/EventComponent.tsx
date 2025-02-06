@@ -138,7 +138,7 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
                 alt={event.title}
                 width={350}
                 height={200}
-                className="object-cover w-auto h-auto max-h-[250px] mx-auto"
+                className="object-cover w-full h-auto max-h-[250px] mx-auto border-0 border-b"
             />
 
             <button
