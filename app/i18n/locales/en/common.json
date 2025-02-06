@@ -158,5 +158,6 @@
   "form_category": "Category",
   "upload_event_photo": "Upload Event Photo",
   "create_event_button": "Create Event",
-  "create_your_event": "Create Your Event"
+  "create_your_event": "Create Your Event",
+  "cta_button": "Organize my event"
 }

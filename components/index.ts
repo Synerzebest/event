@@ -13,7 +13,8 @@ import Events from "./Events";
 import Countdown from "./Countdown";
 import EventComponent from "./EventComponent";
 import PaymentDashboard from "./PaymentDashboard";
-import Transactions from "./Transactions"
+import Transactions from "./Transactions";
+import CtaButton from "./CtaButton";
 
 export {
     Navbar,
@@ -31,5 +32,6 @@ export {
     Countdown,
     EventComponent,
     PaymentDashboard,
-    Transactions
+    Transactions,
+    CtaButton
 }

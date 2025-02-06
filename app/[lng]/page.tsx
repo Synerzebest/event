@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from 'react';
-import { Navbar, Hero, SubHero, Testimonials, PricingTable, ReliabilitySection, FAQSection, Footer } from '@/components';
+import { Navbar, Hero, SubHero, Testimonials, PricingTable, ReliabilitySection, FAQSection, Footer, CtaButton } from '@/components';
 import { useTranslation } from '../i18n';
 
 interface HomeProps {
@@ -33,6 +33,7 @@ export default function Home({ params: { lng } }: HomeProps) {
       <PricingTable lng={lng} />
       <ReliabilitySection lng={lng} />
       <FAQSection lng={lng} />
+      <CtaButton />
       <Footer />
     </>
   )

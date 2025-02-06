@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 
 const Footer = () => {
+    const date = new Date();
+    const year = date.getFullYear();
     return (
         <footer className="bg-blue-500 text-white py-12 mx-4 mb-[16.5rem] rounded-xl relative top-64">
             <div className="container mx-auto flex flex-wrap justify-between items-start space-y-8 md:space-y-0">
@@ -64,7 +66,7 @@ const Footer = () => {
             {/* Bottom Section */}
             <div className="mt-12 text-center border-t border-white pt-6">
                 <p className="text-sm text-white">
-                    © 2024 EventEase. All Rights Reserved.
+                    © {year} EventEase. All Rights Reserved.
                 </p>
             </div>
         </footer>
