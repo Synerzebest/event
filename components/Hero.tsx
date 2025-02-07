@@ -40,10 +40,9 @@ const Hero = () => {
   }, [i18n, getTranslatedWords]);
 
   return (
-    <div className="relative top-24 h-[550px] w-full h-auto flex flex-col lg:flex-row items-center justify-center">
+    <div className="relative sm:top-24 top-8 h-[550px] w-full h-auto flex flex-col lg:flex-row items-center justify-center">
       <div className="z-2 text-center p-4 sm:p-8 lg:w-1/2 lg:text-left">
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4">
-          {/* Vérifie que words contient bien des mots avant d'afficher FlipWords */}
+        <h1 className="text-5xl sm:text-5xl md:text-6xl font-bold mb-4">
           {words.length > 0 && <FlipWords words={words} />} {t("hero_title")}
         </h1>
         <p className="text-lg sm:text-xl md:text-2xl">{t("hero_subtitle")}</p>
