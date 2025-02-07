@@ -1,7 +1,8 @@
 {
   "title": "Home",
   "explore": "Ontdekken",
-  "hero_title": "Creëer, organiseer en beheer eenvoudig uw evenementen",
+  "hero_title_words": ["Creër", "Organiseer", "Beheer"],
+  "hero_title": "eenvoudig uw evenementen",
   "hero_subtitle": "Eventease helpt u bij het creëren, organiseren en beheren van uw evenementen, of het nu gaat om feesten, conferenties of bruiloften",
   "hero_button": "Evenementen verkennen",
   "subhero_title": "Ontdek de kenmerken van EventEase",

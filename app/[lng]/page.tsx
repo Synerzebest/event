@@ -27,7 +27,7 @@ export default function Home({ params: { lng } }: HomeProps) {
   return (
     <>
       <Navbar lng={lng} />
-      <Hero heroTitle={t('hero_title')} heroSubtitle={t('hero_subtitle')} heroButton={t('hero_button')} />
+      <Hero />
       <SubHero title={t('subhero_title')} subtitle={t('subhero_subtitle')} lng={lng} />
       <Testimonials lng={lng} />
       <PricingTable lng={lng} />

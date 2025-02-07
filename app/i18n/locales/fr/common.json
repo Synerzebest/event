@@ -1,7 +1,8 @@
 {
   "title": "Accueil",
   "explore": "Explorer",
-  "hero_title": "Créez, Organisez & Gérez vos événements simplement",
+  "hero_title_words": ["Créez", "Organisez", "Managez"],
+  "hero_title": " vos événements simplement",
   "hero_subtitle": "Eventease vous aide à créer, organiser et gérer vos événements, que ce soient des soirées, des conférences ou des mariages",
   "hero_button": "Explorer les événements",
   "subhero_title": "Découvrez les fonctionnalités d'EventEase",

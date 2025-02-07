@@ -3,10 +3,6 @@ import Image from "next/image";
 import { useTranslation } from "../app/i18n";
 import { motion } from "framer-motion";
 
-const featureVariants = {
-  hidden: { opacity: 0},
-  visible: { opacity: 1, transition: { duration: 0.6, ease: "easeOut" } }
-}
 
 interface SubHeroProps {
   title: string;
@@ -65,11 +61,7 @@ const SubHero = ({ title, subtitle, lng }: SubHeroProps) => {
           {features.map((feature) => (
             <motion.div
               key={feature.title}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
               whileHover={{ scale: 1.02}}
-              variants={featureVariants}
               className="relative bg-white rounded-2xl shadow-lg overflow-hidden
                         transition-all duration-300 mx-auto border border-gray-200
                         hover:shadow-2xl hover:border-blue-400"
