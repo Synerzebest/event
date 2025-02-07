@@ -4,8 +4,8 @@ import { useTranslation } from "../app/i18n";
 import { motion } from "framer-motion";
 
 const featureVariants = {
-  hidden: { opacity: 0, y: 50},
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+  hidden: { opacity: 0},
+  visible: { opacity: 1, transition: { duration: 0.6, ease: "easeOut" } }
 }
 
 interface SubHeroProps {
@@ -68,16 +68,14 @@ const SubHero = ({ title, subtitle, lng }: SubHeroProps) => {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.2 }}
+              whileHover={{ scale: 1.02}}
               variants={featureVariants}
-              whileHover={{ scale: 1.05 }}
               className="relative bg-white rounded-2xl shadow-lg overflow-hidden
                         transition-all duration-300 mx-auto border border-gray-200
                         hover:shadow-2xl hover:border-blue-400"
             >
               {/* Image animée */}
-              <motion.div 
-                whileHover={{ scale: 1.1 }}
-                transition={{ duration: 0.3 }}
+              <div 
                 className="relative h-40 w-full"
               >
                 <Image
@@ -87,7 +85,7 @@ const SubHero = ({ title, subtitle, lng }: SubHeroProps) => {
                   className="object-cover"
                   style={{ objectFit: "contain" }}
                 />
-              </motion.div>
+              </div>
 
               {/* Contenu */}
               <div className="p-6 text-center">
