@@ -9,7 +9,7 @@ const FAQSection = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
   const { t } = useTranslation(lng, "common");
 
   return (
-    <section className="py-16 bg-white relative top-64">
+    <section className="py-16 bg-white relative top-64 w-[95%] sm:w-full mx-auto">
       <div className="container mx-auto">
         {/* Title */}
         <h2 className="text-4xl font-bold text-center mb-8">{t('faq.title')}</h2>

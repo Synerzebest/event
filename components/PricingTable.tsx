@@ -3,6 +3,7 @@ import { useTranslation } from "../app/i18n";
 import useFirebaseUser from "@/lib/useFirebaseUser";
 import { fetchStripeSubscriptionStatus } from "@/lib/stripe";
 import { useRouter } from "next/navigation";
+import { Alert } from "antd";
 
 type PlanType = "STARTER" | "PREMIUM" | "PRO";
 
@@ -42,20 +43,20 @@ const PricingTable = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
             <h2 className="text-center text-4xl font-bold mb-12">{t('choose_plan')}</h2>
 
             {activePlan && (
-                <p className="w-fit mx-auto text-center rounded-xl text-gray-500 font-semibold mb-12 py-2 px-4 border border-gray-500">
-                    {t('active_subscription_message')}
-                </p>
+                <div className="w-11/12 mx-auto flex justify-center mb-12">
+                    <Alert showIcon type="info" message={t('active_subscription_message')} />
+                </div>
             )}
 
             <div className="flex flex-col md:flex-row items-center justify-center gap-8">
-                {["Starter", "Premium", "Pro"].map((plan, index) => {
+                {["Starter", "Premium", "Pro"].map((plan) => {
                     const planType = plan.toUpperCase() as PlanType;
                     const isActive = planType === activePlan;
                     const isDefault = planType === "STARTER" && !activePlan;
 
                     return (
                         <div
-                            key={index}
+                            key={planType}
                             className={`w-[95%] md:w-1/4 bg-white rounded-lg shadow-lg p-8 text-center border ${
                                 plan === "Premium"
                                     ? "border-2 border-blue-500"
