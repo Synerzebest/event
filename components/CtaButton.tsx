@@ -2,7 +2,6 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Button } from "antd";
 import { useTranslation } from "../app/i18n";
 import useLanguage from '@/lib/useLanguage';
 import { FaRegCalendarCheck } from "react-icons/fa";
@@ -14,7 +13,7 @@ const CtaButton = () => {
 
     return (
         <Link href={`/${lng}/eventlab`} className="fixed bottom-4 right-4 z-20">
-            <Button type="primary" size="large" className="flex items-center shadow-xl font-bold hover:scale-105 transition-transform duration-200">
+            <button className="flex items-center gap-4 text-lg text-white bg-[rgba(255,255,255,0.2)] backdrop-blur-md border border-[rgba(255,255,255,0.3)] py-2 px-2 font-bold rounded-xl hover:bg-[rgba(255,255,255,0.3)] duration-300 shadow-lg">
                 {t('cta_button')}
                 <motion.div
                     animate={{
@@ -30,7 +29,7 @@ const CtaButton = () => {
                 >
                     <FaRegCalendarCheck />
                 </motion.div>
-            </Button>
+            </button>
         </Link>
     )
 }

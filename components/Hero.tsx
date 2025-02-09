@@ -1,11 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { FlipWords } from "./ui/flip-words";
 import useLanguage from "@/lib/useLanguage";
 import { useTranslation } from "@/app/i18n";
+import { AuroraBackground } from "./ui/aurora-background";
 
-const heroImage = "/images/hero.png";
 
 const Hero = () => {
   const lng = useLanguage();
@@ -40,29 +39,22 @@ const Hero = () => {
   }, [i18n, getTranslatedWords]);
 
   return (
-    <div className="relative sm:top-24 top-8 h-[550px] w-full h-auto flex flex-col lg:flex-row items-center justify-center">
-      <div className="z-2 text-center p-4 sm:p-8 lg:w-1/2 lg:text-left">
-        <h1 className="text-5xl sm:text-5xl md:text-6xl font-bold mb-4">
-          {words.length > 0 && <FlipWords words={words} />} {t("hero_title")}
-        </h1>
-        <p className="text-lg sm:text-xl md:text-2xl">{t("hero_subtitle")}</p>
-        <Link href="/explore">
-          <button className="text-xl text-white bg-blue-500 border-none mt-8 py-4 px-6 font-bold rounded-xl hover:bg-blue-600 duration-300">
-            {t("hero_button")}
-          </button>
-        </Link>
-      </div>
 
-      <div className="relative w-full lg:w-[30%] h-[350px] z-10">
-        <Image
-          src={heroImage}
-          alt="hero image designed by freepik"
-          fill
-          style={{ objectFit: "contain" }}
-          className="opacity-90"
-        />
+    <AuroraBackground>
+      <div className="relative sm:top-24 top-8 h-[550px] w-full h-auto flex flex-col lg:flex-row items-center justify-center">
+        <div className="z-2 text-center p-4 sm:p-8 flex flex-col items-center lg:text-left">
+          <h1 className="text-5xl text-center text-white sm:text-5xl md:text-6xl font-bold mb-4">
+            {words.length > 0 && <FlipWords words={words} />} {t("hero_title")}
+          </h1>
+          <p className="text-lg text-center text-white sm:text-xl md:text-2xl">{t("hero_subtitle")}</p>
+          <Link href="/explore">
+            <button className="text-xl text-white bg-[rgba(255,255,255,0.2)] backdrop-blur-md border border-[rgba(255,255,255,0.3)] mt-8 py-4 px-6 font-bold rounded-xl hover:bg-[rgba(255,255,255,0.3)] duration-300 shadow-lg">
+              {t("hero_button")}
+            </button>
+          </Link>
+        </div>
       </div>
-    </div>
+    </AuroraBackground>
   );
 };
 
