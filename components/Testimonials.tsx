@@ -55,7 +55,7 @@ const Testimonials = ({ lng }: TestimonialsProps) => {
     <div className="relative top-32">
       <h2 className="text-center text-4xl font-bold mb-12">{t('testimonials_title')}</h2>
           
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-4xl w-full mx-auto">
         <AnimatedTestimonials
           testimonials={testimonials.map((testimonial) => ({
             name: testimonial.name,

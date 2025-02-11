@@ -108,7 +108,9 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
         );
     }
 
-    const formattedDate = format(new Date(event.date), 'dd MMMM yyyy');
+    const eventDate = new Date(event.date);
+    const isPastEvent = eventDate < new Date();
+    const formattedDate = format(eventDate, 'dd MMMM yyyy');
 
     return (
         <motion.div 
@@ -162,18 +164,18 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
                 {participateButton && (
                     <div className="flex gap-4 mt-4">
                         <motion.button
-                            className={`bg-blue-500 text-white font-bold py-2 px-4 rounded-lg transition-all duration-200 transform flex items-center justify-center gap-2 ${
-                                isSubmitting ? "bg-gray-200 text-blue-500 cursor-not-allowed" : "hover:bg-blue-400"
-                            }`}
+                            className={`font-bold py-2 px-4 rounded-lg transition-all duration-200 transform flex items-center justify-center gap-2
+                                ${isSubmitting || isPastEvent ? "bg-gray-200 text-gray-500 cursor-not-allowed" : "bg-blue-500 text-white hover:bg-blue-400"}
+                            `}
                             onClick={handleParticipateClick}
-                            disabled={isSubmitting} 
+                            disabled={isSubmitting || isPastEvent} 
                         >
                             {isSubmitting ? (
                                 <>
                                     {t('participate')} <Spin size="small" />
                                 </>
                             ) : (
-                                t('participate')
+                                isPastEvent ? t('event_expired') : t('participate')
                             )}
                         </motion.button>
                     </div>

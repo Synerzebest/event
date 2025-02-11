@@ -128,7 +128,7 @@
   "private": "Privé",
   "copy_event_link": "Kopieer Link",
   "participate": "Deelnemen",
-  "search_placeholder": "Zoek voor evenementen...",
+  "search_placeholder": "Zoeken...",
   "create_event_title": "Maak Uw Evenement",
   "my_tickets": "Mijn Tickets",
   "no_ticket_yet": "U hebt nog geen ticket.",
@@ -161,5 +161,6 @@
   "create_event_button": "Evenement creëren",
   "create_your_event": "Maak Uw Evenement",
   "cta_button": "Organiseren een evenement",
-  "famous": "Vaak genomen"
+  "famous": "Vaak genomen",
+  "event_expired": "Evenement voltooid"
 }

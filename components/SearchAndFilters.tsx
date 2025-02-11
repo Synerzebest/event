@@ -5,11 +5,11 @@ import { LuSlidersHorizontal } from "react-icons/lu";
 import { IoMdClose } from 'react-icons/io';
 import { Event } from "@/types/types";
 import { Select, Spin } from 'antd';
-import { FaMagnifyingGlass } from "react-icons/fa6";
 import useFirebaseUser from '@/lib/useFirebaseUser';
 import { EventComponent } from '.';
 import { useTranslation } from '@/app/i18n';
 import useLanguage from '@/lib/useLanguage';
+import { FaSearch } from "react-icons/fa";
 
 const categories = [
     { value: "music", label: "Music" },
@@ -97,27 +97,25 @@ const SearchAndFilters = () => {
 
     return (
         <div className="relative top-36 w-11/12 mx-auto p-4 rounded-lg mb-8">
-            <div 
-                className="w-full md:w-2/3 lg:w-1/2 flex items-center justify-between bg-white p-4 rounded-full shadow-lg mx-auto"
-            >
+            <div className="w-full md:w-2/3 lg:w-1/2 flex items-center bg-gray-900 text-white p-3 rounded-full shadow-xl backdrop-blur-md mx-auto transition-all duration-300">
                 <input
                     type="text"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder={`${t("search_placeholder")}`}
-                    className="w-full px-4 py-3 border-none bg-gray-100 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-300 ease-in-out"
+                    placeholder={t('search_placeholder')}
+                    className="w-full px-4 py-2 bg-transparent border-none focus:outline-none text-white placeholder-gray-400"
                 />
                 <button
                     onClick={handleSearch}
-                    className="ml-4 p-3 text-white bg-blue-500 rounded-full shadow-md hover:bg-blue-600 hover:shadow-lg transition duration-300 ease-in-out"
+                    className="ml-3 p-3 bg-gray-700 rounded-full hover:bg-gray-600 transition duration-300"
                 >
-                    <FaMagnifyingGlass size={18} />
+                    <FaSearch size={20} />
                 </button>
                 <button
                     onClick={toggleFilters}
-                    className="ml-2 p-3 text-white bg-gray-500 rounded-full shadow-md hover:bg-gray-600 hover:shadow-lg transition duration-300 ease-in-out"
+                    className="ml-2 p-3 bg-gray-700 rounded-full hover:bg-gray-600 transition duration-300"
                 >
-                    {showFilters ? <IoMdClose size={18} /> : <LuSlidersHorizontal size={18} />}
+                    {showFilters ? <IoMdClose size={20} /> : <LuSlidersHorizontal size={20} />}
                 </button>
             </div>
 

@@ -39,8 +39,8 @@ const PricingTable = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
     }, [user]);
 
     return (
-        <div className="bg-gray-700 py-20 relative top-64">
-            <h2 className="text-center text-4xl font-bold mb-12 text-white">{t('choose_plan')}</h2>
+        <div className="bg-gray-50 py-20 relative top-64">
+            <h2 className="text-center text-4xl font-bold mb-12">{t('choose_plan')}</h2>
 
             {activePlan && (
                 <div className="w-11/12 mx-auto flex justify-center mb-12">

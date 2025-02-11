@@ -128,7 +128,7 @@
   "private": "Private",
   "copy_event_link": "Copy Event Link",
   "participate": "Participate",
-  "search_placeholder": "Search for events...",
+  "search_placeholder": "Search...",
   "create_event_title": "Create Your Event",
   "my_tickets": "My Tickets",
   "no_ticket_yet": "You do not have any ticket yet.",
@@ -161,5 +161,6 @@
   "create_event_button": "Create Event",
   "create_your_event": "Create Your Event",
   "cta_button": "Organize my event",
-  "famous": "Famous"
+  "famous": "Famous",
+  "event_expired": "Event ended"
 }

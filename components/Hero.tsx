@@ -48,7 +48,7 @@ const Hero = () => {
           </h1>
           <p className="text-lg text-center text-white sm:text-xl md:text-2xl">{t("hero_subtitle")}</p>
           <Link href="/explore">
-            <button className="flex items-center gap-2 text-xl text-white bg-[rgba(0,0,0,0.3)] backdrop-blur-md border border-[rgba(255,255,255,0.3)] py-4 px-6 mt-8 font-bold rounded-xl hover:bg-[rgba(255,255,255,0.3)] duration-300 shadow-lg">           
+            <button className="flex items-center gap-2 text-xl text-white bg-gray-900 border border-[rgba(255,255,255,0.3)] py-4 px-6 mt-8 font-bold rounded-xl hover:bg-gray-950 duration-300 shadow-lg">           
               {t("hero_button")}
             </button>
           </Link>
