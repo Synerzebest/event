@@ -53,43 +53,38 @@ const SubHero = ({ title, subtitle, lng }: SubHeroProps) => {
   }
 
   return (
-    <section className="py-16 bg-gray-50 relative top-60">
+    <section className="py-16 bg-slate-100 relative">
       <div className="container mx-auto text-center">
         <h2 className="text-4xl font-bold mb-8">{title}</h2>
         <p className="text-lg text-gray-600 mb-12 mx-4">{subtitle}</p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-8">
           {features.map((feature) => (
             <motion.div
-              key={feature.title}
-              whileHover={{ scale: 1.02}}
-              className="relative bg-white rounded-2xl shadow-lg overflow-hidden
-                        transition-all duration-300 mx-auto border border-gray-200
-                        hover:shadow-2xl hover:border-blue-400"
-            >
-              {/* Image animée */}
-              <div 
-                className="relative h-40 w-full"
-              >
-                <Image
-                  src={feature.image}
-                  alt={feature.title}
-                  fill
-                  className="object-cover"
-                  style={{ objectFit: "contain" }}
-                />
-              </div>
-
-              {/* Contenu */}
-              <div className="p-6 text-center">
-                <h3 className="text-2xl font-semibold text-gray-800 mb-2">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600">{feature.description}</p>
-              </div>
-
-              {/* Effet décoratif en fond */}
-              <div className="absolute inset-0 bg-gradient-to-t from-blue-50 to-transparent opacity-20"></div>
-            </motion.div>
+            key={feature.title}
+            whileHover={{ scale: 1.02, boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.08)" }}
+            className="relative bg-white rounded-2xl shadow-lg overflow-hidden
+                       transition-all duration-300 mx-auto border border-gray-200"
+          >
+            {/* Image animée */}
+            <div className="relative h-40 w-full">
+              <Image
+                src={feature.image}
+                alt={feature.title}
+                fill
+                className="object-cover"
+                style={{ objectFit: "contain" }}
+              />
+            </div>
+          
+            {/* Contenu */}
+            <div className="p-6 text-center">
+              <h3 className="text-2xl font-semibold text-gray-900 mb-2">
+                {feature.title}
+              </h3>
+              <p className="text-gray-600">{feature.description}</p>
+            </div>
+          </motion.div>
+               
           ))}
         </div>
       </div>

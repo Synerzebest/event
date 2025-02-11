@@ -55,9 +55,9 @@ const Events = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
     });
 
     return (
-        <div className="container mx-auto py-16">
+        <div className="container mx-auto relative top-36">
             <div className="w-[95%] mx-auto sm:mx-none sm:w-full flex-col sm:flex-row flex items-center justify-start sm:justify-between">
-                <h2 className="text-2xl font-bold mb-8 text-center sm:text-start">{t('upcoming_events')}</h2>
+                <h2 className="text-2xl font-bold mb-8 text-center sm:text-start text-white">{t('upcoming_events')}</h2>
                 <div className="mb-8">
                     <Button color="primary" onClick={() => setShowPastEvents(!showPastEvents)}>
                         {showPastEvents ? t('past_events_hide') : t('past_events_show')}

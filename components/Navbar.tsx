@@ -48,7 +48,7 @@ const Navbar = ({ lng }: NavbarProps) => {
 
   return (
     <nav className="absolute w-[95%] top-0 sm:top-4 left-1/2 transform -translate-x-1/2 rounded-xl mt-2 flex justify-between items-center py-2 sm:px-12 px-4 
-    bg-[rgba(0,0,0,0.8)] md:bg-[rgba(255,255,255,0.1)] backdrop-blur-xl border border-[rgba(255,255,255,0.2)] shadow-lg z-50">
+    bg-[rgba(0,0,0,0.3)] backdrop-blur-xl border border-[rgba(255,255,255,0.2)] shadow-lg z-50">
       <div>
         <Link href={`/${lng}`}>
           <p className="text-4xl text-white px-4 py-2 rounded-xl font-bold drop-shadow-lg">
@@ -127,7 +127,7 @@ const Navbar = ({ lng }: NavbarProps) => {
       {/* Mobile Menu */}
       {isOpen && (
         <div className="absolute rounded-xl top-[5.5rem] left-0 w-full 
-        bg-[rgba(0,0,0,0.8)] backdrop-blur-xl border border-[rgba(255,255,255,0.2)] md:hidden z-50 
+        bg-[rgba(0,0,0,0.3)] backdrop-blur-2xl border border-[rgba(255,255,255,0.2)] md:hidden z-50 
         flex flex-col gap-4 px-4 py-2">
           <Link href={`/${lng}`} className="px-4 rounded-lg font-bold cursor-pointer text-xl text-white
           hover:bg-[rgba(255,255,255,0.2)] duration-300 py-2 w-fit text-left">

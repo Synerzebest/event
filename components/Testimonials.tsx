@@ -52,7 +52,7 @@ const Testimonials = ({ lng }: TestimonialsProps) => {
   }
 
   return (
-    <div className="py-20 relative top-64">
+    <div className="relative top-32">
       <h2 className="text-center text-4xl font-bold mb-12">{t('testimonials_title')}</h2>
           
       <div className="max-w-4xl mx-auto">

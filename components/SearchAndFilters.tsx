@@ -96,7 +96,7 @@ const SearchAndFilters = () => {
     };
 
     return (
-        <div className="relative top-12 w-11/12 mx-auto p-4 bg-white rounded-lg mb-8">
+        <div className="relative top-36 w-11/12 mx-auto p-4 rounded-lg mb-8">
             <div 
                 className="w-full md:w-2/3 lg:w-1/2 flex items-center justify-between bg-white p-4 rounded-full shadow-lg mx-auto"
             >
