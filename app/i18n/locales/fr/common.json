@@ -162,5 +162,6 @@
   "create_your_event": "Créez votre événement",
   "cta_button": "Organiser mon événement",
   "famous": "Populaire",
-  "event_expired": "Événement terminé"
+  "event_expired": "Événement terminé",
+  "login_to_participate": "Se connecter pour participer"
 }

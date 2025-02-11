@@ -14,6 +14,8 @@ import { Event } from "@/types/types";
 import { useTranslation } from "app/i18n"
 import useLanguage from "@/lib/useLanguage";
 import { Spin } from "antd";
+import useFirebaseUser from "@/lib/useFirebaseUser";
+import Link from "next/link";
 
 interface EventComponentProps {
     eventId: string,
@@ -30,6 +32,7 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
     const router = useRouter();
     const lng = useLanguage();
     const { t } = useTranslation(lng, 'common');
+    const { user } = useFirebaseUser();
 
     useEffect(() => {
         const fetchEvent = async () => {
@@ -114,13 +117,13 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
 
     return (
         <motion.div 
-            className="relative flex-1 min-w-[320px] max-w-[350px] rounded-xl shadow-xl bg-white overflow-hidden"
+            className="relative flex-1 min-w-[320px] max-w-[350px] rounded-xl shadow-xl bg-white"
             transition={{ type: 'spring', stiffness: 300 }}
         >
             {menuOpen && (
                 <motion.div 
                     ref={menuRef}
-                    className="absolute top-[-3rem] z-20 right-2 bg-white border rounded-lg shadow-lg p-2"
+                    className="absolute top-[-3rem] z-[100] right-2 bg-white border rounded-lg shadow-lg p-2"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
@@ -140,7 +143,7 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
                 alt={event.title}
                 width={350}
                 height={200}
-                className="object-cover w-full h-auto max-h-[250px] mx-auto border-0 border-b"
+                className="object-cover w-full h-auto max-h-[250px] mx-auto border-0 border-b rounded-t-xl"
             />
 
             <button
@@ -153,7 +156,7 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
             <div className="p-4 flex flex-col justify-between">
                 <div className="flex justify-between items-center mb-2">
                     <h3 className="font-semibold text-xl text-gray-800 hover:text-blue-600 transition-all">{event.title}</h3>
-                    <div className="border border-blue-600 text-blue-600 text-sm font-bold py-1 px-2 rounded flex items-center gap-1 whitespace-nowrap">
+                    <div className="border border-blue-700 text-blue-700 text-sm font-bold py-1 px-2 rounded flex items-center gap-1 whitespace-nowrap">
                         {event.currentGuests !== undefined ? event.currentGuests : 0} / {event.guestLimit} <FaUser />
                     </div>
                 </div>
@@ -163,9 +166,27 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
 
                 {participateButton && (
                     <div className="flex gap-4 mt-4">
+                    {!user ? (
+                        isPastEvent ? (
+                            <motion.button
+                                className="font-bold py-2 px-4 rounded-lg transition-all duration-200 transform flex items-center justify-center gap-2 bg-gray-200 text-gray-500 cursor-not-allowed"
+                                disabled
+                            >
+                                {t('event_expired')}
+                            </motion.button>
+                        ) : (
+                            <Link href={`/${lng}/auth/signin`}>
+                                <motion.button
+                                    className="font-bold py-2 px-4 rounded-lg transition-all duration-200 transform flex items-center justify-center gap-2 bg-blue-600 text-white hover:bg-blue-800"
+                                >
+                                    {t('login_to_participate')}
+                                </motion.button>
+                            </Link>
+                        )
+                    ) : (
                         <motion.button
                             className={`font-bold py-2 px-4 rounded-lg transition-all duration-200 transform flex items-center justify-center gap-2
-                                ${isSubmitting || isPastEvent ? "bg-gray-200 text-gray-500 cursor-not-allowed" : "bg-blue-500 text-white hover:bg-blue-400"}
+                                ${isSubmitting || isPastEvent ? "bg-gray-200 text-gray-500 cursor-not-allowed" : "bg-blue-600 text-white hover:bg-blue-800"}
                             `}
                             onClick={handleParticipateClick}
                             disabled={isSubmitting || isPastEvent} 
@@ -178,7 +199,8 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
                                 isPastEvent ? t('event_expired') : t('participate')
                             )}
                         </motion.button>
-                    </div>
+                    )}
+                </div>
                 )}
             </div>
         </motion.div>
