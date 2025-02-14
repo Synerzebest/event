@@ -142,8 +142,8 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
                 src={event.images[0]}
                 alt={event.title}
                 width={350}
-                height={200}
-                className="object-cover w-full h-auto max-h-[250px] mx-auto border-0 border-b rounded-t-xl"
+                height={250}
+                className="object-cover w-full h-[250px] max-h-[250px] mx-auto border-0 border-b rounded-t-xl"
             />
 
             <button

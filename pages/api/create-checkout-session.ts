@@ -70,9 +70,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const plan = subscription.items.data[0].price.metadata.nickname || 'starter';
 
       if (plan.toLowerCase() === 'premium') {
-        applicationFeePercentage = 0.10; // Premium : 10%
+        applicationFeePercentage = 0.05; // Premium : 5%
       } else if (plan.toLowerCase() === 'pro') {
-        applicationFeePercentage = 0.05; // Pro : 5%
+        applicationFeePercentage = 0.01; // Pro : 1%
       }
     } else {
       console.log('L’organisateur est sur le plan Starter (aucun abonnement trouvé).');

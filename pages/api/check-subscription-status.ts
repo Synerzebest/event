@@ -14,15 +14,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         // Récupérer les abonnements actifs du client
         const subscriptions = await stripe.subscriptions.list({
             customer: customerId as string,
-            status: 'all', // inclut les abonnements annulés
+            status: 'active', 
             limit: 1,
         });
 
         const activeSubscription = subscriptions.data.find(sub => sub.status === 'active' || sub.status === 'trialing');
         if (activeSubscription) {
-            return res.status(200).json({ activePlan: activeSubscription.items.data[0].plan.id });
+            return res.status(200).json({ activePlan: activeSubscription.items.data[0].price.id });
         }
-
         return res.status(200).json({ activePlan: null });
     } catch (error) {
         console.error("Error while checking subscription:", error);
