@@ -71,7 +71,7 @@ const PricingTable = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
                 </div>
             )}
 
-            <div className="flex flex-col md:flex-row items-center justify-center gap-8">
+            <div className="flex flex-col lg:flex-row items-center justify-center gap-8">
                 {["Starter", "Premium", "Pro"].map((plan) => {
                     const planType = plan.toUpperCase() as PlanType;
                     const isActive = planType === activePlan;
@@ -79,7 +79,7 @@ const PricingTable = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
                     return (
                         <div
                             key={planType}
-                            className={`relative w-[95%] md:w-1/4 bg-gray-50 rounded-2xl shadow-lg p-8 text-center border border-gray-300
+                            className={`relative w-[95%] lg:w-1/4 bg-gray-50 rounded-2xl shadow-lg p-8 text-center border border-gray-300
                                 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl ${
                                     plan === "Premium" ? "border-2 border-blue-500" : ""
                                 }`}
