@@ -10,6 +10,7 @@ import { EventComponent } from '.';
 import { useTranslation } from '@/app/i18n';
 import useLanguage from '@/lib/useLanguage';
 import { FaSearch } from "react-icons/fa";
+import { safeTranslate } from "@/lib/utils";
 
 const categories = [
     { value: "music", label: "Music" },
@@ -102,7 +103,7 @@ const SearchAndFilters = () => {
                     type="text"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder={t('search_placeholder')}
+                    placeholder={safeTranslate(t,'search_placeholder')}
                     className="w-full px-4 py-2 bg-transparent border-none focus:outline-none text-white placeholder-gray-400"
                 />
                 <button

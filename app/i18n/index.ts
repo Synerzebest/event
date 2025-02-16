@@ -77,7 +77,11 @@ export function useTranslation(
   }
 
   return {
-    t: i18nInstance.getFixedT(lng, normalizedNs, options.keyPrefix),
+    t: i18nInstance.getFixedT(lng, normalizedNs, options.keyPrefix) as unknown as (
+      key: string,
+      options?: Record<string, unknown>
+    ) => string | object,
     i18n: i18nInstance,
   };
+
 }

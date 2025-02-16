@@ -1,57 +1,56 @@
-import { NextRequest, NextResponse } from 'next/server';
-import acceptLanguage from 'accept-language';
-import { fallbackLng, languages, cookieName } from './app/i18n/settings';
+import { NextRequest, NextResponse } from "next/server";
+import acceptLanguage from "accept-language";
+import { fallbackLng, languages, cookieName } from "./app/i18n/settings";
 
 acceptLanguage.languages(languages);
 
 export const config = {
-  matcher: [
-    '/((?!api|_next/static|_next/image|images|favicon.ico).*)',
-  ],
+  matcher: ["/((?!api|_next/static|_next/image|images|favicon.ico).*)"],
 };
 
 export function middleware(req: NextRequest) {
   let lng: string | undefined | null;
 
-  // Vérifie si un cookie existe
-  if (req.cookies.has(cookieName)) {
-    const cookieValue = req.cookies.get(cookieName)?.value;
-    if (cookieValue) {
-      lng = acceptLanguage.get(cookieValue);
-    }
+  // 🔍 Vérifier si un cookie existe
+  const cookieLng = req.cookies.get(cookieName)?.value;
+  if (cookieLng && languages.includes(cookieLng)) {
+    lng = cookieLng; // ✅ Garder la langue du cookie
   }
 
-  // Si aucun cookie n'existe, utilise l'en-tête Accept-Language
+  // 🌍 Si aucun cookie, prendre l'en-tête Accept-Language
   if (!lng) {
-    const acceptLanguageHeader = req.headers.get('Accept-Language');
+    const acceptLanguageHeader = req.headers.get("Accept-Language");
     if (acceptLanguageHeader) {
       lng = acceptLanguage.get(acceptLanguageHeader);
     }
   }
 
-  // Définit une langue par défaut si aucune n'est trouvée
+  // 🛑 Si toujours pas de langue, utiliser la valeur par défaut
   if (!lng) {
     lng = fallbackLng;
   }
 
   const pathname = req.nextUrl.pathname;
-
-  // Vérifie si la langue est déjà dans l'URL
   const isLanguageInUrl = languages.some((loc) => pathname.startsWith(`/${loc}`));
 
-  // Redirection si la langue n'est pas dans l'URL
+  // 🌍 Si la langue n'est pas dans l'URL, rediriger
   if (!isLanguageInUrl) {
     const newUrl = new URL(`/${lng}${pathname}`, req.url);
     const response = NextResponse.redirect(newUrl);
 
-    // Ajoute la langue dans le cookie
-    response.cookies.set(cookieName, lng);
+    // ✅ Mettre à jour le cookie uniquement si nécessaire
+    if (cookieLng !== lng) {
+      response.cookies.set(cookieName, lng, { path: "/" });
+    }
     return response;
   }
 
-  // Met à jour le cookie pour refléter la langue active
-  const activeLanguage = pathname.split('/')[1];
+  // ✅ Si la langue est déjà dans l'URL, mettre à jour le cookie si nécessaire
+  const activeLanguage = pathname.split("/")[1];
   const response = NextResponse.next();
-  response.cookies.set(cookieName, activeLanguage);
+  if (cookieLng !== activeLanguage) {
+    response.cookies.set(cookieName, activeLanguage, { path: "/" });
+  }
+
   return response;
 }

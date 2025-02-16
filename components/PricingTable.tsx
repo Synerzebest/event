@@ -4,6 +4,7 @@ import useFirebaseUser from "@/lib/useFirebaseUser";
 import { fetchStripeSubscriptionStatus } from "@/lib/stripe";
 import { useRouter } from "next/navigation";
 import { Alert } from "antd";
+import { safeTranslate } from "@/lib/utils";
 
 type PlanType = "STARTER" | "PREMIUM" | "PRO";
 
@@ -63,11 +64,11 @@ const PricingTable = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
 
     return (
         <div className="bg-gray-50 py-20 relative top-64">
-            <h2 className="text-center text-4xl font-bold mb-12">{t('choose_plan')}</h2>
+            <h2 className="text-center text-4xl font-bold mb-12">{safeTranslate(t,'choose_plan')}</h2>
 
             {activePlan !== "STARTER" && (
                 <div className="w-11/12 mx-auto flex justify-center mb-12">
-                    <Alert showIcon message={t('active_subscription_message')} />
+                    <Alert showIcon message={safeTranslate(t,'active_subscription_message')} />
                 </div>
             )}
 
@@ -87,7 +88,7 @@ const PricingTable = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
                             {/* Badge pour le plan populaire */}
                             {plan === "Premium" && (
                                 <span className="absolute top-3 right-3 bg-gray-700 text-white text-xs font-semibold px-3 py-1 rounded-full">
-                                    {t('famous')}
+                                    {safeTranslate(t,'famous')}
                                 </span>
                             )}
 
@@ -101,26 +102,26 @@ const PricingTable = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
                             </p>
 
                             {/* Description */}
-                            <p className="text-gray-600 mb-6">{t(`${plan.toLowerCase()}_plan_description`)}</p>
+                            <p className="text-gray-600 mb-6">{safeTranslate(t,`${plan.toLowerCase()}_plan_description`)}</p>
 
                             {/* Avantages */}
                             <ul className="text-gray-700 text-left mx-auto w-fit mb-6">
                                 <li className="mb-2 flex items-center">
-                                    ✅ {t(`${plan.toLowerCase()}_plan_advantage`)}
+                                    ✅ {safeTranslate(t,`${plan.toLowerCase()}_plan_advantage`)}
                                 </li>
                                 <li className="mb-2 flex items-center">
-                                    ✅ {t(`${plan.toLowerCase()}_plan_commission`)}
+                                    ✅ {safeTranslate(t,`${plan.toLowerCase()}_plan_commission`)}
                                 </li>
                             </ul>
 
                             {/* Bouton d'abonnement */}
                             {planType === "STARTER" ? (
                                 <span className="py-2 px-6 rounded-full text-lg font-semibold bg-gray-500 text-white">
-                                    {t("default_plan")}
+                                    {safeTranslate(t,"default_plan")}
                                 </span>
                             ) : isActive ? (
                                 <span className="py-2 px-6 rounded-full text-lg font-semibold bg-green-500 text-white">
-                                    {t("active_plan")}
+                                    {safeTranslate(t,"active_plan")}
                                 </span>
                             ) : (
                                 <button
@@ -134,7 +135,7 @@ const PricingTable = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
                                             : "bg-blue-500 text-white hover:bg-blue-600"
                                     }`}
                                 >
-                                    {isActive ? t("active_plan") : t("choose_plan_button")}
+                                    {isActive ? safeTranslate(t,"active_plan") : safeTranslate(t,"choose_plan_button")}
                                 </button>
                             )}
                         </div>

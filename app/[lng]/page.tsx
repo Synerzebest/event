@@ -11,7 +11,7 @@ interface HomeProps {
 }
 
 export default function Home({ params: { lng } }: HomeProps) {
-  const { t, i18n } = useTranslation(lng, 'common')
+  const { i18n } = useTranslation(lng, 'common')
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export default function Home({ params: { lng } }: HomeProps) {
     <>
       <Navbar lng={lng} />
       <Hero />
-      <SubHero title={t('subhero_title')} subtitle={t('subhero_subtitle')} lng={lng} />
+      <SubHero />
       <Testimonials lng={lng} />
       <PricingTable lng={lng} />
       <ReliabilitySection lng={lng} />

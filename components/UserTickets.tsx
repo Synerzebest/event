@@ -11,6 +11,7 @@ import QRCode from 'qrcode';
 import { getAuth } from "firebase/auth";
 import useLanguage from "@/lib/useLanguage";
 import { useTranslation } from "app/i18n";
+import { safeTranslate } from "@/lib/utils";
 
 interface Ticket {
     id: string;
@@ -154,7 +155,7 @@ const UserTickets = () => {
 
                                             {ticket.used ? (
                                                 <p className="text-xs font-semibold text-red-600 bg-red-100 px-3 py-1 rounded-full border border-red-300 w-fit">
-                                                    {t('used_ticket_badge')}
+                                                    {safeTranslate(t,'used_ticket_badge')}
                                                 </p>
                                             ) : (
                                                 <>
@@ -171,7 +172,7 @@ const UserTickets = () => {
                                             {events[ticket.eventId].place}
                                         </p>
                                         <Button type="primary" onClick={() => handleShowQRCode(ticket)}>
-                                            {t('show_qr_code')}
+                                            {safeTranslate(t,'show_qr_code')}
                                         </Button>
                                     </div>
                                 </>
@@ -186,7 +187,7 @@ const UserTickets = () => {
                     ))}
                 </ul>
             ) : (
-                <p className="text-center sm:text-start text-gray-500 text-xl">{t('no_ticket_yet')}</p>
+                <p className="text-center sm:text-start text-gray-500 text-xl">{safeTranslate(t,'no_ticket_yet')}</p>
             )}
 
             {/* Popup Modal pour le QR Code */}
@@ -196,7 +197,7 @@ const UserTickets = () => {
                 onCancel={handleCloseModal}
                 footer={[
                     <Button key="close" onClick={handleCloseModal}>
-                        {t('close')}
+                        {safeTranslate(t,'close')}
                     </Button>
                 ]}
             >
@@ -211,7 +212,7 @@ const UserTickets = () => {
                         />
                     </div>
                 ) : (
-                    <p>{t('qr_code_loading')}</p>
+                    <p>{safeTranslate(t,'qr_code_loading')}</p>
                 )}
             </Modal>
         </div>

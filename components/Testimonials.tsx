@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useTranslation } from "../app/i18n";
 import { AnimatedTestimonials } from "./ui/animated-testimonials";
+import { safeTranslate } from "@/lib/utils";
 
 interface TestimonialsProps {
   lng: "fr" | "en" | "nl";
@@ -53,9 +54,9 @@ const Testimonials = ({ lng }: TestimonialsProps) => {
 
   return (
     <div className="relative top-32">
-      <h2 className="text-center text-4xl font-bold mb-12">{t('testimonials_title')}</h2>
+      <h2 className="text-center text-4xl font-bold mb-12">{safeTranslate(t,'testimonials_title')}</h2>
           
-      <div className="max-w-4xl w-full mx-auto">
+      <div className="max-w-4xl w-full mx-auto overflow-x-hidden">
         <AnimatedTestimonials
           testimonials={testimonials.map((testimonial) => ({
             name: testimonial.name,

@@ -1,17 +1,19 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 const useLanguage = (): "fr" | "en" | "nl" => {
-    const [lng, setLng] = useState<"fr" | "en" | "nl">("fr");
+  const [lng, setLng] = useState<"fr" | "en" | "nl">("fr");
 
-    useEffect(() => {
-        const match = document.cookie.match(/(?:^|; )i18n=([^;]*)/);
-        if (match) {
-            const language = match[1] as "fr" | "en" | "nl"; // Assurer que c'est une des langues valides
-            setLng(language);
-        }
-    }, []);
+  useEffect(() => {
+    const match = document.cookie.match(/(?:^|; )i18next=([^;]*)/);
+    if (match) {
+      const language = match[1] as "fr" | "en" | "nl";
+      if (["fr", "en", "nl"].includes(language)) {
+        setLng(language);
+      }
+    }
+  }, []);
 
-    return lng;
+  return lng;
 };
 
 export default useLanguage;

@@ -7,6 +7,7 @@ import { Navbar, EventComponent, Footer } from '@/components';
 import { useParams } from 'next/navigation';
 import useFirebaseUser from '@/lib/useFirebaseUser';
 import { useTranslation } from '../../../i18n';
+import { safeTranslate } from '@/lib/utils';
 
 const Page = () => {
     const [showConfetti] = useState(true);
@@ -63,7 +64,7 @@ const Page = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
                 >
-                    🎉 {t('success_message')}
+                    🎉 {safeTranslate(t,'success_message')}
                 </motion.h1>
                 
                 <motion.p
@@ -72,7 +73,7 @@ const Page = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.3 }}
                 >
-                    {t('success_submessage')}
+                    {safeTranslate(t, 'success_submessage')}
                 </motion.p>
 
                 <motion.div

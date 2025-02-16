@@ -1,53 +1,56 @@
 "use client";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/app/i18n";
+import useLanguage from "@/lib/useLanguage";
 
 export const FlipWords = ({
-  words,
   duration = 3000,
   className,
 }: {
-  words: string[];
   duration?: number;
   className?: string;
 }) => {
-  const [currentWord, setCurrentWord] = useState(words[0]);
-  const [isAnimating, setIsAnimating] = useState<boolean>(false);
+  const lng = useLanguage();
+  const { t } = useTranslation(lng, "common");
 
-  const startAnimation = useCallback(() => {
-    const word = words[words.indexOf(currentWord) + 1] || words[0];
-    setCurrentWord(word);
-    setIsAnimating(true);
-  }, [currentWord, words]);
+  const wordsRef = useRef<string[]>([]);
+  const [currentWord, setCurrentWord] = useState<string | null>(null);
+
+  // Récupérer les traductions uniquement si elles changent
+  useEffect(() => {
+    const translatedWords = t("hero_title_words", { returnObjects: true }) as string[];
+    if (
+      Array.isArray(translatedWords) &&
+      translatedWords.length > 0 &&
+      JSON.stringify(translatedWords) !== JSON.stringify(wordsRef.current)
+    ) {
+      wordsRef.current = translatedWords;
+      setCurrentWord(translatedWords[0]);
+    }
+  }, [t, lng]);
 
   useEffect(() => {
-    if (!isAnimating)
-      setTimeout(() => {
-        startAnimation();
-      }, duration);
-  }, [isAnimating, duration, startAnimation]);
+    if (!currentWord || wordsRef.current.length === 0) return;
+
+    const interval = setInterval(() => {
+      const currentIndex = wordsRef.current.indexOf(currentWord);
+      const nextIndex = (currentIndex + 1) % wordsRef.current.length;
+      setCurrentWord(wordsRef.current[nextIndex]);
+    }, duration);
+
+    return () => clearInterval(interval);
+  }, [currentWord, duration]);
+
+  if (!currentWord) return null; // Si pas de mot, on n'affiche rien
 
   return (
-    <AnimatePresence
-      onExitComplete={() => {
-        setIsAnimating(false);
-      }}
-    >
+    <AnimatePresence>
       <motion.div
-        initial={{
-          opacity: 0,
-          y: 10,
-        }}
-        animate={{
-          opacity: 1,
-          y: 0,
-        }}
-        transition={{
-          type: "spring",
-          stiffness: 100,
-          damping: 10,
-        }}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ type: "spring", stiffness: 100, damping: 10 }}
         exit={{
           opacity: 0,
           y: -40,
@@ -56,22 +59,15 @@ export const FlipWords = ({
           scale: 2,
           position: "absolute",
         }}
-        className={cn(
-          "z-10 inline-block relative text-left",
-          className
-        )}
+        className={cn("z-10 inline-block relative text-left", className)}
         key={currentWord}
       >
-        {/* edit suggested by Sajal: https://x.com/DewanganSajal */}
         {currentWord.split(" ").map((word, wordIndex) => (
           <motion.span
             key={word + wordIndex}
             initial={{ opacity: 0, y: 10, filter: "blur(8px)" }}
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            transition={{
-              delay: wordIndex * 0.3,
-              duration: 0.3,
-            }}
+            transition={{ delay: wordIndex * 0.3, duration: 0.3 }}
             className="inline-block whitespace-nowrap"
           >
             {word.split("").map((letter, letterIndex) => (

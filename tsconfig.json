@@ -29,6 +29,6 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "next-i18next.config.js"
-  ],
+, "app/i18n/index.ts"  ],
   "exclude": ["node_modules"]
 }

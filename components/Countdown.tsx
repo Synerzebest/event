@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import useLanguage from "@/lib/useLanguage";
 import { useTranslation } from "@/app/i18n";
+import { safeTranslate } from "@/lib/utils";
 
 
 // Fonction pour calculer le temps restant jusqu'à la date de l'événement
@@ -45,29 +46,29 @@ const Countdown = ({ eventDate }: { eventDate: string }) => {
         <div className="relative top-12 flex items-center justify-center p-4 rounded-lg">
             {timeLeft.days > 0 ? (
                 <div className="text-center">
-                    <h3 className="text-3xl font-semibold">{t('event_start')}</h3>
+                    <h3 className="text-3xl font-semibold">{safeTranslate(t,'event_start')}</h3>
                     <div className="flex space-x-4 mt-2 text-gray-600">
                         <div className="flex flex-col">
                             <span className="text-4xl font-semibold">{timeLeft.days}</span>
-                            <span className="text-xs uppercase">{t('days')}</span>
+                            <span className="text-xs uppercase">{safeTranslate(t,'days')}</span>
                         </div>
                         <div className="flex flex-col">
                             <span className="text-4xl font-semibold">{timeLeft.hours}</span>
-                            <span className="text-xs uppercase">{t('hours')}</span>
+                            <span className="text-xs uppercase">{safeTranslate(t,'hours')}</span>
                         </div>
                         <div className="flex flex-col">
                             <span className="text-4xl font-semibold">{timeLeft.minutes}</span>
-                            <span className="text-xs uppercase">{t('minutes')}</span>
+                            <span className="text-xs uppercase">{safeTranslate(t,'minutes')}</span>
                         </div>
                         <div className="flex flex-col">
                             <span className="text-4xl font-semibold">{timeLeft.seconds}</span>
-                            <span className="text-xs uppercase">{t('seconds')}</span>
+                            <span className="text-xs uppercase">{safeTranslate(t,'seconds')}</span>
                         </div>
                     </div>
                 </div>
             ) : (
                 <div className="text-center">
-                    <h3 className="text-2xl font-semibold text-gray-800">{t('event_happening')}</h3>
+                    <h3 className="text-2xl font-semibold text-gray-800">{safeTranslate(t,'event_happening')}</h3>
                 </div>
             )}
         </div>

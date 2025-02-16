@@ -13,7 +13,7 @@ import { FaShare } from "react-icons/fa6";
 import { IoIosSettings } from "react-icons/io";
 import useLanguage from "@/lib/useLanguage";
 import { useTranslation } from "@/app/i18n";
-
+import { safeTranslate } from "@/lib/utils"; 
 
 export default function Dashboard() {
     const [events, setEvents] = useState<Event[]>([]);
@@ -150,10 +150,10 @@ export default function Dashboard() {
     return (
         <div className="container mx-auto py-16">
             <section className="py-16">
-                <h2 className="text-3xl sm:text-2xl text-center sm:text-start font-bold mb-8">{t('my_tickets')}</h2>
+                <h2 className="text-3xl sm:text-2xl text-center sm:text-start font-bold mb-8">{safeTranslate(t,'my_tickets')}</h2>
                 <UserTickets />
 
-                <h2 className="text-3xl sm:text-2xl text-center sm:text-start font-bold mb-8">{t('my_events')}</h2>
+                <h2 className="text-3xl sm:text-2xl text-center sm:text-start font-bold mb-8">{safeTranslate(t,'my_events')}</h2>
                 <div className="flex flex-wrap gap-8 justify-center sm:justify-start">
                     {loading ? (
                         Array.from({ length: 3 }).map((_, index) => (
@@ -166,7 +166,7 @@ export default function Dashboard() {
                             </div>
                         ))
                     ) : myEvents.length === 0 ? (
-                        <div className="text-center text-gray-500 text-xl">{t('no_event_yet')}</div>
+                        <div className="text-center text-gray-500 text-xl">{safeTranslate(t,'no_event_yet')}</div>
                     ) : (
                         myEvents.map(event => {
                             const isLiked = likedEvents.includes(event.id); 
@@ -182,7 +182,7 @@ export default function Dashboard() {
                                                 className="text-gray-800 text-sm px-4 py-2 hover:bg-gray-100 w-full text-left"
                                                 onClick={() => handleCopyLink(event.id)}
                                             >
-                                                {t('copy_event_link')}
+                                                {safeTranslate(t,'copy_event_link')}
                                             </button>
                                         </div>
                                     )}
@@ -257,7 +257,7 @@ export default function Dashboard() {
                 )}
 
                 <section className="mt-8">
-                    <h2 className="text-3xl sm:text-2xl font-bold mb-8 text-center sm:text-start">{t('favorite_events')}</h2>
+                    <h2 className="text-3xl sm:text-2xl font-bold mb-8 text-center sm:text-start">{safeTranslate(t,'favorite_events')}</h2>
                     <div className="flex gap-8 flex-wrap justify-center sm:justify-start">
                         {loading ? (
                             Array.from({ length: 3 }).map((_, index) => (
@@ -271,7 +271,7 @@ export default function Dashboard() {
                             ))
                         ) : (
                             likedEvents.length === 0 ? (
-                                <div className="text-gray-500 text-xl sm:text-start text-center">{t('no_favorite_events')}</div>
+                                <div className="text-gray-500 text-xl sm:text-start text-center">{safeTranslate(t,'no_favorite_events')}</div>
                             ) : (
                                 likedEvents.map((eventId) => {
                                     const event = events.find((e) => e.id === eventId);

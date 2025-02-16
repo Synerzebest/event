@@ -16,6 +16,7 @@ import useLanguage from "@/lib/useLanguage";
 import { Spin } from "antd";
 import useFirebaseUser from "@/lib/useFirebaseUser";
 import Link from "next/link";
+import { safeTranslate } from "@/lib/utils";
 
 interface EventComponentProps {
     eventId: string,
@@ -133,7 +134,7 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
                         className="text-gray-800 text-sm px-4 py-2 hover:bg-gray-100 w-full text-left"
                         onClick={() => handleCopyLink(event.id)}
                     >
-                        {t('copy_event_link')}
+                        {safeTranslate(t,'copy_event_link')}
                     </button>
                 </motion.div>
             )}
@@ -172,14 +173,14 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
                                 className="font-bold py-2 px-4 rounded-lg transition-all duration-200 transform flex items-center justify-center gap-2 bg-gray-200 text-gray-500 cursor-not-allowed"
                                 disabled
                             >
-                                {t('event_expired')}
+                                {safeTranslate(t,'event_expired')}
                             </motion.button>
                         ) : (
                             <Link href={`/${lng}/auth/signin`}>
                                 <motion.button
                                     className="font-bold py-2 px-4 rounded-lg transition-all duration-200 transform flex items-center justify-center gap-2 bg-blue-600 text-white hover:bg-blue-800"
                                 >
-                                    {t('login_to_participate')}
+                                    {safeTranslate(t,'login_to_participate')}
                                 </motion.button>
                             </Link>
                         )
@@ -193,10 +194,10 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
                         >
                             {isSubmitting ? (
                                 <>
-                                    {t('participate')} <Spin size="small" />
+                                    {safeTranslate(t,'participate')} <Spin size="small" />
                                 </>
                             ) : (
-                                isPastEvent ? t('event_expired') : t('participate')
+                                isPastEvent ? safeTranslate(t,'event_expired') : safeTranslate(t,'participate')
                             )}
                         </motion.button>
                     )}

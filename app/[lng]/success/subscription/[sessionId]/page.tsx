@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { Navbar, Footer } from '@/components';
 import { useParams } from 'next/navigation';
 import { useTranslation } from '../../../../i18n';
+import { safeTranslate } from '@/lib/utils';
 
 const Page = () => {
     const [showConfetti] = useState(true);
@@ -60,7 +61,7 @@ const Page = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
                 >
-                    🎉 {t('success_message')}
+                    🎉 {safeTranslate(t,'success_message')}
                 </motion.h1>
                 
                 <motion.p
@@ -69,7 +70,7 @@ const Page = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.3 }}
                 >
-                    {t('subscription_success_submessage')}
+                    {safeTranslate(t,'subscription_success_submessage')}
                 </motion.p>
                 <motion.p
                     className="mt-6 text-white font-medium text-center text-2xl"
@@ -77,7 +78,7 @@ const Page = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.3 }}
                 >
-                    {t('subscription_tip')}
+                    {safeTranslate(t,'subscription_tip')}
                 </motion.p>
             </motion.div>
             <Footer />

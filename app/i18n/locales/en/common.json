@@ -1,8 +1,8 @@
 {
   "title": "Home",
   "explore": "Explore",
-  "hero_title_words": ["Create Your", "Organize Your", "Manage Your", "Join"],
-  "hero_title": " Events with Ease",
+  "hero_title_words": ["Join", "Create", "Manage"],
+  "hero_title": "Events with Ease",
   "hero_subtitle": "EventEase helps you create, organize, and manage your events, whether parties, conferences or weddings.",
   "hero_button": "Explore events",
   "subhero_title": "Discover the Features of EventEase",

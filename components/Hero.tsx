@@ -1,55 +1,56 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { FlipWords } from "./ui/flip-words";
 import useLanguage from "@/lib/useLanguage";
 import { useTranslation } from "@/app/i18n";
 import { AuroraBackground } from "./ui/aurora-background";
-
+import { i18n as I18nType } from "i18next";
 
 const Hero = () => {
   const lng = useLanguage();
   const { t, i18n } = useTranslation(lng, "common");
+  const i18nInstance = i18n as I18nType | null;
 
-  const [words, setWords] = useState<string[]>([]);
-  const prevWordsRef = useRef<string[]>([]);
-
-  // Fonction pour récupérer les mots traduits
-  const getTranslatedWords = useCallback(() => {
-    const translated = t("hero_title_words", { returnObjects: true });
-    
-    // Vérifie que les traductions sont bien un tableau de chaînes
-    if (Array.isArray(translated) && translated.every((word) => typeof word === "string")) {
-      return translated as string[];
-    } else {
-      console.error("Translation 'hero_title_words' is not a valid array of strings.", translated);
-      return [];
-    }
-  }, [t]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    if (i18n) {
-      const translatedWords = getTranslatedWords();
+    if (!i18nInstance) return;
 
-      // Vérifier si les mots ont changé pour éviter des re-rendus inutiles
-      if (JSON.stringify(translatedWords) !== JSON.stringify(prevWordsRef.current)) {
-        setWords(translatedWords);
-        prevWordsRef.current = translatedWords;
-      }
+    if (i18nInstance.language !== lng) {
+      i18nInstance.changeLanguage(lng).then(() => {
+        document.cookie = `i18next=${lng}; path=/`;
+        setIsLoaded(true);
+      });
+    } else {
+      setIsLoaded(true);
     }
-  }, [i18n, getTranslatedWords]);
+  }, [lng, i18nInstance]);
+
+  const safeTranslate = (t: (key: string, options?: Record<string, unknown>) => string | object, key: string, options?: Record<string, unknown>): string => {
+    const result = t(key, options);
+    return typeof result === "string" ? result : JSON.stringify(result);
+  };
+  
+
+  if (!isLoaded) return <p className="text-center text-white">Chargement...</p>;
 
   return (
-
     <AuroraBackground>
-      <div className="relative sm:top-24 top-8 h-[550px] w-full h-auto flex flex-col lg:flex-row items-center justify-center">
+      <div className="relative sm:top-24 top-8 h-[550px] w-full flex flex-col lg:flex-row items-center justify-center">
         <div className="z-2 text-center p-4 sm:p-8 flex flex-col items-center lg:text-left">
-          <h1 className="text-5xl text-center text-white sm:text-5xl md:text-6xl font-bold mb-4">
-            {words.length > 0 && <FlipWords words={words} />} {t("hero_title")}
+          <h1 className="text-4xl text-center text-white sm:text-5xl md:text-6xl font-bold mb-4">
+            <span className="hidden sm:inline">
+              <FlipWords />
+            </span>
+            {" "}{safeTranslate(t, "hero_title")}
           </h1>
-          <p className="text-lg text-center text-white sm:text-xl md:text-2xl">{t("hero_subtitle")}</p>
+
+          <p className="text-lg text-center text-white sm:text-xl md:text-2xl">{safeTranslate(t,"hero_subtitle")}</p>
           <Link href="/explore">
-            <button className="flex items-center gap-2 text-xl text-white bg-gray-900 border border-[rgba(255,255,255,0.3)] py-4 px-6 mt-8 font-bold rounded-xl hover:bg-gray-950 duration-300 shadow-lg">           
-              {t("hero_button")}
+            <button className="flex items-center gap-2 text-xl text-white bg-gray-900 border border-[rgba(255,255,255,0.3)] py-4 px-6 mt-8 font-bold rounded-xl hover:bg-gray-950 duration-300 shadow-lg">
+              {safeTranslate(t,"hero_button")}
             </button>
           </Link>
         </div>

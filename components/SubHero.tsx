@@ -2,15 +2,12 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import { useTranslation } from "../app/i18n";
 import { motion } from "framer-motion";
+import { safeTranslate } from "@/lib/utils";
+import useLanguage from "@/lib/useLanguage";
 
 
-interface SubHeroProps {
-  title: string;
-  subtitle: string;
-  lng: "en" | "fr" | "nl";
-}
-
-const SubHero = ({ title, subtitle, lng }: SubHeroProps) => {
+const SubHero = () => {
+  const lng = useLanguage();
   const { t, i18n } = useTranslation(lng, "common");
   const [features, setFeatures] = useState<
     Array<{ title: string; description: string; image: string }>
@@ -55,8 +52,8 @@ const SubHero = ({ title, subtitle, lng }: SubHeroProps) => {
   return (
     <section className="py-16 bg-slate-100 relative">
       <div className="container mx-auto text-center">
-        <h2 className="text-4xl font-bold mb-8">{title}</h2>
-        <p className="text-lg text-gray-600 mb-12 mx-4">{subtitle}</p>
+        <h2 className="text-4xl font-bold mb-8">{safeTranslate(t,'subhero_title')}</h2>
+        <p className="text-lg text-gray-600 mb-12 mx-4">{safeTranslate(t, "subhero_subtitle")}</p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-8">
           {features.map((feature) => (
             <motion.div

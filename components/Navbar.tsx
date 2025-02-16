@@ -8,6 +8,7 @@ import { FaBars, FaTimes } from "react-icons/fa";
 import { useTranslation } from "../app/i18n";
 import { useRouter } from "next/navigation";
 import { MdLanguage } from "react-icons/md";
+import { safeTranslate } from "@/lib/utils";
 
 interface NavbarProps {
   lng: string;
@@ -61,11 +62,11 @@ const Navbar = ({ lng }: NavbarProps) => {
         <ul className="flex items-center">
           <li className="font-bold cursor-pointer text-xl text-white hover:bg-gray-950
           duration-300 py-2 px-4 rounded-lg">
-            <Link href={`/${lng}`}>{t('title')}</Link>
+            <Link href={`/${lng}`}>{safeTranslate(t,'title')}</Link>
           </li>
           <li className="font-bold cursor-pointer text-xl text-white hover:bg-gray-950 
           duration-300 py-2 px-4 rounded-lg">
-            <Link href={`/${lng}/explore`}>{t('explore')}</Link>
+            <Link href={`/${lng}/explore`}>{safeTranslate(t,'explore')}</Link>
           </li>
           {isSignedIn ? (
             <>
@@ -131,14 +132,14 @@ const Navbar = ({ lng }: NavbarProps) => {
         flex flex-col gap-4 px-4 py-2">
           <Link href={`/${lng}`} className="px-4 rounded-lg font-bold cursor-pointer text-xl text-white
           hover:bg-gray-950 duration-300 py-2 w-fit text-left">
-            {t('title')}
+            {safeTranslate(t,'title')}
           </Link>
   
           {isSignedIn ? (
             <>
               <Link href={`/${lng}/explore`} className="px-4 rounded-lg font-bold cursor-pointer text-xl text-white 
               hover:bg-gray-950 duration-300 py-2 w-fit text-left">
-                {t('explore')}
+                {safeTranslate(t,'explore')}
               </Link>
               <Link href={`/${lng}/eventlab`} className="px-4 rounded-lg font-bold cursor-pointer text-xl text-white 
               hover:bg-gray-950 duration-300 py-2 w-fit text-left">

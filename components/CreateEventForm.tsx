@@ -12,6 +12,7 @@ import dayjs from 'dayjs';
 import { useTranslation } from "../app/i18n"
 import useLanguage from "@/lib/useLanguage";
 import { categories } from "@/constants/constants";
+import { safeTranslate } from "@/lib/utils";
 
 
 const { TextArea } = Input;
@@ -177,26 +178,26 @@ const CreateEventForm: React.FC = () => {
         <div className="w-[95%] sm:w-3/4 mx-auto relative top-36 flex flex-col gap-8 mb-24">
             <div className="text-center">
                 <p className="text-[2.5rem] sm:text-7xl font-bold bg-gradient-to-tl from-blue-800 via-blue-500 to-zinc-400 bg-clip-text text-transparent">
-                    {t('create_your_event')}
+                    {safeTranslate(t,'create_your_event')}
                 </p>
             </div>
     
             <div className="w-full flex flex-col md:flex-row bg-white p-8 rounded-lg shadow-lg gap-8 sm:gap-0 border border-gray-300">
                 {/* Première colonne */}
                 <div className="w-full md:w-1/2 flex flex-col gap-4 pr-4">
-                    <p className="text-2xl font-bold mb-2 text-blue-500">{t('event_details')}</p>
+                    <p className="text-2xl font-bold mb-2 text-blue-500">{safeTranslate(t,'event_details')}</p>
                     <Input 
                         className="rounded-md shadow-sm border-gray-300 focus:border-blue-500" 
                         name="title" 
                         onChange={(e) => setFormData({...formData, title: e.target.value})} 
-                        placeholder={`${t('form_title')}`} 
+                        placeholder={`${safeTranslate(t,'form_title')}`} 
                         required 
                     />
                     <Input 
                         className="rounded-md shadow-sm border-gray-300 focus:border-blue-500" 
                         name="place" 
                         onChange={(e) => setFormData({...formData, place: e.target.value})} 
-                        placeholder={`${t('form_place')}`} 
+                        placeholder={`${safeTranslate(t,'form_place')}`} 
                         required 
                     />
                     <DatePicker 
@@ -210,7 +211,7 @@ const CreateEventForm: React.FC = () => {
                         className="rounded-md shadow-sm border-gray-300 focus:border-blue-500" 
                         name="description" 
                         onChange={(e) => setFormData({...formData, description: e.target.value})} 
-                        placeholder={`${t('form_description')}`} 
+                        placeholder={`${safeTranslate(t,'form_description')}`} 
                         autoSize 
                         required 
                     />
@@ -224,26 +225,26 @@ const CreateEventForm: React.FC = () => {
                     />
     
                     {/* Déplacement du champ Guest Limit ici */}
-                    <p className="text-xl font-bold mt-6 text-blue-500">{t('guest_limit')}</p>
+                    <p className="text-xl font-bold mt-6 text-blue-500">{safeTranslate(t,'guest_limit')}</p>
                     <InputNumber 
                         value={guestLimit} 
                         onChange={handleGuestsChange} 
                         min={1} 
-                        placeholder={t('guest_limit')}
+                        placeholder={safeTranslate(t,'guest_limit')}
                         className="w-full mb-4" 
                     />
                 </div>
     
                 {/* Deuxième colonne */}
                 <div className="w-full md:w-1/2 flex flex-col gap-4">
-                    <p className="text-2xl font-bold mb-2 text-blue-500">{t('event_privacy_guests')}</p>
+                    <p className="text-2xl font-bold mb-2 text-blue-500">{safeTranslate(t,'event_privacy_guests')}</p>
                     <Radio.Group
                         value={formData.privacy}
                         onChange={(e) => setFormData({...formData, privacy: e.target.value})}
                         className="mb-4"
                     >
-                        <Radio value="public">{t('public')}</Radio>
-                        <Radio value="private">{t('private')}</Radio>
+                        <Radio value="public">{safeTranslate(t,'public')}</Radio>
+                        <Radio value="private">{safeTranslate(t,'private')}</Radio>
                     </Radio.Group>
     
                     {/* Déplacement du champ Tickets ici */}
@@ -256,7 +257,7 @@ const CreateEventForm: React.FC = () => {
                                         <div className="flex flex-col lg:flex-row lg:items-end lg:gap-4 gap-2">
                                             <div className="flex flex-col w-full gap-2">
                                                 <label className="block text-sm font-medium text-gray-700">
-                                                    {t('ticket_name')}
+                                                    {safeTranslate(t,'ticket_name')}
                                                 </label>
                                                 <Input 
                                                     value={ticket.name} 
@@ -267,7 +268,7 @@ const CreateEventForm: React.FC = () => {
                                             </div>
                                             <div className="flex flex-col w-full md:w-1/3 gap-2">
                                                 <label className="block text-sm font-medium text-gray-700">
-                                                    {t('price')} (€)
+                                                    {safeTranslate(t,'price')} (€)
                                                 </label>
                                                 <InputNumber
                                                     value={ticket.price}
@@ -280,7 +281,7 @@ const CreateEventForm: React.FC = () => {
                                             </div>
                                             <div className="flex flex-col w-full md:w-1/3 gap-2">
                                                 <label className="block text-sm font-medium text-gray-700">
-                                                    {t('quantity')}
+                                                    {safeTranslate(t,'quantity')}
                                                 </label>
                                                 <InputNumber
                                                     value={ticket.quantity}
@@ -297,7 +298,7 @@ const CreateEventForm: React.FC = () => {
                                                 onClick={() => removeTicket(index)} 
                                                 icon={<PlusOutlined />}
                                             >
-                                                {t('remove')}
+                                                {safeTranslate(t,'remove')}
                                             </Button>
                                         </div>
                                     </div>
@@ -308,12 +309,12 @@ const CreateEventForm: React.FC = () => {
                                     onClick={addTicket}
                                     className="border-gray-400 text-gray-600"
                                 >
-                                    {t('add_ticket')}
+                                    {safeTranslate(t,'add_ticket')}
                                 </Button>
                             </>
                         ) : (
                             <p className="text-red-500">
-                                {t('stripe_alert')}
+                                {safeTranslate(t,'stripe_alert')}
                             </p>
                         )}
                     </div>
@@ -335,7 +336,7 @@ const CreateEventForm: React.FC = () => {
                         {fileList.length === 0 && (
                             <div>
                                 <PlusOutlined />
-                                <p className="mt-2 text-sm text-gray-600">{t('upload_event_photo')}</p>
+                                <p className="mt-2 text-sm text-gray-600">{safeTranslate(t,'upload_event_photo')}</p>
                             </div>
                         )}
                     </Upload>
@@ -347,7 +348,7 @@ const CreateEventForm: React.FC = () => {
                         disabled={uploading}
                         className="mt-4 w-full"
                     >
-                        {t('create_event_button')}
+                        {safeTranslate(t,'create_event_button')}
                     </Button>
                 </div>
             </div>

@@ -6,6 +6,7 @@ import useFirebaseUser from '@/lib/useFirebaseUser';
 import { EventComponent } from '.';
 import { useTranslation } from "../app/i18n";
 import { Event } from "@/types/types";
+import { safeTranslate } from "@/lib/utils";
 
 const Events = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
     const { t } = useTranslation(lng, "common");
@@ -57,10 +58,10 @@ const Events = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
     return (
         <div className="container mx-auto relative top-36">
             <div className="w-[95%] mx-auto sm:mx-none sm:w-full flex-col sm:flex-row flex items-center justify-start sm:justify-between">
-                <h2 className="text-2xl font-bold mb-8 text-center sm:text-start text-white">{t('upcoming_events')}</h2>
+                <h2 className="text-2xl font-bold mb-8 text-center sm:text-start text-white">{safeTranslate(t,'upcoming_events')}</h2>
                 <div className="mb-8">
                     <Button color="primary" onClick={() => setShowPastEvents(!showPastEvents)}>
-                        {showPastEvents ? t('past_events_hide') : t('past_events_show')}
+                        {showPastEvents ? safeTranslate(t,'past_events_hide') : safeTranslate(t,'past_events_show')}
                     </Button>
                 </div>
             </div>
@@ -79,7 +80,7 @@ const Events = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
                         </div>
                     ))
                 ) : filteredEvents.length === 0 ? (
-                    <div className="text-center text-gray-500 text-xl">{t('events_availability')}</div>
+                    <div className="text-center text-gray-500 text-xl">{safeTranslate(t,'events_availability')}</div>
                 ) : (
                     filteredEvents.map((event) => (
                         <EventComponent key={event.id} eventId={event.id} userId={userId} participateButton={true} />
