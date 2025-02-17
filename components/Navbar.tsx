@@ -100,7 +100,7 @@ const Navbar = ({ lng }: NavbarProps) => {
             <MdLanguage size={25} />
           </button>
           {dropdownOpen && (
-            <ul className="absolute right-0 mt-2 w-28 bg-[rgba(255,255,255,0.2)] backdrop-blur-md border border-[rgba(255,255,255,0.2)]
+            <ul className="absolute right-0 mt-2 w-28 bg-gray-900 backdrop-blur-md border border-[rgba(255,255,255,0.2)]
             rounded-md shadow-lg text-white z-50">
               <li onClick={() => { handleChangeLanguage('fr'); setDropdownOpen(false); }}
                 className="cursor-pointer px-4 py-2 hover:bg-gray-950">

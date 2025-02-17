@@ -1,8 +1,10 @@
 import React from 'react';
 import Link from 'next/link';
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
+import useLanguage from '@/lib/useLanguage';
 
 const Footer = () => {
+    const lng = useLanguage();
     const date = new Date();
     const year = date.getFullYear();
     return (
@@ -26,8 +28,8 @@ const Footer = () => {
                             </Link>
                         </li>
                         <li>
-                            <Link href="/pricing" className="hover:text-gray-100 transition duration-300">
-                                Pricing
+                            <Link href={`/${lng}/terms-and-conditions`} className="hover:text-gray-100 transition duration-300">
+                                Terms and Conditions
                             </Link>
                         </li>
                         <li>

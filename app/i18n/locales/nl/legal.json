@@ -1,0 +1,51 @@
+{
+    "tcs_title": "Terms and Conditions of use (T&Cs)",
+    "introduction_title": "1. Introduction",
+    "introduction_content": "Welcome to EventEase (hereinafter \"the Application\"), a platform dedicated to making it easier to organize and participate in small events. By accessing or using the Application, you accept these General Conditions of Use.",
+    "definitions_title": "2. Definitions",
+    "definitions_content": ["User: Any person using the Application, whether an Organizer or Participant.", "Organizer: User offering events via the Application", "Participant: User registering or purchasing tickets for events via the Application.", "Subscription: Paid offer allowing users to access specific features of the Application."],
+    "access_title": "3. Access to the Application",
+    "access_content": "The Application is accessible to anyone. Registration is required to access certain features, including organizing or participating in events.",
+    "services_title": "4. Services Offered",
+    "services_content": [
+        {
+            "subservice_title": "4.1 For Organizers",
+            "subservice_content": ["Events creation and management.", "Tickets sales via the Application.", "Access to promotion and participant management tools."]
+        },
+        {
+            "subservice_title": "4.2 For Participants",
+            "subservice_content": ["Consultation of available events.", "Buy tickets online.", "Receiving event notifications and information."]
+        }
+    ],
+    "subscriptions_title": "5. Subscriptions",
+    "subscriptions_content": "The Application offers monthly subscriptions for Organizers, at prices of €19.99 and €49.99 per month. Details of the features included in each offer are available on the Application.",
+    "payments_title": "6. Payments",
+    "payments_content": "Financial transactions, including subscriptions and ticket purchases, are managed through Stripe. By using these services, you also agree to Stripe's terms and conditions.",
+    "commissions_title": "7. Commissions",
+    "commissions_content": "A commission is deducted from each ticket sold by an Organizer, in accordance with the terms defined in the Application.",
+    "responsabilities_title": "8. Responsabilities",
+    "responsabilities_content": [
+        {
+            "subresponsibility_title": "8.1 Of the Organizer",
+            "subresponsibility_content": "The Organizer is solely responsible for the content of its events, their organization and their smooth running. It undertakes to respect the laws in force and to provide accurate information to Participants."
+        },
+        {
+            "subresponsibility_title": "8.2 Of the Participant",
+            "subresponsibility_content": "The Participant is responsible for the veracity of the information provided during registration and purchases. He undertakes to respect the specific conditions of each event."
+        },
+        {
+            "subresponsibility_title": "8.3 Of the Application",
+            "subresponsibility_content": "The Application acts as an intermediary between the Organizers and the Participants. It cannot be held responsible for disputes arising between these parties, nor for cancellations or modifications of events."
+        }
+    ],
+    "cancellation_and_refund_title": "9. Cancellation and Refund",
+    "cancellation_and_refund_content": "Cancellation and refund conditions are defined by each Organizer. Participants are recommended to consult these conditions before making any purchase. In the event of cancellation of an event by the Organizer, the reimbursement terms will be communicated to the Participants concerned.",
+    "intellectual_property_title": "10. Intellectual Property",
+    "intellectual_property_content": "All elements of the Application (texts, images, logos, etc.) are protected by intellectual property law. Any unauthorized reproduction or use is strictly prohibited.",
+    "data_protection_title": "11. Data Protection",
+    "data_protection_content": "Users' personal data is collected and processed in accordance with current data protection legislation. For more information, please see our Privacy Policy.",
+    "modification_tcs_title": "12. Modification of the T&Cs",
+    "modification_tcs_content": "The Application reserves the right to modify these T&Cs at any time. Users will be informed of any modification and must accept the new conditions to continue using the Application.",
+    "applicable_law_and_competent_jurisdiction_title": "13. Applicable Law and Competent Jurisdiction",
+    "applicable_law_and_competent_jurisdiction_content": "These T&Cs are governed by Belgian law. Any dispute relating to their interpretation or execution will be under the exclusive jurisdiction of the Belgian courts."
+}

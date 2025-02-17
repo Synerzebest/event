@@ -1,0 +1,51 @@
+{
+    "tcs_title": "Conditions Générales d'Utilisation (CGU)",
+    "introduction_title": "1. Introduction",
+    "introduction_content": "Bienvenue sur EventEase (ci-après \"l'Application\"), une plateforme dédiée à faciliter l'organisation et la participation à de petits événements. En accédant ou en utilisant l'Application, vous acceptez les présentes Conditions Générales d'Utilisation.",
+    "definitions_title": "2. Définitions",
+    "definitions_content": ["Utilisateur : Toute personne utilisant l'Application, qu'elle soit Organisateur ou Participant.", "Organisateur : Utilisateur proposant des événements via l'Application.", "Participant : Utilisateur s'inscrivant ou achetant des billets pour des événements via l'Application.", "Abonnement : Offre payante permettant aux Organisateurs d'accéder à des fonctionnalités spécifiques de l'Application."],
+    "access_title": "3. Accès à l'Application",
+    "access_content": "L'Application est accessible à tout le monde. L'inscription est obligatoire pour accéder à certaines fonctionnalités, notamment l'organisation ou la participation à des événements.",
+    "services_title": "4. Services Proposés",
+    "services_content": [
+        {
+            "subservice_title": "4.1 Pour les Organisateurs",
+            "subservice_content": ["Création et gestion d'événements.", "Vente de tickets via l'Application.", "Accès à des outils de promotion et de gestion des participants."]
+        },
+        {
+            "subservice_title": "4.2 Pour les Participants",
+            "subservice_content": ["Consultation des événements à venir (et passés).", "Acheter des tickets en ligne.", "Réception de notifications et d'informations relatives aux événements."]
+        }
+    ],
+    "subscriptions_title": "5. Abonnements",
+    "subscriptions_content": "L'Application propose des abonnements mensuels pour les Organisateurs, aux tarifs de 19.99€ et 49.99€ par mois. Les détails des fonctionnalités incluses dans chaque offre sont disponibles sur l'Application.",
+    "payments_title": "6. Paiements",
+    "payments_content": "Les transactions financières, y compris les abonnements et les achats de billets, sont gérées via Stripe. En utilisant ces services, vous acceptez également les conditions générales de Stripe.",
+    "commissions_title": "7. Commissions",
+    "commissions_content": "Une commission est prélevée sur chaque billet vendu par un Organisateur, conformément aux modalités définies dans l'Application.",
+    "responsabilities_title": "8. Responsabilités",
+    "responsabilities_content": [
+        {
+            "subresponsibility_title": "8.1 De l'Organisateur",
+            "subresponsibility_content": "L'Organisateur est seul responsable du contenu de ses événements, de leur organisation et de leur bon déroulement. Il s'engage à respecter les lois en vigueur et à fournir des informations exactes aux Participants."
+        },
+        {
+            "subresponsibility_title": "8.2 Du Participant",
+            "subresponsibility_content": "Le Participant est responsable de la véracité des informations fournies lors de son inscription et de ses achats. Il s'engage à respecter les conditions spécifiques de chaque événement."
+        },
+        {
+            "subresponsibility_title": "8.3 De l'Application",
+            "subresponsibility_content": "L'Application agit en tant qu'intermédiaire entre les Organisateurs et les Participants. Elle ne saurait être tenue responsable des litiges survenant entre ces parties, ni des annulations ou modifications d'événements."
+        }
+    ],
+    "cancellation_and_refund_title": "9. Annulation et Remboursement",
+    "cancellation_and_refund_content": "Les conditions d'annulation et de remboursement sont définies par chaque Organisateur. Il est recommandé aux Participants de consulter ces conditions avant tout achat. En cas d'annulation d'un événement par l'Organisateur, les modalités de remboursement seront communiquées aux Participants concernés.",
+    "intellectual_property_title": "10. Propriété Intellectuelle",
+    "intellectual_property_content": "Tous les éléments de l'Application (textes, images, logos, etc.) sont protégés par le droit de la propriété intellectuelle. Toute reproduction ou utilisation non autorisée est strictement interdite.",
+    "data_protection_title": "11. Protection des données",
+    "data_protection_content": "Les données personnelles des Utilisateurs sont collectées et traitées conformément à la législation en vigueur en matière de protection des données. Pour plus d'informations, veuillez consulter notre Politique de Confidentialité.",
+    "modification_tcs_title": "12. Modification des GCU",
+    "modification_tcs_content": "L'Application se réserve le droit de modifier les présentes CGU à tout moment. Les Utilisateurs seront informés de toute modification et devront accepter les nouvelles conditions pour continuer à utiliser l'Application.",
+    "applicable_law_and_competent_jurisdiction_title": "13. Droit Applicable et Juridiction Compétente",
+    "applicable_law_and_competent_jurisdiction_content": "Les présentes CGU sont régies par le droit belge. Tout litige relatif à leur interprétation ou à leur exécution sera de la compétence exclusive des tribunaux belges."
+}
