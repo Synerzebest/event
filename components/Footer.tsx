@@ -33,13 +33,13 @@ const Footer = () => {
                             </Link>
                         </li>
                         <li>
-                            <Link href="/faq" className="hover:text-gray-100 transition duration-300">
-                                FAQ
+                            <Link href={`/${lng}/privacy-policy`} className="hover:text-gray-100 transition duration-300">
+                                Privacy Policy
                             </Link>
                         </li>
                         <li>
-                            <Link href="/contact" className="hover:text-gray-100 transition duration-300">
-                                Contact
+                            <Link href="/" className="hover:text-gray-100 transition duration-300">
+                                FAQ
                             </Link>
                         </li>
                     </ul>

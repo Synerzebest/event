@@ -1,0 +1,90 @@
+{
+    "privacy_policy_title": "Privacy Policy",
+    "introduction_title": "1. Introduction",
+    "introduction_content": "Welcome to EventEase (hereinafter 'the Application'). This Privacy Policy explains how we collect, use, and protect your personal data when you use the Application. By using EventEase, you agree to the practices described in this Privacy Policy.",
+    
+    "data_collected_title": "2. Data Collected",
+    "data_collected_content": [
+        {
+            "subdata_title": "2.1 Data provided by the user",
+            "subdata_content": ["First and last name", "Email address", "Payment information (managed via Stripe)", "Event creation details", "Messages sent via our customer support"]
+        },
+        {
+            "subdata_title": "2.2 Data collected automatically",
+            "subdata_content": ["IP address", "Browsing and usage data (pages visited, actions taken)", "Technical data (browser type, operating system)"]
+        }
+    ],
+    
+    "data_usage_title": "3. Purpose of Data Processing",
+    "data_usage_content": [
+        "Provide and improve our services",
+        "Manage your user account and subscriptions",
+        "Facilitate event organization and participation",
+        "Process payments via Stripe",
+        "Respond to your requests through our customer support",
+        "Ensure security and prevent fraud",
+        "Comply with our legal obligations"
+    ],
+    
+    "data_sharing_title": "4. Data Sharing",
+    "data_sharing_content": [
+        {
+            "subsharing_title": "4.1 Service providers",
+            "subsharing_content": "We use Stripe for payment management and other technical partners necessary for the proper functioning of the Application."
+        },
+        {
+            "subsharing_title": "4.2 Legal authorities",
+            "subsharing_content": "If legally required, we may share certain information with the competent authorities."
+        }
+    ],
+    
+    "data_retention_title": "5. Data Retention Period",
+    "data_retention_content": [
+        "Account data: retained until the account is deleted or after a prolonged period of inactivity.",
+        "Payment data: retained in accordance with legal obligations.",
+        "Browsing data: retained for up to 12 months."
+    ],
+    
+    "user_rights_title": "6. Your Rights Regarding Your Data",
+    "user_rights_content": [
+        {
+            "subright_title": "6.1 Right of access",
+            "subright_content": "You may request a copy of the data we hold about you."
+        },
+        {
+            "subright_title": "6.2 Right to rectification",
+            "subright_content": "You may request the correction of inaccurate information."
+        },
+        {
+            "subright_title": "6.3 Right to erasure",
+            "subright_content": "You may request the deletion of your data under certain conditions."
+        },
+        {
+            "subright_title": "6.4 Right to object and restrict processing",
+            "subright_content": "You may limit or refuse certain data processing activities."
+        },
+        {
+            "subright_title": "6.5 Right to data portability",
+            "subright_content": "You may retrieve your data in a structured format."
+        }
+    ],
+    
+    "data_security_title": "7. Data Security",
+    "data_security_content": "We implement technical and organizational measures to protect your data from unauthorized access, loss, or disclosure.",
+    
+    "cookies_title": "8. Cookies and Tracking Technologies",
+    "cookies_content": [
+        "Improve your user experience",
+        "Analyze traffic on our Application",
+        "Personalize content and offers"
+    ],
+    
+    "cookies_management_title": "9. Managing Cookies",
+    "cookies_management_content": "You can manage your cookie preferences through your browser settings.",
+    
+    "policy_modifications_title": "10. Changes to the Privacy Policy",
+    "policy_modifications_content": "We reserve the right to modify this Privacy Policy at any time. Changes will be communicated through the Application.",
+    
+    "contact_title": "11. Contact",
+    "contact_content": "For any questions regarding this Privacy Policy, you can contact us at [email address]."
+}

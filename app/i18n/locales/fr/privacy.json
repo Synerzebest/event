@@ -1,0 +1,90 @@
+{
+    "privacy_policy_title": "Politique de Confidentialité",
+    "introduction_title": "1. Introduction",
+    "introduction_content": "Bienvenue sur EventEase (ci-après \"l'Application\"). Cette Politique de Confidentialité explique comment nous collectons, utilisons et protégeons vos données personnelles lorsque vous utilisez l'Application. En utilisant EventEase, vous acceptez les pratiques décrites dans cette Politique de Confidentialité.",
+    
+    "data_collected_title": "2. Données Collectées",
+    "data_collected_content": [
+        {
+            "subdata_title": "2.1 Données fournies par l'utilisateur",
+            "subdata_content": ["Nom, prénom", "Adresse e-mail", "Informations de paiement (gérées via Stripe)", "Informations relatives à la création d'événements", "Messages envoyés via notre support client"]
+        },
+        {
+            "subdata_title": "2.2 Données collectées automatiquement",
+            "subdata_content": ["Adresse IP", "Données de navigation et d'utilisation (pages visitées, actions effectuées)", "Données techniques (type de navigateur, système d'exploitation)"]
+        }
+    ],
+    
+    "data_usage_title": "3. Finalités du Traitement des Données",
+    "data_usage_content": [
+        "Fournir et améliorer nos services",
+        "Gérer votre compte utilisateur et vos abonnements",
+        "Faciliter l’organisation et la participation aux événements",
+        "Traiter les paiements via Stripe",
+        "Répondre à vos demandes via notre support client",
+        "Assurer la sécurité et prévenir les fraudes",
+        "Respecter nos obligations légales"
+    ],
+    
+    "data_sharing_title": "4. Partage des Données",
+    "data_sharing_content": [
+        {
+            "subsharing_title": "4.1 Prestataires de services",
+            "subsharing_content": "Nous utilisons Stripe pour la gestion des paiements ainsi que d'autres partenaires techniques nécessaires au bon fonctionnement de l'Application."
+        },
+        {
+            "subsharing_title": "4.2 Autorités légales",
+            "subsharing_content": "En cas d'obligation légale, nous pouvons être amenés à partager certaines informations avec les autorités compétentes."
+        }
+    ],
+    
+    "data_retention_title": "5. Durée de Conservation des Données",
+    "data_retention_content": [
+        "Données du compte : conservées jusqu’à la suppression du compte ou après une période d'inactivité prolongée.",
+        "Données de paiement : conservées conformément aux obligations légales.",
+        "Données de navigation : conservées jusqu’à 12 mois maximum."
+    ],
+    
+    "user_rights_title": "6. Vos Droits sur vos Données",
+    "user_rights_content": [
+        {
+            "subright_title": "6.1 Droit d'accès",
+            "subright_content": "Vous pouvez demander une copie des données que nous détenons sur vous."
+        },
+        {
+            "subright_title": "6.2 Droit de rectification",
+            "subright_content": "Vous pouvez demander la correction de vos informations inexactes."
+        },
+        {
+            "subright_title": "6.3 Droit à l’effacement",
+            "subright_content": "Vous pouvez demander la suppression de vos données sous certaines conditions."
+        },
+        {
+            "subright_title": "6.4 Droit d’opposition et de limitation",
+            "subright_content": "Vous pouvez limiter ou refuser certains traitements de vos données."
+        },
+        {
+            "subright_title": "6.5 Droit à la portabilité",
+            "subright_content": "Vous pouvez récupérer vos données sous un format structuré."
+        }
+    ],
+    
+    "data_security_title": "7. Sécurité des Données",
+    "data_security_content": "Nous mettons en place des mesures techniques et organisationnelles pour protéger vos données contre tout accès non autorisé, perte ou divulgation.",
+    
+    "cookies_title": "8. Cookies et Technologies de Suivi",
+    "cookies_content": [
+        "Améliorer votre expérience utilisateur",
+        "Analyser le trafic sur notre Application",
+        "Personnaliser le contenu et les offres"
+    ],
+    
+    "cookies_management_title": "9. Gestion des Cookies",
+    "cookies_management_content": "Vous pouvez gérer vos préférences en matière de cookies via les paramètres de votre navigateur.",
+    
+    "policy_modifications_title": "10. Modifications de la Politique de Confidentialité",
+    "policy_modifications_content": "Nous nous réservons le droit de modifier cette Politique de Confidentialité à tout moment. Les modifications seront notifiées via l’Application.",
+    
+    "contact_title": "11. Contact",
+    "contact_content": "Pour toute question relative à cette Politique de Confidentialité, vous pouvez nous contacter à [adresse e-mail]."
+}

@@ -1,0 +1,90 @@
+{
+    "privacy_policy_title": "Privacybeleid",
+    "introduction_title": "1. Inleiding",
+    "introduction_content": "Welkom bij EventEase (hierna 'de Applicatie'). Dit Privacybeleid beschrijft hoe wij uw persoonlijke gegevens verzamelen, gebruiken en beschermen wanneer u de Applicatie gebruikt. Door EventEase te gebruiken, gaat u akkoord met de praktijken die in dit Privacybeleid worden beschreven.",
+    
+    "data_collected_title": "2. Verzamelde Gegevens",
+    "data_collected_content": [
+        {
+            "subdata_title": "2.1 Door de gebruiker verstrekte gegevens",
+            "subdata_content": ["Voor- en achternaam", "E-mailadres", "Betalingsgegevens (beheerd via Stripe)", "Informatie over het aanmaken van evenementen", "Berichten verzonden via onze klantenservice"]
+        },
+        {
+            "subdata_title": "2.2 Automatisch verzamelde gegevens",
+            "subdata_content": ["IP-adres", "Navigatie- en gebruiksgegevens (bezochte pagina's, uitgevoerde acties)", "Technische gegevens (browsersoort, besturingssysteem)"]
+        }
+    ],
+    
+    "data_usage_title": "3. Doeleinden van de Gegevensverwerking",
+    "data_usage_content": [
+        "Onze diensten leveren en verbeteren",
+        "Uw gebruikersaccount en abonnementen beheren",
+        "Het organiseren en deelnemen aan evenementen vergemakkelijken",
+        "Betalingen verwerken via Stripe",
+        "Uw vragen beantwoorden via onze klantenservice",
+        "De beveiliging garanderen en fraude voorkomen",
+        "Onze wettelijke verplichtingen naleven"
+    ],
+    
+    "data_sharing_title": "4. Delen van Gegevens",
+    "data_sharing_content": [
+        {
+            "subsharing_title": "4.1 Dienstverleners",
+            "subsharing_content": "Wij gebruiken Stripe voor het beheren van betalingen en andere technische partners die nodig zijn voor de goede werking van de Applicatie."
+        },
+        {
+            "subsharing_title": "4.2 Wettelijke autoriteiten",
+            "subsharing_content": "Indien wettelijk verplicht, kunnen wij bepaalde informatie delen met bevoegde autoriteiten."
+        }
+    ],
+    
+    "data_retention_title": "5. Bewaartermijn van Gegevens",
+    "data_retention_content": [
+        "Accountgegevens: bewaard totdat het account wordt verwijderd of na een langere periode van inactiviteit.",
+        "Betalingsgegevens: bewaard volgens wettelijke verplichtingen.",
+        "Navigatiegegevens: bewaard tot maximaal 12 maanden."
+    ],
+    
+    "user_rights_title": "6. Uw Rechten met Betrekking tot Uw Gegevens",
+    "user_rights_content": [
+        {
+            "subright_title": "6.1 Recht op inzage",
+            "subright_content": "U kunt een kopie aanvragen van de gegevens die wij over u hebben."
+        },
+        {
+            "subright_title": "6.2 Recht op rectificatie",
+            "subright_content": "U kunt verzoeken om correctie van onjuiste informatie."
+        },
+        {
+            "subright_title": "6.3 Recht op verwijdering",
+            "subright_content": "U kunt onder bepaalde voorwaarden verzoeken om verwijdering van uw gegevens."
+        },
+        {
+            "subright_title": "6.4 Recht op bezwaar en beperking",
+            "subright_content": "U kunt bepaalde gegevensverwerkingen beperken of weigeren."
+        },
+        {
+            "subright_title": "6.5 Recht op gegevensoverdraagbaarheid",
+            "subright_content": "U kunt uw gegevens in een gestructureerd formaat opvragen."
+        }
+    ],
+    
+    "data_security_title": "7. Gegevensbeveiliging",
+    "data_security_content": "Wij nemen technische en organisatorische maatregelen om uw gegevens te beschermen tegen ongeoorloofde toegang, verlies of openbaarmaking.",
+    
+    "cookies_title": "8. Cookies en Trackingtechnologieën",
+    "cookies_content": [
+        "Uw gebruikerservaring verbeteren",
+        "Het verkeer op onze Applicatie analyseren",
+        "Inhoud en aanbiedingen personaliseren"
+    ],
+    
+    "cookies_management_title": "9. Beheer van Cookies",
+    "cookies_management_content": "U kunt uw cookievoorkeuren beheren via de instellingen van uw browser.",
+    
+    "policy_modifications_title": "10. Wijzigingen in het Privacybeleid",
+    "policy_modifications_content": "Wij behouden ons het recht voor om dit Privacybeleid op elk moment te wijzigen. Wijzigingen worden via de Applicatie gecommuniceerd.",
+    
+    "contact_title": "11. Contact",
+    "contact_content": "Voor vragen over dit Privacybeleid kunt u contact met ons opnemen via [e-mailadres]."
+}
