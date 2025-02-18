@@ -5,9 +5,9 @@ type Props = {
 };
 
 const Adsense = ({ pId }: Props) => {
-  if (process.env.NODE_ENV !== "production") {
-    return null;
-  }
+  // if (process.env.NODE_ENV !== "production") {
+  //   return null;
+  // }
   return (
     <Script
       async
