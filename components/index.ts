@@ -15,7 +15,7 @@ import EventComponent from "./EventComponent";
 import PaymentDashboard from "./PaymentDashboard";
 import Transactions from "./Transactions";
 import CtaButton from "./CtaButton";
-import GoogleAdsense from "./GoogleAdsense";
+import Adsense from "./Adsense";
 
 export {
     Navbar,
@@ -35,5 +35,5 @@ export {
     PaymentDashboard,
     Transactions,
     CtaButton,
-    GoogleAdsense
+    Adsense
 }

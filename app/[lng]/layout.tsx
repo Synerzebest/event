@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { dir } from "i18next";
 import { languages } from "../i18n/settings";
-import { GoogleAdsense } from "../../components";
+import { Adsense } from "../../components";
 
 const GoogleAdsenseId = process.env.GOOGLE_ADSENSE_ID || "";
 
@@ -35,7 +35,7 @@ export default function RootLayout({ children, params: { lng } }: RootLayoutProp
         <body
           className={`antialiased`}
         >
-          <GoogleAdsense pId={GoogleAdsenseId} />
+          <Adsense pId={GoogleAdsenseId} />
           {children}
         </body>
       </html>

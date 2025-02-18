@@ -4,7 +4,7 @@ type Props = {
   pId: string;
 };
 
-const GoogleAdsense: React.FC<Props> = ({ pId }) => {
+const Adsense = ({ pId }: Props) => {
   if (process.env.NODE_ENV !== "production") {
     return null;
   }
@@ -18,4 +18,4 @@ const GoogleAdsense: React.FC<Props> = ({ pId }) => {
   );
 };
 
-export default GoogleAdsense;
+export default Adsense;

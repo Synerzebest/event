@@ -1,3 +1,5 @@
+"use client"
+
 import { useState, useEffect, useMemo, useRef } from 'react'; // Ajout de useRef ici
 import { createInstance } from 'i18next';
 import resourcesToBackend from 'i18next-resources-to-backend';

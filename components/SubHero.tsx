@@ -1,3 +1,5 @@
+"use client"
+
 import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import { useTranslation } from "../app/i18n";

@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "../app/i18n";
 import useFirebaseUser from "@/lib/useFirebaseUser";
