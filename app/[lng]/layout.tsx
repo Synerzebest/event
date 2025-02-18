@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { dir } from "i18next";
 import { languages } from "../i18n/settings";
-import GoogleAdsense from "../../components/GoogleAdsense";
+import { GoogleAdsense } from "../../components";
 
 const GoogleAdsenseId = process.env.GOOGLE_ADSENSE_ID || "";
 
