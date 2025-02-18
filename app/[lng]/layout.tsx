@@ -2,7 +2,13 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { dir } from "i18next";
 import { languages } from "../i18n/settings";
-import GoogleAdsense from "@/components/GoogleAdSense";
+import GoogleAdsense from "@/components/GoogleAdsense";
+
+const GoogleAdsenseId = process.env.GOOGLE_ADSENSE_ID || "";
+
+if (!GoogleAdsenseId) {
+  console.log("Google Adsense ID not provided")
+}
 
 export async function generateStaticParams() {
   return languages.map((lng) => ({ lng }))
@@ -29,7 +35,7 @@ export default function RootLayout({ children, params: { lng } }: RootLayoutProp
         <body
           className={`antialiased`}
         >
-          <GoogleAdsense />
+          <GoogleAdsense pId={GoogleAdsenseId} />
           {children}
         </body>
       </html>
