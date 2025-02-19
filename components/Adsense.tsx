@@ -1,10 +1,7 @@
 import Script from "next/script";
 
-type Props = {
-  pId: string;
-};
 
-const Adsense = ({ pId }: Props) => {
+const Adsense = ({ pId }: {pId: string}) => {
   // if (process.env.NODE_ENV !== "production") {
   //   return null;
   // }

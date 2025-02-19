@@ -16,6 +16,7 @@ import PaymentDashboard from "./PaymentDashboard";
 import Transactions from "./Transactions";
 import CtaButton from "./CtaButton";
 import Adsense from "./Adsense";
+import PetitePub from "./PetitePub";
 
 export {
     Navbar,
@@ -35,5 +36,6 @@ export {
     PaymentDashboard,
     Transactions,
     CtaButton,
-    Adsense
+    Adsense,
+    PetitePub
 }

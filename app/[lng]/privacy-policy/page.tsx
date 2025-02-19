@@ -4,7 +4,7 @@ import React from "react";
 import { useTranslation } from "@/app/i18n";
 import { safeTranslate } from "@/lib/utils";
 import useLanguage from "@/lib/useLanguage";
-import { Navbar, Footer } from "@/components";
+import { Navbar, Footer, PetitePub } from "@/components";
 
 // Définition des types stricts
 interface SubSection {
@@ -100,6 +100,8 @@ const PrivacyPage: React.FC = () => {
                     );
                 })}
             </main>
+
+            <PetitePub />
 
             <Footer />
         </div>

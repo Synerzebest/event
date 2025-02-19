@@ -6,10 +6,6 @@ import { Adsense } from "../../components";
 
 const GoogleAdsenseId = process.env.GOOGLE_ADSENSE_ID || "";
 
-if (!GoogleAdsenseId) {
-  console.log("Google Adsense ID not provided")
-}
-
 export async function generateStaticParams() {
   return languages.map((lng) => ({ lng }))
 }

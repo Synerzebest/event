@@ -12,6 +12,7 @@ const nextConfig = {
     reactStrictMode: false,
     env: {
         STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
+        GOOGLE_ADSENSE_ID: process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_ID
     },
     webpack: (config) => {
         config.resolve.alias = {
