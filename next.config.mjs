@@ -9,6 +9,19 @@ const nextConfig = {
             },
         ],
     },
+    async headers() {
+        return [
+            {
+                source: "/(.*)", // Applique la règle à toutes les pages
+                headers: [
+                    {
+                        key: "X-Robots-Tag",
+                        value: "index, follow"
+                    }
+                ]
+            }
+        ];
+    },
     reactStrictMode: false,
     env: {
         STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,

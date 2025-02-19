@@ -55,7 +55,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (ticket.price === 0) {
       // Pas de gestion Stripe pour les événements gratuits
       return res.status(200).json({
-        message: 'Cet événement est gratuit. Aucune session de paiement n’est nécessaire.',
+        message: 'This event is free. No payment session needed.',
       });
     }
 
@@ -75,10 +75,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         applicationFeePercentage = 0.01; // Pro : 1%
       }
     } else {
-      console.log('L’organisateur est sur le plan Starter (aucun abonnement trouvé).');
+      console.log('Organizer has starter plan (no plan found).');
     }
 
-    console.log(`Frais d'application calculés : ${applicationFeePercentage * 100}%`);
 
     // Créer une session de paiement avec Stripe
     const session = await stripe.checkout.sessions.create({

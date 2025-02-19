@@ -195,7 +195,7 @@ const Page = () => {
         <>
             <Navbar lng={lng} />
             <motion.div
-                className="flex flex-col md:flex-row w-11/12 mx-auto gap-8 pt-10"
+                className="relative top-36 flex flex-col md:flex-row w-11/12 mx-auto gap-8 pt-10"
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, ease: "easeInOut" }}

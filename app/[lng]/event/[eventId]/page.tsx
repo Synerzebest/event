@@ -77,7 +77,7 @@ const Page = ({ params: { lng } }: PageProps) => {
                 <>
                     <Navbar lng={lng}/>
                     <div className="w-full flex flex-col items-center gap-32">
-                        <div>
+                        <div className="relative top-36">
                             <Countdown eventDate={event.date} />
                         </div>
 

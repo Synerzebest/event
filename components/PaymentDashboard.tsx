@@ -86,7 +86,7 @@ const StripeAccountDashboard: React.FC = () => {
 
   return (
     <motion.div
-      className="w-full flex flex-col items-center"
+      className="relative top-12 w-full flex flex-col items-center"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}

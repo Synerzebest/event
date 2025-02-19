@@ -95,7 +95,7 @@ const Transactions: React.FC = () => {
 
   return (
     <motion.div
-        className="w-[97%] mx-auto border border-gray-200 shadow-lg rounded-xl flex flex-col items-center w-full max-w-4xl px-4 py-6"
+        className="relative top-24 w-[97%] mx-auto border border-gray-200 shadow-lg rounded-xl flex flex-col items-center w-full max-w-4xl px-4 py-6"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
