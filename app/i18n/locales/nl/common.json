@@ -163,5 +163,9 @@
   "cta_button": "Organiseren een evenement",
   "famous": "Vaak genomen",
   "event_expired": "Evenement voltooid",
-  "login_to_participate": "Log in om deel te nemen"
+  "login_to_participate": "Log in om deel te nemen",
+  "footer_content": "Vereenvoudig het evenementenbeheer en maak uw evenementen tot een succes.",
+  "quick_links": "Quick Links",
+  "terms_and_conditions": "Algemene Voorwaarden",
+  "privacy_policy": "Privacybeleid"
 }

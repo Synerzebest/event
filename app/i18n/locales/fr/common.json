@@ -163,5 +163,10 @@
   "cta_button": "Organiser mon événement",
   "famous": "Populaire",
   "event_expired": "Événement terminé",
-  "login_to_participate": "Se connecter pour participer"
+  "login_to_participate": "Se connecter pour participer",
+  "footer_content": "Simplifie la gestion des événements et fait de vos événements une réussite.",
+  "quick_links": "Liens rapides",
+  "about_us": "À propos de nous",
+  "terms_and_conditions": "Conditions d'utilisation",
+  "privacy_policy": "Politique de confidentialité"
 }

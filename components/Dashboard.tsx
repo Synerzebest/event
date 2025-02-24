@@ -191,8 +191,8 @@ export default function Dashboard() {
                                         src={event.images[0]}
                                         alt={event.title}
                                         width={350}
-                                        height={200}
-                                        className="object-cover rounded-t-lg"
+                                        height={250}
+                                        className="object-cover w-full h-[250px] max-h-[250px] mx-auto border-0 border-b rounded-t-xl"
                                     />
 
                                     <button
@@ -283,8 +283,8 @@ export default function Dashboard() {
                                                 src={event.images[0]}
                                                 alt={event.title}
                                                 width={350}
-                                                height={200}
-                                                className="object-cover rounded-t-lg"
+                                                height={250}
+                                                className="object-cover w-full h-[250px] max-h-[250px] mx-auto border-0 border-b rounded-t-xl"
                                             />
                                             <div className="p-4">
                                                 <div className="flex justify-between items-center mb-2">

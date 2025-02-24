@@ -163,5 +163,9 @@
   "cta_button": "Organize my event",
   "famous": "Famous",
   "event_expired": "Event ended",
-  "login_to_participate": "Login to participate"
+  "login_to_participate": "Login to participate",
+  "footer_content": "Simplifying event management and making your events a success.",
+  "quick_links": "Quick Links",
+  "terms_and_conditions": "Terms and Conditions",
+  "privacy_policy": "Privacy Policy"
 }

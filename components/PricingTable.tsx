@@ -89,7 +89,7 @@ const PricingTable = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
                         >
                             {/* Badge pour le plan populaire */}
                             {plan === "Premium" && (
-                                <span className="absolute top-3 right-3 bg-gray-700 text-white text-xs font-semibold px-3 py-1 rounded-full">
+                                <span className="absolute top-3 right-3 bg-blue-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
                                     {safeTranslate(t,'famous')}
                                 </span>
                             )}
@@ -118,7 +118,7 @@ const PricingTable = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
 
                             {/* Bouton d'abonnement */}
                             {planType === "STARTER" ? (
-                                <span className="py-2 px-6 rounded-full text-lg font-semibold bg-gray-500 text-white">
+                                <span className="py-2 px-6 rounded-full text-lg font-semibold bg-blue-500 text-white">
                                     {safeTranslate(t,"default_plan")}
                                 </span>
                             ) : isActive ? (

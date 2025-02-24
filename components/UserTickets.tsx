@@ -146,7 +146,7 @@ const UserTickets = () => {
                                             src={`${events[ticket.eventId].images[0]}`} 
                                             width={250}
                                             height={140}
-                                            className="object-cover rounded-t-lg w-full h-full"
+                                            className="object-cover w-full h-[250px] max-h-[250px] mx-auto border-0 border-b rounded-t-xl"
                                         />
                                     </div>
                                     <div className="px-4 mb-4 flex flex-col gap-4">
