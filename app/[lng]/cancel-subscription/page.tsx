@@ -78,7 +78,7 @@ const CancelSubscription = () => {
         <div>
             <Navbar lng={lng} />
             {user?.subscriptionId && !isCanceled ? (
-                <div className="height-64 flex flex-col items-center p-6">
+                <div className="relative top-36 height-64 flex flex-col items-center p-6">
                     <h1 className="text-2xl font-bold">{lng === "fr" ? 'Résilier votre abonnement' : lng === "en" ? 'Cancel your subscription' : 'Annuleer uw abonnement'}</h1>
                     <p className="mt-4">{lng === "fr" ? 'Êtes-vous sûr de vouloir résilier votre abonnement ?' : lng === "en" ? 'Are you sure you want to cancel your subscription?' : 'Weet je zeker dat je je abonnement wilt annuleren?'}</p>
                     <button

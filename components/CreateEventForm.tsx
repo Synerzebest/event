@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import useFirebaseUser from "@/lib/useFirebaseUser";
-import { Input, DatePicker, Radio, InputNumber, Upload, Button, notification, Select } from "antd";
+import { Input, DatePicker, Radio, InputNumber, Upload, Button, notification, Select, Alert } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { addDoc, collection } from "firebase/firestore";
@@ -26,6 +26,18 @@ type Ticket = {
 };
 
 const CreateEventForm: React.FC = () => {
+
+    const getGuestLimit = (nickname: string | null | undefined): number => {
+        switch (nickname) {
+            case "pro":
+                return Infinity; // Unlimited
+            case "premium":
+                return 500;
+            default:
+                return 100; // Free subscription
+        }
+    };
+
     const lng = useLanguage();
     const { t } = useTranslation(lng, "common");
     const { user } = useFirebaseUser();
@@ -33,7 +45,20 @@ const CreateEventForm: React.FC = () => {
     const [uploading, setUploading] = useState(false);
     const [eventDate, setEventDate] = useState<dayjs.Dayjs | null>(null);
     const [tickets, setTickets] = useState<Ticket[]>([]);
+    const [maxGuestLimit, setMaxGuestLimit] = useState<number>(
+        getGuestLimit(user?.nickname)
+    );
     const [guestLimit, setGuestLimit] = useState<number>(1);
+
+    useEffect(() => {
+        if (user?.nickname) {
+            const newLimit = getGuestLimit(user.nickname);
+            setMaxGuestLimit(newLimit);
+            
+            setGuestLimit((prev) => (prev === 1 ? newLimit : Math.min(prev, newLimit)));
+        }
+    }, [user?.nickname]);    
+
     const [formData, setFormData] = useState({
         title: '',
         place: '',
@@ -85,8 +110,11 @@ const CreateEventForm: React.FC = () => {
 
     const handleGuestsChange = (value: number | null) => {
         if (value !== null) {
-            setGuestLimit(value);
-            setFormData({ ...formData, guestLimit: value });
+            setGuestLimit(Math.min(value, maxGuestLimit)); // Empêche de dépasser la limite sans alerte
+            setFormData((prev) => ({
+                ...prev,
+                guestLimit: Math.min(value, maxGuestLimit)
+            }));
         }
     };
 
@@ -128,22 +156,34 @@ const CreateEventForm: React.FC = () => {
           const imageURLs = await Promise.all(fileList.map((file) => handleUpload(file)));
       
           const totalTickets = tickets.reduce((sum, ticket) => sum + ticket.quantity, 0);
-          const remainingPlaces = formData.guestLimit - totalTickets;
+
+          const remainingPlaces = guestLimit - totalTickets;
       
           // Ajouter un ticket "participant" si nécessaire
           if (remainingPlaces > 0) {
-            const participantTicket = tickets.find(ticket => ticket.name === "participant");
-            if (participantTicket) {
-              participantTicket.quantity += remainingPlaces;
-            } else {
-              tickets.push({
-                name: "participant",
-                price: 0,
-                quantity: remainingPlaces,
-                sold: 0,
-              });
-            }
-          }
+            setTickets((prevTickets) => {
+                const participantTicketIndex = prevTickets.findIndex(ticket => ticket.name === "participant");
+        
+                if (participantTicketIndex !== -1) {
+                    // Si le ticket "participant" existe, on met à jour sa quantité
+                    const updatedTickets = [...prevTickets];
+                    updatedTickets[participantTicketIndex].quantity += remainingPlaces;
+                    return updatedTickets;
+                } else {
+                    // Sinon, on l'ajoute
+                    return [
+                        ...prevTickets,
+                        {
+                            name: "Participant",
+                            price: 0,
+                            quantity: remainingPlaces,
+                            sold: 0,
+                        }
+                    ];
+                }
+            });
+        }
+        
       
           // Créer l'événement dans Firestore avec les tickets et images
           await addDoc(collection(db, "events"), {
@@ -172,7 +212,6 @@ const CreateEventForm: React.FC = () => {
           setUploading(false);
         }
       };
-      
 
       return (
         <div className="w-[95%] sm:w-3/4 mx-auto relative top-36 flex flex-col gap-8 mb-24">
@@ -226,13 +265,27 @@ const CreateEventForm: React.FC = () => {
     
                     {/* Déplacement du champ Guest Limit ici */}
                     <p className="text-xl font-bold mt-6 text-blue-500">{safeTranslate(t,'guest_limit')}</p>
-                    <InputNumber 
-                        value={guestLimit} 
-                        onChange={handleGuestsChange} 
-                        min={1} 
-                        placeholder={safeTranslate(t,'guest_limit')}
-                        className="w-full mb-4" 
-                    />
+                    <div className="flex flex-col gap-2">
+                        <Alert
+                            message={safeTranslate(t, "plan_limit", { 
+                                plan: user?.nickname 
+                                    ? user.nickname.charAt(0).toUpperCase() + user.nickname.slice(1) 
+                                    : "Starter", 
+                                max: maxGuestLimit === Infinity ? t("unlimited") : maxGuestLimit 
+                            })}
+                            type="info"
+                            showIcon
+                        />
+                        <InputNumber
+                            value={guestLimit}
+                            onChange={handleGuestsChange}
+                            min={1}
+                            max={maxGuestLimit !== Infinity ? maxGuestLimit : undefined}
+                            disabled={maxGuestLimit === Infinity} // Désactive le champ si illimité
+                            placeholder={safeTranslate(t, 'guest_limit')}
+                            className="w-full mb-4"
+                        />
+                    </div>
                 </div>
     
                 {/* Deuxième colonne */}

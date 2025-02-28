@@ -11,8 +11,8 @@ export async function generateStaticParams() {
 }
 
 export const metadata: Metadata = {
-  title: "EventEase",
-  description: "Create And Manage Your Events With Ease",
+  title: "EaseEvent",
+  description: "Le meilleur endroit pour trouver un événement ! Que ce soit pour rejoindre ou créer un événement, EaseEvent vous facilite la vie !",
 };
 
 interface RootLayoutProps {

@@ -49,6 +49,29 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       break;
     }
+    case 'customer.subscription.deleted': {
+      const subscription = event.data.object as Stripe.Subscription;
+      const customerId = subscription.customer as string;
+  
+      try {
+          const usersRef = firestore.collection('users');
+          const querySnapshot = await usersRef.where('stripeCustomerId', '==', customerId).get();
+  
+          if (!querySnapshot.empty) {
+              const userDoc = querySnapshot.docs[0];
+  
+              await userDoc.ref.update({
+                  subscriptionId: null,
+                  nickname: "starter",
+              });
+  
+              console.log(`L'utilisateur ${userDoc.id} a annulé son abonnement. Réinitialisation à "starter".`);
+          }
+      } catch (error) {
+          console.error("Erreur lors de la gestion de l'annulation d'abonnement:", error);
+      }
+      break;
+  }  
     default:
       console.log(`Événement non pris en charge: ${event.type}`);
   }
@@ -159,6 +182,9 @@ async function updateEventAndTicketQuantities(eventId: string, ticketName: strin
 
 async function updateUserSubscription(customerId: string, subscriptionId: string) {
   try {
+    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+    const nickname = subscription.items.data[0].price.metadata.nickname || 'starter';
+
     const usersRef = firestore.collection('users');
     const querySnapshot = await usersRef.where('stripeCustomerId', '==', customerId).get();
 
@@ -167,15 +193,21 @@ async function updateUserSubscription(customerId: string, subscriptionId: string
     }
 
     const userDoc = querySnapshot.docs[0];
-    await userDoc.ref.update({ subscriptionId: subscriptionId });
 
-    console.log(`Mise à jour réussie pour l'utilisateur ${userDoc.id} avec l'abonnement ${subscriptionId}`);
+    // 🔥 Mise à jour de Firestore avec le nickname et subscriptionId
+    await userDoc.ref.update({
+      subscriptionId: subscriptionId,
+      nickname: nickname.toLowerCase(),
+    });
+
+    console.log(`Mise à jour réussie pour l'utilisateur ${userDoc.id} : abonnement ${subscriptionId}, nickname ${nickname}`);
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.error(`Erreur lors de la mise à jour de l'utilisateur : ${error.message}`);
     } else {
-      console.error('Erreur inconnue lors de la mise à jour de l\'utilisateur');
+      console.error("Erreur inconnue lors de la mise à jour de l'utilisateur");
     }
     throw error;
   }
 }
+

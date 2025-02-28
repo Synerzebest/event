@@ -16,6 +16,7 @@ interface User {
   stripeCustomerId?: string | null;
   subscription?: string | null;
   subscriptionId?: string;
+  nickname: string;
 }
 
 const useFirebaseUser = () => {
@@ -44,6 +45,7 @@ const useFirebaseUser = () => {
               stripeCustomerId: userData?.stripeCustomerId || null,
               subscription: userData?.subscription || null,
               subscriptionId: userData?.subscriptionId || null,
+              nickname: userData?.nickname || "starter",
             });
           } else {
             console.warn("Aucun document Firestore trouvé pour cet utilisateur.");
@@ -54,7 +56,7 @@ const useFirebaseUser = () => {
               uid: currentUser.uid,
               stripeAccountId: null,
               stripeCustomerId: null,
-              subscription: "starter"
+              nickname: "starter"
             });
           }
         } catch (error) {
@@ -70,7 +72,7 @@ const useFirebaseUser = () => {
             uid: currentUser.uid,
             stripeAccountId: null,
             stripeCustomerId: null,
-            subscription: "starter"
+            nickname: "starter"
           });
         }
       } else {

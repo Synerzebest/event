@@ -112,6 +112,9 @@ const PricingTable = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
                                     ✅ {safeTranslate(t,`${plan.toLowerCase()}_plan_advantage`)}
                                 </li>
                                 <li className="mb-2 flex items-center">
+                                    ✅ {safeTranslate(t,`${plan.toLowerCase()}_plan_guest`)}
+                                </li>
+                                <li className="mb-2 flex items-center">
                                     ✅ {safeTranslate(t,`${plan.toLowerCase()}_plan_commission`)}
                                 </li>
                             </ul>
@@ -129,7 +132,7 @@ const PricingTable = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
                                 <button
                                     onClick={() => handleSubscribe(priceIds[planType]!)}
                                     disabled={activePlan !== "STARTER" && !isActive} 
-                                    className={`py-3 px-6 rounded-full text-lg font-semibold transition-all ${
+                                    className={`py-2 px-6 rounded-full text-lg font-semibold transition-all ${
                                         isActive
                                             ? "bg-green-500 text-white"
                                             : activePlan !== "STARTER" && !isActive

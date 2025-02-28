@@ -30,7 +30,7 @@ const Page = () => {
             <Navbar lng={lng} />
             
             <motion.div
-                className="w-11/12 h-[500px] flex flex-col justify-evenly relative top-12 mx-auto p-8 rounded-xl bg-gradient-to-b from-blue-600 via-blue-500 to-blue-400 shadow-lg"
+                className="relative top-36 w-11/12 h-[500px] flex flex-col justify-evenly relative top-12 mx-auto p-8 rounded-xl bg-gradient-to-b from-blue-600 via-blue-500 to-blue-400 shadow-lg"
                 initial={{ opacity: 0, y: 50 }} 
                 animate={{ opacity: 1, y: 0 }} 
                 transition={{ duration: 0.8, ease: "easeOut" }}

@@ -52,13 +52,16 @@
   "choose_plan_button": "S'abonner",
   "starter_plan_description": "Pour les événements en petit comité",
   "starter_plan_commission": "15% de commission sur chaque vente de ticket",
+  "starter_plan_guest": "Jusqu'à 100 invités",
   "starter_plan_advantage": "Assistance basique",
   "premium_plan_description": "Pour des événements plus importants",
   "premium_plan_commission": "5% de commission sur chaque vente de ticket",
   "premium_plan_advantage": "Assistance prioritaire",
+  "premium_plan_guest": "Jusqu'à 500 invités",
   "pro_plan_description": "Pour les événements de grande envergure",
   "pro_plan_commission": "1% de commission sur chaque vente de ticket",
   "pro_plan_advantage": "Assistance dédiée",
+  "pro_plan_guest": "Un nombre illimité d'invités",
   "active_subscription_message": "Vous avez déjà un abonnement actif. Pour changer d'abonnement, veuillez d'abord résilier votre abonnement actuel.",
   "active_plan": "Actif",
   "default_plan": "Par défaut",
@@ -168,5 +171,7 @@
   "quick_links": "Liens rapides",
   "about_us": "À propos de nous",
   "terms_and_conditions": "Conditions d'utilisation",
-  "privacy_policy": "Politique de confidentialité"
+  "privacy_policy": "Politique de confidentialité",
+  "plan_limit": "{{plan}} plan: {{max}} max",
+  "unlimited": "Illimité"
 }

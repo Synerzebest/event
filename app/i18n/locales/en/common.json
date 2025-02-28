@@ -53,12 +53,15 @@
   "starter_plan_description": "For small-scale events",
   "starter_plan_commission": "15% commission on each ticket sale",
   "starter_plan_advantage": "Basic support",
+  "starter_plan_guest": "Up to 100 guests",
   "premium_plan_description": "For larger events",
   "premium_plan_commission": "5% commission on each ticket sale",
   "premium_plan_advantage": "Priority support",
+  "premium_plan_guest": "Up to 500 guests",
   "pro_plan_description": "For large-scale events",
   "pro_plan_commission": "1% commission on each ticket sale",
   "pro_plan_advantage": "Dedicated support",
+  "pro_plan_guest": "Unlimited guests",
   "active_subscription_message": "You already have an active subscription. To change your subscription, please cancel your current subscription first.",
   "active_plan": "Active",
   "default_plan": "Default Plan",
@@ -167,5 +170,7 @@
   "footer_content": "Simplifying event management and making your events a success.",
   "quick_links": "Quick Links",
   "terms_and_conditions": "Terms and Conditions",
-  "privacy_policy": "Privacy Policy"
+  "privacy_policy": "Privacy Policy",
+  "plan_limit": "{{plan}} plan: {{max}} max",
+  "unlimited": "Unlimited"
 }

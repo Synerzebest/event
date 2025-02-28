@@ -41,7 +41,7 @@ const Hero = () => {
       <div className="relative sm:top-24 top-8 h-[550px] w-full flex flex-col lg:flex-row items-center justify-center">
         <div className="z-2 text-center p-4 sm:p-8 flex flex-col items-center lg:text-left">
           <h1 className="text-4xl text-center text-blue-500 sm:text-5xl md:text-6xl font-bold mb-4">
-            <span className="hidden sm:inline">
+            <span className="inline">
               <FlipWords />
             </span>
             {" "}{safeTranslate(t, "hero_title")}
