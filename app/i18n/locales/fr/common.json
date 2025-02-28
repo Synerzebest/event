@@ -173,5 +173,6 @@
   "terms_and_conditions": "Conditions d'utilisation",
   "privacy_policy": "Politique de confidentialité",
   "plan_limit": "{{plan}} plan: {{max}} max",
-  "unlimited": "Illimité"
+  "unlimited": "Illimité",
+  "private_event_alert": "Un événement privé ne sera accessible que depuis son lien de partage."
 }

@@ -172,5 +172,6 @@
   "terms_and_conditions": "Terms and Conditions",
   "privacy_policy": "Privacy Policy",
   "plan_limit": "{{plan}} plan: {{max}} max",
-  "unlimited": "Unlimited"
+  "unlimited": "Unlimited",
+  "private_event_alert": "A private event will only be accessible from its share link."
 }

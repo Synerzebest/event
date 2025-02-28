@@ -172,5 +172,6 @@
   "terms_and_conditions": "Algemene Voorwaarden",
   "privacy_policy": "Privacybeleid",
   "plan_limit": "{{plan}} plan: {{max}} max",
-  "unlimited": "Onbeperkt"
+  "unlimited": "Onbeperkt",
+  "private_event_alert": "Een privé-evenement is alleen toegankelijk via de deellink"
 }

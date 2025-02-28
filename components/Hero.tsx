@@ -40,14 +40,14 @@ const Hero = () => {
     <AuroraBackground>
       <div className="relative sm:top-24 top-8 h-[550px] w-full flex flex-col lg:flex-row items-center justify-center">
         <div className="z-2 text-center p-4 sm:p-8 flex flex-col items-center lg:text-left">
-          <h1 className="text-4xl text-center text-blue-500 sm:text-5xl md:text-6xl font-bold mb-4">
+          <h1 className="text-4xl text-blue-500 text-center sm:text-5xl md:text-6xl font-bold mb-4">
             <span className="inline">
               <FlipWords />
             </span>
             {" "}{safeTranslate(t, "hero_title")}
           </h1>
 
-          <p className="text-lg text-center sm:text-xl md:text-2xl text-blue-500">{safeTranslate(t,"hero_subtitle")}</p>
+          <p className="text-lg text-center sm:text-xl md:text-2xl text-gray-600">{safeTranslate(t,"hero_subtitle")}</p>
           <Link href="/explore">
             <button className="flex items-center gap-2 text-xl text-white bg-blue-500 border border-[rgba(255,255,255,0.3)] py-4 px-6 mt-8 font-bold rounded-xl hover:bg-blue-600 duration-300 shadow-lg">
               {safeTranslate(t,"hero_button")}
