@@ -154,7 +154,7 @@ const EditEventPopup: React.FC<EditEventPopupProps> = ({ event, onClose, onUpdat
                 <div className="mb-4">
                     <label className="block text-sm font-medium mb-2 text-gray-700">Event Date</label>
                     <DatePicker
-                        className="rounded-md shadow-sm border-gray-300 focus:border-blue-500"
+                        className="rounded-md shadow-sm border-gray-300 focus:border-indigo-500"
                         style={{ width: "100%" }}
                         onChange={(date) => setEventDate(date || dayjs())} // Met à jour la date
                         value={eventDate}
@@ -203,8 +203,8 @@ const EditEventPopup: React.FC<EditEventPopupProps> = ({ event, onClose, onUpdat
                     <button
                         onClick={handleSave}
                         disabled={loading}
-                        className={`bg-blue-500 text-white px-6 py-2 rounded-md flex items-center justify-center ${
-                            loading ? "cursor-not-allowed opacity-75" : "hover:bg-blue-600"
+                        className={`bg-indigo-500 text-white px-6 py-2 rounded-md flex items-center justify-center ${
+                            loading ? "cursor-not-allowed opacity-75" : "hover:bg-indigo-600"
                         }`}
                     >
                         {loading ? (

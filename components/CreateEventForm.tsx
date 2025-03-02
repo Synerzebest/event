@@ -216,7 +216,7 @@ const CreateEventForm: React.FC = () => {
       return (
         <div className="w-[95%] sm:w-3/4 mx-auto relative top-36 flex flex-col gap-8 mb-24">
             <div className="text-center">
-                <p className="text-[2.5rem] sm:text-7xl font-bold bg-gradient-to-tr from-blue-700 via-blue-500 to-blue-300 bg-clip-text text-transparent">
+                <p className="text-[2.5rem] sm:text-7xl font-bold bg-gradient-to-tr from-indigo-700 via-indigo-500 to-indigo-300 bg-clip-text text-transparent">
                     {safeTranslate(t,'create_your_event')}
                 </p>
             </div>
@@ -224,30 +224,30 @@ const CreateEventForm: React.FC = () => {
             <div className="w-full flex flex-col md:flex-row bg-white p-8 rounded-lg shadow-lg gap-8 sm:gap-0 border border-gray-300">
                 {/* Première colonne */}
                 <div className="w-full md:w-1/2 flex flex-col gap-4 pr-4">
-                    <p className="text-2xl font-bold mb-2 text-blue-500">{safeTranslate(t,'event_details')}</p>
+                    <p className="text-2xl font-bold mb-2 text-indigo-500">{safeTranslate(t,'event_details')}</p>
                     <Input 
-                        className="rounded-md shadow-sm border-gray-300 focus:border-blue-500" 
+                        className="rounded-md shadow-sm border-gray-300 focus:border-indigo-500" 
                         name="title" 
                         onChange={(e) => setFormData({...formData, title: e.target.value})} 
                         placeholder={`${safeTranslate(t,'form_title')}`} 
                         required 
                     />
                     <Input 
-                        className="rounded-md shadow-sm border-gray-300 focus:border-blue-500" 
+                        className="rounded-md shadow-sm border-gray-300 focus:border-indigo-500" 
                         name="place" 
                         onChange={(e) => setFormData({...formData, place: e.target.value})} 
                         placeholder={`${safeTranslate(t,'form_place')}`} 
                         required 
                     />
                     <DatePicker 
-                        className="rounded-md shadow-sm border-gray-300 focus:border-blue-500" 
+                        className="rounded-md shadow-sm border-gray-300 focus:border-indigo-500" 
                         style={{ width: "100%" }} 
                         onChange={(date) => setEventDate(date)} 
                         disabledDate={(current) => current && current < dayjs().startOf('day')}
                         required 
                     />
                     <TextArea 
-                        className="rounded-md shadow-sm border-gray-300 focus:border-blue-500" 
+                        className="rounded-md shadow-sm border-gray-300 focus:border-indigo-500" 
                         name="description" 
                         onChange={(e) => setFormData({...formData, description: e.target.value})} 
                         placeholder={`${safeTranslate(t,'form_description')}`} 
@@ -255,7 +255,7 @@ const CreateEventForm: React.FC = () => {
                         required 
                     />
                     <Select
-                        className="rounded-md shadow-sm border-gray-300 focus:border-blue-500"
+                        className="rounded-md shadow-sm border-gray-300 focus:border-indigo-500"
                         showSearch
                         placeholder={`${t('form_category')}`}
                         optionFilterProp="label"
@@ -264,7 +264,7 @@ const CreateEventForm: React.FC = () => {
                     />
     
                     {/* Déplacement du champ Guest Limit ici */}
-                    <p className="text-xl font-bold mt-6 text-blue-500">{safeTranslate(t,'guest_limit')}</p>
+                    <p className="text-xl font-bold mt-6 text-indigo-500">{safeTranslate(t,'guest_limit')}</p>
                     <div className="flex flex-col gap-2">
                         <Alert
                             message={safeTranslate(t, "plan_limit", { 
@@ -290,7 +290,7 @@ const CreateEventForm: React.FC = () => {
     
                 {/* Deuxième colonne */}
                 <div className="w-full md:w-1/2 flex flex-col gap-4">
-                    <p className="text-2xl font-bold mb-2 text-blue-500">{safeTranslate(t,'event_privacy_guests')}</p>
+                    <p className="text-2xl font-bold mb-2 text-indigo-500">{safeTranslate(t,'event_privacy_guests')}</p>
                     <Radio.Group
                         value={formData.privacy}
                         onChange={(e) => setFormData({...formData, privacy: e.target.value})}
@@ -310,7 +310,7 @@ const CreateEventForm: React.FC = () => {
 
                     {/* Déplacement du champ Tickets ici */}
                     <div className="w-full flex flex-col gap-4 mt-6">
-                        <p className="text-2xl font-bold mb-2 text-blue-500">Tickets</p>
+                        <p className="text-2xl font-bold mb-2 text-indigo-500">Tickets</p>
                         {user?.accountStatus === "verified" && user?.chargesEnabled && user?.payoutsEnabled ? (
                             <>
                                 {tickets.map((ticket, index) => (
@@ -403,11 +403,10 @@ const CreateEventForm: React.FC = () => {
                     </Upload>
     
                     <Button 
-                        type="primary" 
                         onClick={handleSubmit} 
                         loading={uploading} 
                         disabled={uploading}
-                        className="mt-4 w-full"
+                        className="mt-4 w-full bg-indigo-500 hover:bg-indigo-600 font-bold text-white text-lg py-6"
                     >
                         {safeTranslate(t,'create_event_button')}
                     </Button>

@@ -84,12 +84,12 @@ const PricingTable = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
                             key={planType}
                             className={`relative w-[95%] lg:w-1/4 bg-gray-50 rounded-2xl shadow-lg p-8 text-center border border-gray-300
                                 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl ${
-                                    plan === "Premium" ? "border-2 border-blue-500" : ""
+                                    plan === "Premium" ? "border-2 border-indigo-500" : ""
                                 }`}
                         >
                             {/* Badge pour le plan populaire */}
                             {plan === "Premium" && (
-                                <span className="absolute top-3 right-3 bg-blue-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
+                                <span className="absolute top-3 right-3 bg-indigo-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
                                     {safeTranslate(t,'famous')}
                                 </span>
                             )}
@@ -121,7 +121,7 @@ const PricingTable = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
 
                             {/* Bouton d'abonnement */}
                             {planType === "STARTER" ? (
-                                <span className="py-2 px-6 rounded-full text-lg font-semibold bg-blue-500 text-white">
+                                <span className="py-2 px-6 rounded-full text-lg font-semibold bg-indigo-500 text-white">
                                     {safeTranslate(t,"default_plan")}
                                 </span>
                             ) : isActive ? (
@@ -137,7 +137,7 @@ const PricingTable = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
                                             ? "bg-green-500 text-white"
                                             : activePlan !== "STARTER" && !isActive
                                             ? "bg-gray-300 text-gray-500 cursor-not-allowed" 
-                                            : "bg-blue-500 text-white hover:bg-blue-600"
+                                            : "bg-indigo-500 text-white hover:bg-indigo-600"
                                     }`}
                                 >
                                     {isActive ? safeTranslate(t,"active_plan") : safeTranslate(t,"choose_plan_button")}

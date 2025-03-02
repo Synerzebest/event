@@ -14,7 +14,6 @@ import Countdown from "./Countdown";
 import EventComponent from "./EventComponent";
 import PaymentDashboard from "./PaymentDashboard";
 import Transactions from "./Transactions";
-import CtaButton from "./CtaButton";
 import Adsense from "./Adsense";
 import PetitePub from "./PetitePub";
 
@@ -35,7 +34,6 @@ export {
     EventComponent,
     PaymentDashboard,
     Transactions,
-    CtaButton,
     Adsense,
     PetitePub
 }

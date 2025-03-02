@@ -265,21 +265,21 @@ const EventPopup: React.FC<EventPopupProps> = ({ event, onClose }) => {
                 {/* Scan Ticket Button */}
                 <motion.button
                     onClick={() => setShowScanner(true)}
-                    className="absolute left-1/2 -translate-x-1/2 text-white bg-blue-500 border border-blue-500 font-bold p-3 rounded-lg shadow-lg mt-[-0.5rem] sm:mt-4 hover:bg-blue-600 transition-all"
+                    className="absolute left-1/2 -translate-x-1/2 text-white bg-indigo-500 border border-indigo-500 font-bold p-3 rounded-lg shadow-lg mt-[-0.5rem] sm:mt-4 hover:bg-indigo-600 transition-all"
                 >
                     Scan Ticket
                 </motion.button>
 
                 {showScanner && (
                     <div className="mt-6">
-                        <p className="text-blue-500 font-semibold">Scan QR Code</p>
+                        <p className="text-indigo-500 font-semibold">Scan QR Code</p>
                         <QRCodeScanner 
                             onScan={handleScanTicket} 
                             onClose={() => setShowScanner(false)} 
                         />
                         <button
                             onClick={() => setShowScanner(false)}
-                            className="mt-2 text-blue-500 underline"
+                            className="mt-2 text-indigo-500 underline"
                         >
                             Cancel
                         </button>
@@ -290,7 +290,7 @@ const EventPopup: React.FC<EventPopupProps> = ({ event, onClose }) => {
                 <div className="mt-12">
                     <h2 className="text-3xl font-extrabold text-gray-900 my-4">{event.title}</h2>
 
-                    <div className="border border-blue-600 text-blue-600 text-sm font-bold py-1 px-2 rounded inline-flex items-center gap-1 whitespace-nowrap">
+                    <div className="border border-indigo-600 text-indigo-600 text-sm font-bold py-1 px-2 rounded inline-flex items-center gap-1 whitespace-nowrap">
                         {event.currentGuests !== undefined ? event.currentGuests : 0} / {event.guestLimit} <FaUser />
                     </div>
 
@@ -312,7 +312,7 @@ const EventPopup: React.FC<EventPopupProps> = ({ event, onClose }) => {
                         type="text"
                         placeholder="Find organizers..."
                         onChange={(e) => handleSearchChange(e.target.value)}
-                        className="border rounded-lg p-3 w-full bg-gray-100 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="border rounded-lg p-3 w-full bg-gray-100 mb-4 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     />
                     {searchQuery && (
                         <ul className="space-y-3">
@@ -328,7 +328,7 @@ const EventPopup: React.FC<EventPopupProps> = ({ event, onClose }) => {
                                             <span className="text-lg">{user.displayName}</span>
                                         </div>
                                         <motion.button 
-                                            className={`text-blue-500 ${isOrganizer ? 'cursor-not-allowed text-gray-400' : ''}`}
+                                            className={`text-indigo-500 ${isOrganizer ? 'cursor-not-allowed text-gray-400' : ''}`}
                                             onClick={() => handleAddOrganizer(user.uid)}
                                             disabled={isOrganizer}
                                             whileTap={{ scale: 0.95 }}

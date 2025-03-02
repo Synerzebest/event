@@ -49,7 +49,7 @@ const Navbar = ({ lng }: NavbarProps) => {
 
   return (
     <nav className="absolute w-[95%] top-0 sm:top-4 left-1/2 transform -translate-x-1/2 rounded-xl mt-2 flex justify-between items-center py-2 sm:px-12 px-4 
-    bg-blue-500 border border-[rgba(255,255,255,0.2)] shadow-lg z-50">
+    bg-indigo-500 border border-[rgba(255,255,255,0.2)] shadow-lg z-50">
       <div>
         <Link href={`/${lng}`}>
           <p className="text-4xl text-white px-4 py-2 rounded-xl font-bold drop-shadow-lg">
@@ -60,11 +60,11 @@ const Navbar = ({ lng }: NavbarProps) => {
   
       <div className="hidden md:flex items-center gap-4"> {/* Desktop Menu */}
         <ul className="flex items-center">
-          <li className="font-bold cursor-pointer text-xl text-white hover:bg-blue-600
+          <li className="font-bold cursor-pointer text-xl text-white hover:bg-indigo-600
           duration-300 py-2 px-4 rounded-lg">
             <Link href={`/${lng}`}>{safeTranslate(t,'title')}</Link>
           </li>
-          <li className="font-bold cursor-pointer text-xl text-white hover:bg-blue-600 
+          <li className="font-bold cursor-pointer text-xl text-white hover:bg-indigo-600 
           duration-300 py-2 px-4 rounded-lg">
             <Link href={`/${lng}/explore`}>{safeTranslate(t,'explore')}</Link>
           </li>
@@ -72,7 +72,7 @@ const Navbar = ({ lng }: NavbarProps) => {
             <>
               <li>
                 <Link href={`/${lng}/eventlab`} className="font-bold cursor-pointer text-xl text-white 
-                hover:bg-blue-600 duration-300 py-2 px-4 rounded-lg">
+                hover:bg-indigo-600 duration-300 py-2 px-4 rounded-lg">
                   EventLab
                 </Link>
               </li>
@@ -82,11 +82,11 @@ const Navbar = ({ lng }: NavbarProps) => {
             </>
           ) : (
             <>
-              <li className="font-bold cursor-pointer text-xl text-white hover:bg-blue-600
+              <li className="font-bold cursor-pointer text-xl text-white hover:bg-indigo-600
               duration-300 py-2 px-4 rounded-lg">
                 <Link href="/auth/signin">Signin</Link>
               </li>
-              <li className="font-bold cursor-pointer text-xl text-white hover:bg-blue-600
+              <li className="font-bold cursor-pointer text-xl text-white hover:bg-indigo-600
               duration-300 py-2 px-4 rounded-lg">
                 <Link href="/auth/signup">Signup</Link>
               </li>
@@ -100,18 +100,18 @@ const Navbar = ({ lng }: NavbarProps) => {
             <MdLanguage size={25} />
           </button>
           {dropdownOpen && (
-            <ul className="absolute right-0 mt-2 w-28 bg-blue-500 backdrop-blur-md border border-[rgba(255,255,255,0.2)]
+            <ul className="absolute right-0 mt-2 w-28 bg-indigo-500 backdrop-blur-md border border-[rgba(255,255,255,0.2)]
             rounded-md shadow-lg text-white z-50">
               <li onClick={() => { handleChangeLanguage('fr'); setDropdownOpen(false); }}
-                className="cursor-pointer px-4 py-2 hover:bg-blue-600">
+                className="cursor-pointer px-4 py-2 hover:bg-indigo-600">
                 Français
               </li>
               <li onClick={() => { handleChangeLanguage('en'); setDropdownOpen(false); }}
-                className="cursor-pointer px-4 py-2 hover:bg-blue-600">
+                className="cursor-pointer px-4 py-2 hover:bg-indigo-600">
                 English
               </li>
               <li onClick={() => { handleChangeLanguage('nl'); setDropdownOpen(false); }}
-                className="cursor-pointer px-4 py-2 hover:bg-blue-600">
+                className="cursor-pointer px-4 py-2 hover:bg-indigo-600">
                 Nederlands
               </li>
             </ul>
@@ -128,21 +128,21 @@ const Navbar = ({ lng }: NavbarProps) => {
       {/* Mobile Menu */}
       {isOpen && (
         <div className="absolute rounded-xl top-[5.5rem] left-0 w-full 
-        bg-blue-500 border border-[rgba(255,255,255,0.2)] md:hidden z-50 
+        bg-indigo-500 border border-[rgba(255,255,255,0.2)] md:hidden z-50 
         flex flex-col gap-4 px-4 py-2">
           <Link href={`/${lng}`} className="px-4 rounded-lg font-bold cursor-pointer text-xl text-white
-          hover:bg-blue-600 duration-300 py-2 w-fit text-left">
+          hover:bg-indigo-600 duration-300 py-2 w-fit text-left">
             {safeTranslate(t,'title')}
           </Link>
   
           {isSignedIn ? (
             <>
               <Link href={`/${lng}/explore`} className="px-4 rounded-lg font-bold cursor-pointer text-xl text-white 
-              hover:bg-blue-600 duration-300 py-2 w-fit text-left">
+              hover:bg-indigo-600 duration-300 py-2 w-fit text-left">
                 {safeTranslate(t,'explore')}
               </Link>
               <Link href={`/${lng}/eventlab`} className="px-4 rounded-lg font-bold cursor-pointer text-xl text-white 
-              hover:bg-blue-600 duration-300 py-2 w-fit text-left">
+              hover:bg-indigo-600 duration-300 py-2 w-fit text-left">
                 EventLab
               </Link>
               <div className="text-white pl-4">
@@ -152,11 +152,11 @@ const Navbar = ({ lng }: NavbarProps) => {
           ) : (
             <>
               <Link href="/auth/signin" className="px-4 rounded-lg font-bold cursor-pointer text-xl text-white 
-              hover:bg-blue-600 duration-300 py-2 w-fit text-left">
+              hover:bg-indigo-600 duration-300 py-2 w-fit text-left">
                 Signin
               </Link>
               <Link href="/auth/signup" className="px-4 rounded-lg font-bold cursor-pointer text-xl text-white 
-              hover:bg-blue-600 duration-300 py-2 w-fit text-left">
+              hover:bg-indigo-600 duration-300 py-2 w-fit text-left">
                 Signup
               </Link>
             </>
@@ -168,7 +168,7 @@ const Navbar = ({ lng }: NavbarProps) => {
               <MdLanguage size={25} />
             </button>
             {dropdownOpen && (
-              <ul className="absolute left-0 mt-4 w-28 bg-blue-500 border border-[rgba(255,255,255,0.2)]
+              <ul className="absolute left-0 mt-4 w-28 bg-indigo-500 border border-[rgba(255,255,255,0.2)]
               rounded-md shadow-lg text-white z-50">
                 <li onClick={() => { handleChangeLanguage('fr'); setDropdownOpen(false); }}
                   className="font-bold cursor-pointer px-4 py-2 hover:bg-[rgba(255,255,255,0.3)]">

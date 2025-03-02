@@ -11,7 +11,7 @@ const Footer = () => {
     const date = new Date();
     const year = date.getFullYear();
     return (
-        <footer className="bg-blue-500 text-gray-300 py-12 mx-4 mb-[16.5rem] rounded-xl relative top-64">
+        <footer className="bg-indigo-500 text-gray-300 py-12 mx-4 mb-[16.5rem] rounded-xl relative top-64">
             <div className="container mx-auto flex flex-wrap justify-between items-start space-y-8 md:space-y-0">
                 {/* Section 1: Company Logo and Info */}
                 <div className="w-full md:w-1/3 flex flex-col items-center md:items-start text-center md:text-left">
@@ -26,22 +26,22 @@ const Footer = () => {
                     <h3 className="text-lg font-bold text-white mb-4">{safeTranslate(t, "quick_links")}</h3>
                     <ul className="space-y-2">
                         <li>
-                            <Link href="/about" className="hover:text-gray-100 transition duration-300">
+                            <Link href="/about" className="text-gray-100 transition duration-300">
                                 {safeTranslate(t, "about_us")}
                             </Link>
                         </li>
                         <li>
-                            <Link href={`/${lng}/terms-and-conditions`} className="hover:text-gray-100 transition duration-300">
+                            <Link href={`/${lng}/terms-and-conditions`} className="text-gray-100 transition duration-300">
                                 {safeTranslate(t, "terms_and_conditions")}
                             </Link>
                         </li>
                         <li>
-                            <Link href={`/${lng}/privacy-policy`} className="hover:text-gray-100 transition duration-300">
+                            <Link href={`/${lng}/privacy-policy`} className="text-gray-100 transition duration-300">
                                 {safeTranslate(t, "privacy_policy")}
                             </Link>
                         </li>
                         <li>
-                            <Link href="/" className="hover:text-gray-100 transition duration-300">
+                            <Link href="/" className="text-gray-100 transition duration-300">
                                 FAQ
                             </Link>
                         </li>
@@ -52,16 +52,16 @@ const Footer = () => {
                 <div className="w-full md:w-1/3 flex flex-col items-center md:items-end text-center md:text-right">
                     <h3 className="text-lg font-bold text-white mb-4">Follow Us</h3>
                     <div className="flex space-x-4">
-                        <Link href="https://facebook.com" className="p-3 bg-blue-800 rounded-full hover:bg-blue-700 transition duration-300">
+                        <Link href="https://facebook.com" className="p-3 bg-indigo-800 rounded-full hover:bg-indigo-700 transition duration-300">
                             <FaFacebookF size={20} className="text-white" />
                         </Link>
-                        <Link href="https://twitter.com" className="p-3 bg-blue-800 rounded-full hover:bg-blue-700 transition duration-300">
+                        <Link href="https://twitter.com" className="p-3 bg-indigo-800 rounded-full hover:bg-indigo-700 transition duration-300">
                             <FaTwitter size={20} className="text-white" />
                         </Link>
-                        <Link href="https://instagram.com" className="p-3 bg-blue-800 rounded-full hover:bg-blue-700 transition duration-300">
+                        <Link href="https://instagram.com" className="p-3 bg-indigo-800 rounded-full hover:bg-indigo-700 transition duration-300">
                             <FaInstagram size={20} className="text-white" />
                         </Link>
-                        <Link href="https://linkedin.com" className="p-3 bg-blue-800 rounded-full hover:bg-blue-700 transition duration-300">
+                        <Link href="https://linkedin.com" className="p-3 bg-indigo-800 rounded-full hover:bg-indigo-700 transition duration-300">
                             <FaLinkedinIn size={20} className="text-white" />
                         </Link>
                     </div>
@@ -70,7 +70,7 @@ const Footer = () => {
 
             {/* Bottom Section */}
             <div className="mt-12 text-center border-t border-gray-300 pt-6">
-                <p className="text-sm text-gray-200">
+                <p className="text-sm text-gray-100">
                     © {year} EventEase. All Rights Reserved.
                 </p>
             </div>

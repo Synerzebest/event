@@ -58,7 +58,7 @@ const Page = ({ params: { lng } }: PageProps) => {
       }
 
     return (
-        <>
+        <div className="relative top-36">
             {loading ? (
                 <>
                     <Navbar lng={lng}/>
@@ -89,7 +89,7 @@ const Page = ({ params: { lng } }: PageProps) => {
                 </>
             )}
             
-        </>
+        </div>
     );
 };
 

@@ -204,7 +204,7 @@ export default function Dashboard() {
                                     <div className="p-4">
                                         <div className="flex justify-between items-center mb-2">
                                             <h3 className="font-bold text-xl">{event.title}</h3>
-                                            <div className="border border-blue-600 text-blue-600 text-sm font-bold py-1 px-2 rounded flex items-center gap-1 whitespace-nowrap">
+                                            <div className="border border-indigo-600 text-indigo-600 text-sm font-bold py-1 px-2 rounded flex items-center gap-1 whitespace-nowrap">
                                                 {event.currentGuests !== undefined ? event.currentGuests : 0} / {event.guestLimit} <FaUser />
                                             </div>
                                         </div>
@@ -213,7 +213,7 @@ export default function Dashboard() {
                                         <div className="flex justify-between items-center gap-4 mt-4">
                                             <div className="flex items-center gap-4">
                                                 <button
-                                                    className=" bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600"
+                                                    className=" bg-indigo-500 text-white font-bold py-2 px-4 rounded hover:bg-indigo-600"
                                                     onClick={() => handleManageEvent(event.id)}
                                                 >
                                                     Manage Event
@@ -289,7 +289,7 @@ export default function Dashboard() {
                                             <div className="p-4">
                                                 <div className="flex justify-between items-center mb-2">
                                                     <h3 className="font-bold text-xl">{event.title}</h3>
-                                                    <div className="border border-blue-600 text-blue-600 text-sm font-bold py-1 px-2 rounded flex items-center gap-1 whitespace-nowrap">
+                                                    <div className="border border-indigo-600 text-indigo-600 text-sm font-bold py-1 px-2 rounded flex items-center gap-1 whitespace-nowrap">
                                                         {event.currentGuests !== undefined ? event.currentGuests : 0} / {event.guestLimit} <FaUser />
                                                     </div>
                                                 </div>

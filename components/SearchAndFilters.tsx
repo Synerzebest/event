@@ -98,23 +98,23 @@ const SearchAndFilters = () => {
 
     return (
         <div className="relative top-36 w-11/12 mx-auto p-4 rounded-lg mb-8">
-            <div className="w-full md:w-2/3 lg:w-1/2 flex items-center bg-blue-500 text-white p-3 rounded-full shadow-xl backdrop-blur-md mx-auto transition-all duration-300">
+            <div className="w-full md:w-2/3 lg:w-1/2 flex items-center bg-indigo-500 text-white p-3 rounded-full shadow-xl backdrop-blur-md mx-auto transition-all duration-300">
                 <input
                     type="text"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     placeholder={safeTranslate(t, 'search_placeholder')}
-                    className="w-full px-4 py-2 bg-transparent border-none focus:outline-none text-white placeholder-gray-200"
+                    className="w-full px-4 py-2 bg-transparent border-none focus:outline-none text-white placeholder-gray-100"
                 />
                 <button
                     onClick={handleSearch}
-                    className="ml-3 p-3 bg-blue-600 rounded-full hover:bg-blue-700 transition duration-300"
+                    className="ml-3 p-3 bg-indigo-600 rounded-full hover:bg-indigo-700 transition duration-300"
                 >
                     <FaSearch size={20} />
                 </button>
                 <button
                     onClick={toggleFilters}
-                    className="ml-2 p-3 bg-blue-600 rounded-full hover:bg-blue-700 transition duration-300"
+                    className="ml-2 p-3 bg-indigo-600 rounded-full hover:bg-indigo-700 transition duration-300"
                 >
                     {showFilters ? <IoMdClose size={20} /> : <LuSlidersHorizontal size={20} />}
                 </button>

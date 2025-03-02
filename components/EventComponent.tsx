@@ -156,8 +156,8 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
 
             <div className="p-4 flex flex-col justify-between">
                 <div className="flex justify-between items-center mb-2">
-                    <h3 className="font-semibold text-xl text-gray-800 hover:text-blue-600 transition-all">{event.title}</h3>
-                    <div className="border border-blue-700 text-blue-700 text-sm font-bold py-1 px-2 rounded flex items-center gap-1 whitespace-nowrap">
+                    <h3 className="font-semibold text-xl text-gray-800 hover:text-indigo-600 transition-all">{event.title}</h3>
+                    <div className="border border-indigo-700 text-indigo-700 text-sm font-bold py-1 px-2 rounded flex items-center gap-1 whitespace-nowrap">
                         {event.currentGuests !== undefined ? event.currentGuests : 0} / {event.guestLimit} <FaUser />
                     </div>
                 </div>
@@ -178,7 +178,7 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
                         ) : (
                             <Link href={`/${lng}/auth/signin`}>
                                 <motion.button
-                                    className="font-bold py-2 px-4 rounded-lg transition-all duration-200 transform flex items-center justify-center gap-2 bg-blue-600 text-white hover:bg-blue-800"
+                                    className="font-bold py-2 px-4 rounded-lg transition-all duration-200 transform flex items-center justify-center gap-2 bg-indigo-600 text-white hover:bg-indigo-800"
                                 >
                                     {safeTranslate(t,'login_to_participate')}
                                 </motion.button>
@@ -187,7 +187,7 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
                     ) : (
                         <motion.button
                             className={`font-bold py-2 px-4 rounded-lg transition-all duration-200 transform flex items-center justify-center gap-2
-                                ${isSubmitting || isPastEvent ? "bg-gray-200 text-gray-500 cursor-not-allowed" : "bg-blue-600 text-white hover:bg-blue-800"}
+                                ${isSubmitting || isPastEvent ? "bg-gray-200 text-gray-500 cursor-not-allowed" : "bg-indigo-600 text-white hover:bg-indigo-800"}
                             `}
                             onClick={handleParticipateClick}
                             disabled={isSubmitting || isPastEvent} 
