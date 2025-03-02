@@ -1,9 +1,9 @@
 {
   "title": "Accueil",
   "explore": "Explorer",
-  "hero_title_words": ["Rejoignez", "Créez", "Managez"],
-  "hero_title": "Des Événements Simplement",
-  "hero_subtitle": "Eventease vous aide à créer, organiser et gérer vos événements, que ce soient des soirées, des conférences ou des mariages",
+  "hero_title_words": ["Trouvez", "Créez", "Managez"],
+  "hero_title": "des événements avec simplicité",
+  "hero_subtitle": "EaseEvent vous aide à trouver, organiser et gérer vos événements, que ce soient des soirées, des conférences ou des mariages",
   "hero_button": "Explorer les événements",
   "subhero_title": "Découvrez les fonctionnalités d'EventEase",
   "subhero_subtitle": "Rationalisez votre processus de planification d’événements grâce à nos outils puissants conçus pour être efficaces et faciles à utiliser.",
