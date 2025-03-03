@@ -29,8 +29,8 @@ export default function Home({ params: { lng } }: HomeProps) {
       <Navbar lng={lng} />
       <Hero />
       <SubHero />
-      <Testimonials lng={lng} />
       <PricingTable lng={lng} />
+      <Testimonials lng={lng} />
       <ReliabilitySection lng={lng} />
       <FAQSection lng={lng} />
       <Footer />
