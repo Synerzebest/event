@@ -25,7 +25,7 @@ const nextConfig = {
                 ]
             },
             {
-                source: "/(.*)", // Toutes les autres pages
+                source: "/(.*)", 
                 headers: [
                     {
                         key: "X-Robots-Tag",
@@ -33,6 +33,14 @@ const nextConfig = {
                     }
                 ]
             }
+        ];
+    },
+    async rewrites() {
+        return [
+          {
+            source: "/ads.txt",
+            destination: "/ads.txt"
+          }
         ];
     },
     reactStrictMode: false,
