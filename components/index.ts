@@ -14,8 +14,8 @@ import Countdown from "./Countdown";
 import EventComponent from "./EventComponent";
 import PaymentDashboard from "./PaymentDashboard";
 import Transactions from "./Transactions";
-import Adsense from "./Adsense";
 import PetitePub from "./PetitePub";
+import Adsense from "./Adsense";
 
 export {
     Navbar,
@@ -34,6 +34,6 @@ export {
     EventComponent,
     PaymentDashboard,
     Transactions,
-    Adsense,
-    PetitePub
+    PetitePub,
+    Adsense
 }
