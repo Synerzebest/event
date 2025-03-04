@@ -5,10 +5,17 @@ import { fallbackLng, languages, cookieName } from "./app/i18n/settings";
 acceptLanguage.languages(languages);
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|images|favicon.ico|google47fe9171773f6dde.html|ads.txt|robots.txt).*)"],
+  matcher: ["/((?!api|_next/static|_next/image|images|favicon.ico|google47fe9171773f6dde.html|robots.txt|ads.txt).*)"],
 };
 
 export function middleware(req: NextRequest) {
+  const pathname = req.nextUrl.pathname;
+
+  // ✅ Si c'est ads.txt, on ne fait rien, on laisse Next.js gérer normalement
+  if (pathname === "/ads.txt") {
+    return NextResponse.next();
+  }
+
   let lng: string | undefined | null;
 
   // 🔍 Vérifier si un cookie existe
@@ -30,7 +37,6 @@ export function middleware(req: NextRequest) {
     lng = fallbackLng;
   }
 
-  const pathname = req.nextUrl.pathname;
   const isLanguageInUrl = languages.some((loc) => pathname.startsWith(`/${loc}`));
 
   // 🌍 Si la langue n'est pas dans l'URL, rediriger
