@@ -25,7 +25,7 @@ const nextConfig = {
                 ]
             },
             {
-                source: "/(.*)", 
+                source: "/((?!ads.txt).*)", // 🔹 Exclure ads.txt des règles globales
                 headers: [
                     {
                         key: "X-Robots-Tag",
@@ -37,10 +37,10 @@ const nextConfig = {
     },
     async rewrites() {
         return [
-          {
-            source: "/ads.txt",
-            destination: "/ads.txt"
-          }
+            {
+                source: "/ads.txt",
+                destination: "/public/ads.txt" 
+            }
         ];
     },
     reactStrictMode: false,
