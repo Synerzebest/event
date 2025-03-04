@@ -27,18 +27,18 @@ export default function RootLayout({ children, params: { lng } }: RootLayoutProp
   return (
     <html lang={lng} dir={dir(lng)}>
       <head>
+        
         <link rel="icon" href="/favicon.ico" sizes="any" />
         {GoogleAdsenseId && (
           <Script
             async
-            strategy="afterInteractive"
             src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${GoogleAdsenseId}`}
             crossOrigin="anonymous"
           />
         )}
       </head>
       <body className="antialiased">
-        <Adsense pId={GoogleAdsenseId} /> {/* ✅ Utilisation correcte */}
+        <Adsense pId={GoogleAdsenseId} />
         {children}
       </body>
     </html>
