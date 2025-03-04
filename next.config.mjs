@@ -12,11 +12,24 @@ const nextConfig = {
     async headers() {
         return [
             {
-                source: "/(.*)", // Applique la règle à toutes les pages
+                source: "/ads.txt",
+                headers: [
+                    {
+                        key: "Content-Type",
+                        value: "text/plain",
+                    },
+                    {
+                        key: "X-Robots-Tag",
+                        value: "index, follow",
+                    }
+                ]
+            },
+            {
+                source: "/(.*)", // Toutes les autres pages
                 headers: [
                     {
                         key: "X-Robots-Tag",
-                        value: "index, follow"
+                        value: "index, follow",
                     }
                 ]
             }
