@@ -286,10 +286,6 @@ const CreateEventForm: React.FC = () => {
                             className="w-full mb-4"
                         />
                     </div>
-                </div>
-    
-                {/* Deuxième colonne */}
-                <div className="w-full md:w-1/2 flex flex-col gap-4">
                     <p className="text-2xl font-bold mb-2 text-indigo-500">{safeTranslate(t,'event_privacy_guests')}</p>
                     <Radio.Group
                         value={formData.privacy}
@@ -307,8 +303,12 @@ const CreateEventForm: React.FC = () => {
                             showIcon
                         />
                     )}
+                </div>
+    
+                {/* Deuxième colonne */}
+                <div className="w-full md:w-1/2 flex flex-col gap-4">
 
-                    {/* Déplacement du champ Tickets ici */}
+                    {/* Tickets */}
                     <div className="w-full flex flex-col gap-4 mt-6">
                         <p className="text-2xl font-bold mb-2 text-indigo-500">Tickets</p>
                         {user?.accountStatus === "verified" && user?.chargesEnabled && user?.payoutsEnabled ? (
@@ -318,7 +318,7 @@ const CreateEventForm: React.FC = () => {
                                         <div className="flex flex-col lg:flex-row lg:items-end lg:gap-4 gap-2">
                                             <div className="flex flex-col w-full gap-2">
                                                 <label className="block text-sm font-medium text-gray-700">
-                                                    {safeTranslate(t,'ticket_name')}
+                                                    {safeTranslate(t, 'ticket_name')}
                                                 </label>
                                                 <Input 
                                                     value={ticket.name} 
@@ -329,7 +329,7 @@ const CreateEventForm: React.FC = () => {
                                             </div>
                                             <div className="flex flex-col w-full md:w-1/3 gap-2">
                                                 <label className="block text-sm font-medium text-gray-700">
-                                                    {safeTranslate(t,'price')} (€)
+                                                    {safeTranslate(t, 'price')} (€)
                                                 </label>
                                                 <InputNumber
                                                     value={ticket.price}
@@ -342,7 +342,7 @@ const CreateEventForm: React.FC = () => {
                                             </div>
                                             <div className="flex flex-col w-full md:w-1/3 gap-2">
                                                 <label className="block text-sm font-medium text-gray-700">
-                                                    {safeTranslate(t,'quantity')}
+                                                    {safeTranslate(t, 'quantity')}
                                                 </label>
                                                 <InputNumber
                                                     value={ticket.quantity}
@@ -359,7 +359,7 @@ const CreateEventForm: React.FC = () => {
                                                 onClick={() => removeTicket(index)} 
                                                 icon={<PlusOutlined />}
                                             >
-                                                {safeTranslate(t,'remove')}
+                                                {safeTranslate(t, 'remove')}
                                             </Button>
                                         </div>
                                     </div>
@@ -370,16 +370,55 @@ const CreateEventForm: React.FC = () => {
                                     onClick={addTicket}
                                     className="border-gray-400 text-gray-600"
                                 >
-                                    {safeTranslate(t,'add_ticket')}
+                                    {safeTranslate(t, 'add_ticket')}
                                 </Button>
                             </>
                         ) : (
-                            <p className="text-red-500">
-                                {safeTranslate(t,'stripe_alert')}
-                            </p>
+                            <>
+                                <Alert
+                                    message={safeTranslate(t, 'stripe_alert')}
+                                    type="error"
+                                    showIcon
+                                    className="mb-4"
+                                />
+                                <div className="flex flex-col gap-2 border border-gray-300 p-4 rounded-md">
+                                    <div className="flex flex-col lg:flex-row lg:items-end lg:gap-4 gap-2">
+                                        <div className="flex flex-col w-full lg:w-1/2 gap-2">
+                                            <label className="block text-sm font-medium text-gray-700">
+                                                {safeTranslate(t, 'ticket_name')}
+                                            </label>
+                                            <Input 
+                                                value={safeTranslate(t, 'participant')}
+                                                disabled
+                                            />
+                                        </div>
+                                        <div className="flex flex-col w-full lg:w-1/4 gap-2">
+                                            <label className="block text-sm font-medium text-gray-700">
+                                                {safeTranslate(t, 'quantity')}
+                                            </label>
+                                            <InputNumber
+                                                value={guestLimit}
+                                                min={1}
+                                                disabled
+                                                className="w-full"
+                                            />
+                                        </div>
+                                        <div className="flex flex-col w-full lg:w-1/4 gap-2">
+                                            <label className="block text-sm font-medium text-gray-700">
+                                                {safeTranslate(t, 'price')}
+                                            </label>
+                                            <Input
+                                                value={safeTranslate(t, "free")}
+                                                disabled
+                                                className="w-full"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </>
                         )}
                     </div>
-    
+                    <p className="text-2xl font-bold mb-2 text-indigo-500">Photo</p>
                     <Upload
                         fileList={fileList}
                         onChange={({ fileList: newFileList }) => {

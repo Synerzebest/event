@@ -25,10 +25,8 @@ const Footer = () => {
                 <div className="w-full md:w-1/3 flex flex-col items-center text-center">
                     <h3 className="text-lg font-bold text-white mb-4">{safeTranslate(t, "quick_links")}</h3>
                     <ul className="space-y-2">
-                        <li>
-                            <Link href="/about" className="text-gray-100 transition duration-300">
-                                {safeTranslate(t, "about_us")}
-                            </Link>
+                        <li className="text-gray-100">
+                            contact@easevent.be
                         </li>
                         <li>
                             <Link href={`/${lng}/terms-and-conditions`} className="text-gray-100 transition duration-300">
