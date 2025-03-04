@@ -35,14 +35,6 @@ const nextConfig = {
             }
         ];
     },
-    async rewrites() {
-        return [
-            {
-                source: "/ads.txt",
-                destination: "/public/ads.txt" 
-            }
-        ];
-    },
     reactStrictMode: false,
     env: {
         STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
