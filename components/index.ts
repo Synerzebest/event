@@ -8,7 +8,7 @@ import FAQSection from "./FaqSection";
 import Footer from './Footer'
 import Dashboard from "./Dashboard";
 import SearchAndFilters from "./SearchAndFilters";
-import CreateEventForm from "./CreateEventForm";
+import CreateEventButton from "./CreateEventButton";
 import Events from "./Events";
 import Countdown from "./Countdown";
 import EventComponent from "./EventComponent";
@@ -28,7 +28,7 @@ export {
     Footer,
     Dashboard,
     SearchAndFilters,
-    CreateEventForm,
+    CreateEventButton,
     Events,
     Countdown,
     EventComponent,

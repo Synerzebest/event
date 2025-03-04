@@ -12,6 +12,7 @@ import { getAuth } from "firebase/auth";
 import useLanguage from "@/lib/useLanguage";
 import { useTranslation } from "app/i18n";
 import { safeTranslate } from "@/lib/utils";
+import Link from "next/link";
 
 interface Ticket {
     id: string;
@@ -19,6 +20,8 @@ interface Ticket {
     eventId: string;
     used: boolean;
 }
+
+const no_ticket_image = "/images/no-ticket.png"
 
 const UserTickets = () => {
     const [tickets, setTickets] = useState<Ticket[]>([]);
@@ -187,7 +190,12 @@ const UserTickets = () => {
                     ))}
                 </ul>
             ) : (
-                <p className="text-center sm:text-start text-gray-500 text-xl">{safeTranslate(t,'no_ticket_yet')}</p>
+                <div className="sm:w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 w-[95%] mx-auto flex flex-col items-center text-center p-6 border border-gray-300 rounded-lg shadow-md">
+                    <Image src={no_ticket_image} alt="no ticket image" className="w-auto max-h-36 h-full mb-4" width={500} height={200} />
+                    <p className="text-white text-xl font-semibold">{safeTranslate(t, 'no_ticket_yet')}</p>
+                    <p className="text-white text-md mt-2">{safeTranslate(t, 'no_ticket_description')}</p>
+                    <Link href={`/${lng}/explore`} className="bg-blue-500 hover:bg-blue-600 duration-300 font-bold text-lg px-6 py-2 mt-4 text-white rounded-xl">{safeTranslate(t, "explore")}</Link>
+                </div>
             )}
 
             {/* Popup Modal pour le QR Code */}

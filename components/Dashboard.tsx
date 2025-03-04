@@ -14,6 +14,9 @@ import { IoIosSettings } from "react-icons/io";
 import useLanguage from "@/lib/useLanguage";
 import { useTranslation } from "@/app/i18n";
 import { safeTranslate } from "@/lib/utils"; 
+import ScrollToTopButton from "./ScrollToTopButton";
+
+const no_event_image = "/images/no-event.png";
 
 export default function Dashboard() {
     const [events, setEvents] = useState<Event[]>([]);
@@ -148,7 +151,7 @@ export default function Dashboard() {
     };
 
     return (
-        <div className="container mx-auto py-16">
+        <div className="relative top-44 container mx-auto">
             <section className="py-16">
                 <h2 className="text-3xl sm:text-2xl text-center sm:text-start font-bold mb-8">{safeTranslate(t,'my_tickets')}</h2>
                 <UserTickets />
@@ -166,7 +169,12 @@ export default function Dashboard() {
                             </div>
                         ))
                     ) : myEvents.length === 0 ? (
-                        <div className="text-center text-gray-500 text-xl">{safeTranslate(t,'no_event_yet')}</div>
+                        <div className="sm:w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 w-[95%] mx-auto flex flex-col items-center text-center p-6 border border-gray-300 rounded-lg shadow-md">
+                            <Image src={no_event_image} alt="no ticket image" className="w-auto max-h-36 h-full mb-4" width={500} height={200} />
+                            <p className="text-white text-xl font-semibold">{safeTranslate(t, 'no_event_yet')}</p>
+                            <p className="text-white text-md mt-2">{safeTranslate(t, 'no_event_description')}</p>
+                            <ScrollToTopButton />
+                        </div>
                     ) : (
                         myEvents.map(event => {
                             const isLiked = likedEvents.includes(event.id); 

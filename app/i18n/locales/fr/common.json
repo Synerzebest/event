@@ -175,5 +175,8 @@
   "privacy_policy": "Politique de confidentialité",
   "plan_limit": "{{plan}} plan: {{max}} max",
   "unlimited": "Illimité",
-  "private_event_alert": "Un événement privé ne sera accessible que depuis son lien de partage."
+  "private_event_alert": "Un événement privé ne sera accessible que depuis son lien de partage.",
+  "new_event": "Nouvel événement",
+  "no_ticket_description": "🎟️ Obtenez votre premier ticket ici 🎟️",
+  "no_event_description": "📆 Créez votre premier événement en cliquant sur le bouton au-dessus 📆"
 }

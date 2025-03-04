@@ -174,5 +174,8 @@
   "privacy_policy": "Privacybeleid",
   "plan_limit": "{{plan}} plan: {{max}} max",
   "unlimited": "Onbeperkt",
-  "private_event_alert": "Een privé-evenement is alleen toegankelijk via de deellink"
+  "private_event_alert": "Een privé-evenement is alleen toegankelijk via de deellink",
+  "new_event": "Nieuw Evenement",
+  "no_ticket_description": "🎟️ Koop hier uw eerste ticket 🎟️",
+  "no_event_description": "📆 Maak uw eerste evenement aan door op de knop hierboven te klikken 📆"
 }

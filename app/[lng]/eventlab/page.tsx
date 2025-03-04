@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Navbar, Footer, Dashboard, CreateEventForm } from '@/components';
+import { Navbar, Footer, Dashboard, CreateEventButton } from '@/components';
 import useFirebaseUser from '@/lib/useFirebaseUser'; 
 import { useTranslation } from '../../i18n'
 
@@ -50,7 +50,7 @@ export default function Page({ params: { lng } }: PageProps) {
   return (
     <>
       <Navbar lng={lng} />
-      <CreateEventForm />
+      <CreateEventButton lng={lng} />
       <Dashboard />
       <Footer />
     </>
