@@ -27,7 +27,7 @@ export default function RootLayout({ children, params: { lng } }: RootLayoutProp
   return (
     <html lang={lng} dir={dir(lng)}>
       <head>
-        
+        <meta name="google-adsense-account" content={GoogleAdsenseId} />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         {GoogleAdsenseId && (
           <Script
