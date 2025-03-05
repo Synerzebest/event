@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getFirestore, doc, getDoc, updateDoc, setDoc } from 'firebase/firestore';
-import { getAuth } from 'firebase-admin/auth';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from "@/lib/firebaseConfig";
 
 

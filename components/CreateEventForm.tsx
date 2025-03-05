@@ -128,97 +128,94 @@ const CreateEventForm: React.FC = () => {
     const handleSubmit = async () => {
         setUploading(true);
         try {
-          const isoDate = eventDate ? eventDate.toDate().toISOString() : null;
-      
-          // Validation des champs de formulaire
-          if (!formData.title || !formData.description || !formData.place || !formData.category) {
-            notification.error({
-              message: "Validation Error",
-              description: "Please fill in all required fields.",
-            });
-            setUploading(false);
-            return;
-          }
-      
-          if (fileList.length === 0) {
-            notification.error({
-              message: "Photo Error",
-              description: "Please provide a photo for the event."
-            });
-            setUploading(false);
-            return;
-          }
-      
-          for (const ticket of tickets) {
-            if (!ticket.name || ticket.price === null || ticket.quantity === null) {
-              notification.error({
-                message: "Ticket Validation Error",
-                description: "Please provide a name and price for all tickets.",
-              });
-              setUploading(false);
-              return;
+            const isoDate = eventDate ? eventDate.toDate().toISOString() : null;
+    
+            // Validation des champs de formulaire
+            if (!formData.title || !formData.description || !formData.place || !formData.category) {
+                notification.error({
+                    message: "Validation Error",
+                    description: "Please fill in all required fields.",
+                });
+                setUploading(false);
+                return;
             }
-          }
-      
-          const imageURLs = await Promise.all(fileList.map((file) => handleUpload(file)));
-      
-          const totalTickets = tickets.reduce((sum, ticket) => sum + ticket.quantity, 0);
-
-          const remainingPlaces = guestLimit - totalTickets;
-      
-          // Ajouter un ticket "participant" si nécessaire
-          if (remainingPlaces > 0) {
-            setTickets((prevTickets) => {
-                const participantTicketIndex = prevTickets.findIndex(ticket => ticket.name === "participant");
-        
+    
+            if (fileList.length === 0) {
+                notification.error({
+                    message: "Photo Error",
+                    description: "Please provide a photo for the event."
+                });
+                setUploading(false);
+                return;
+            }
+    
+            for (const ticket of tickets) {
+                if (!ticket.name || ticket.price === null || ticket.quantity === null) {
+                    notification.error({
+                        message: "Ticket Validation Error",
+                        description: "Please provide a name and price for all tickets.",
+                    });
+                    setUploading(false);
+                    return;
+                }
+            }
+    
+            const imageURLs = await Promise.all(fileList.map((file) => handleUpload(file)));
+    
+            // Calcul du nombre total de places occupées
+            const totalTickets = tickets.reduce((sum, ticket) => sum + ticket.quantity, 0);
+    
+            // Calcul du nombre de places restantes
+            const remainingPlaces = guestLimit - totalTickets;
+    
+            // Vérifier si un ticket "Participant" doit être ajouté ou mis à jour
+            const updatedTickets = [...tickets];
+    
+            if (remainingPlaces > 0) {
+                const participantTicketIndex = updatedTickets.findIndex(ticket => ticket.name === "Participant");
+    
                 if (participantTicketIndex !== -1) {
-                    // Si le ticket "participant" existe, on met à jour sa quantité
-                    const updatedTickets = [...prevTickets];
+                    // Si un ticket "Participant" existe, on met à jour sa quantité
                     updatedTickets[participantTicketIndex].quantity += remainingPlaces;
-                    return updatedTickets;
                 } else {
                     // Sinon, on l'ajoute
-                    return [
-                        ...prevTickets,
-                        {
-                            name: "Participant",
-                            price: 0,
-                            quantity: remainingPlaces,
-                            sold: 0,
-                        }
-                    ];
+                    updatedTickets.push({
+                        name: "Participant",
+                        price: 0,
+                        quantity: remainingPlaces,
+                        sold: 0,
+                    });
                 }
+            }
+    
+            // Créer l'événement dans Firestore avec les tickets et images
+            await addDoc(collection(db, "events"), {
+                ...formData,
+                date: isoDate,
+                images: imageURLs,
+                createdBy: user?.uid,
+                organizers: [user?.uid],
+                tickets: updatedTickets, // On utilise la liste de tickets mise à jour
             });
-        }
-        
-      
-          // Créer l'événement dans Firestore avec les tickets et images
-          await addDoc(collection(db, "events"), {
-            ...formData,
-            date: isoDate,
-            images: imageURLs,
-            createdBy: user?.uid,
-            organizers: [user?.uid],
-            tickets,
-          });
-      
-          notification.success({
-            message: "Event Created!",
-            description: "Your event has been successfully created.",
-          });
-      
-          setFileList([]);
-          setTickets([]);
+    
+            notification.success({
+                message: "Event Created!",
+                description: "Your event has been successfully created.",
+            });
+    
+            setFileList([]);
+            setTickets([]);
         } catch (error) {
-          console.error("Error creating event:", error);
-          notification.error({
-            message: "Error",
-            description: "There was an error creating the event.",
-          });
+            console.error("Error creating event:", error);
+            notification.error({
+                message: "Error",
+                description: "There was an error creating the event.",
+            });
         } finally {
-          setUploading(false);
+            setUploading(false);
         }
-      };
+    };
+    
 
       return (
         <div className="w-[95%] sm:w-3/4 mx-auto relative top-12 flex flex-col gap-8 mb-24">    
