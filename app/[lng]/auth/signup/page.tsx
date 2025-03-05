@@ -10,6 +10,8 @@ import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 import useLanguage from "@/lib/useLanguage";
 import { BackgroundLines } from "@/components/ui/background-lines";
+import { useTranslation } from "@/app/i18n";
+import { safeTranslate } from "@/lib/utils";
 
 const { Title } = Typography;
 
@@ -20,6 +22,8 @@ const Signup = () => {
     const [error, setError] = useState<string | null>(null);
     const lng = useLanguage();
     const router = useRouter();
+
+    const { t } = useTranslation(lng, "auth");
 
     // Inscription avec email et mot de passe
     const handleSignup = async (e: React.FormEvent) => {
@@ -40,7 +44,6 @@ const Signup = () => {
                 email: email,
                 createdAt: new Date(),
                 stripeConfigured: false,
-                subscription: "starter"
             });
 
             // Redirige vers le tableau de bord
@@ -65,7 +68,6 @@ const Signup = () => {
                     email: user.email,
                     createdAt: new Date(),
                     stripeConfigured: false,
-                    subscription: "starter"
                 });
             }
 
@@ -80,7 +82,7 @@ const Signup = () => {
             <div className="flex items-center justify-center min-h-screen relative z-10">
                 <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-lg">
                     <Title level={2} className="text-center">
-                        Inscription à Eventease
+                        EaseEvent
                     </Title>
 
                     {error && <Alert message={error} type="error" showIcon />}
@@ -88,7 +90,7 @@ const Signup = () => {
                     <form onSubmit={handleSignup} className="space-y-4">
                         <Input
                             type="text"
-                            placeholder="Name"
+                            placeholder={safeTranslate(t, "name")}
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             required
@@ -105,7 +107,7 @@ const Signup = () => {
                             size="large"
                         />
                         <Input.Password
-                            placeholder="Password"
+                            placeholder={safeTranslate(t, "password")}
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
@@ -119,7 +121,7 @@ const Signup = () => {
                             className="w-full mt-4"
                             size="large"
                         >
-                            Signup
+                            {safeTranslate(t, "signup")}
                         </Button>
                     </form>
 
@@ -132,13 +134,13 @@ const Signup = () => {
                         size="large"
                     >
                         <FcGoogle className="text-xl" />
-                        <span>Signup with Google</span>
+                        <span>{safeTranslate(t, "signup_google")}</span>
                     </Button>
 
                     <p className="text-center text-gray-500">
-                        Already Member ?{" "}
+                        {safeTranslate(t, "already_member")}{" "}
                         <Link href="/auth/signin" className="text-blue-500 hover:underline hover:text-blue-700">
-                            Signin
+                            {safeTranslate(t, "signin")}
                         </Link>
                     </p>
                 </div>

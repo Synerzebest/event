@@ -9,6 +9,9 @@ import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 import { BackgroundLines } from "@/components/ui/background-lines";
 import useLanguage from "@/lib/useLanguage";
+import { useTranslation } from "@/app/i18n";
+import { safeTranslate } from "@/lib/utils";
+
 
 const { Title } = Typography;
 
@@ -18,6 +21,8 @@ const Signin = () => {
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
     const lng = useLanguage();
+
+    const { t } = useTranslation(lng, "auth");
 
     const handleSignin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -45,7 +50,7 @@ const Signin = () => {
         <BackgroundLines className="flex items-center justify-center">                
                 <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-lg relative z-10">
                     <Title level={2} className="text-center">
-                    Welcome back to Eventease
+                    {safeTranslate(t, "welcome_back")}
                     </Title>
 
                     {error && <Alert message={error} type="error" showIcon />}
@@ -61,7 +66,7 @@ const Signin = () => {
                             size="large"
                         />
                         <Input.Password
-                            placeholder="Password"
+                            placeholder={safeTranslate(t, "password")}
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
@@ -75,7 +80,7 @@ const Signin = () => {
                             className="w-full mt-4"
                             size="large"
                         >
-                        Signin
+                            {safeTranslate(t, "signin")}
                         </Button>
                     </form>
 
@@ -88,13 +93,13 @@ const Signin = () => {
                         size="large"
                     >
                         <FcGoogle className="text-xl" />
-                        <span>Signin with Google</span>
+                        <span>{safeTranslate(t, "signin_google")}</span>
                     </Button>
 
 
                     <p className="text-center text-gray-500">
-                    Not member ?{" "}
-                    <Link href="/auth/signup" className="text-blue-500 hover:underline hover:text-blue-700">Signup</Link>
+                    {safeTranslate(t, "not_member")}{" "}
+                    <Link href="/auth/signup" className="text-blue-500 hover:underline hover:text-blue-700">{safeTranslate(t, "signup")}</Link>
                     </p>
                 </div>
         </BackgroundLines>

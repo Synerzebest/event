@@ -48,14 +48,14 @@ const CreateEventForm: React.FC = () => {
     const [maxGuestLimit, setMaxGuestLimit] = useState<number>(
         getGuestLimit(user?.nickname)
     );
-    const [guestLimit, setGuestLimit] = useState<number>(1);
+    const [guestLimit, setGuestLimit] = useState<number>(getGuestLimit(user?.nickname));
 
     useEffect(() => {
         if (user?.nickname) {
             const newLimit = getGuestLimit(user.nickname);
             setMaxGuestLimit(newLimit);
             
-            setGuestLimit((prev) => (prev === 1 ? newLimit : Math.min(prev, newLimit)));
+            setGuestLimit((prev) => (prev === 1 || prev > newLimit ? newLimit : prev));
         }
     }, [user?.nickname]);    
 
@@ -117,6 +117,13 @@ const CreateEventForm: React.FC = () => {
             }));
         }
     };
+
+    useEffect(() => {
+        setFormData((prev) => ({
+            ...prev,
+            guestLimit: guestLimit
+        }));
+    }, [guestLimit]);
 
     const handleSubmit = async () => {
         setUploading(true);

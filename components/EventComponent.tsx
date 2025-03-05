@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
-import { FaUser } from "react-icons/fa";
 import { format } from "date-fns";
 import { notification } from 'antd';
 import { FaShare } from "react-icons/fa6";
@@ -17,6 +16,7 @@ import { Spin } from "antd";
 import useFirebaseUser from "@/lib/useFirebaseUser";
 import Link from "next/link";
 import { safeTranslate } from "@/lib/utils";
+import { FaUser, FaHeart } from "react-icons/fa";
 
 interface EventComponentProps {
     eventId: string,
@@ -34,6 +34,32 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
     const lng = useLanguage();
     const { t } = useTranslation(lng, 'common');
     const { user } = useFirebaseUser();
+    const [isLiked, setIsLiked] = useState(false);
+
+    const handleLike = async (eventId: string) => {
+        if (!user) {
+            router.push('/auth/signin');
+            return;
+        }
+    
+        try {
+            const response = await fetch('/api/likeEvent', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: user.uid, eventId }),
+            });
+    
+            const data = await response.json();
+            if (response.ok) {
+                setIsLiked(true);
+            } else {
+                console.error('Error liking event:', data.error);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+    
 
     useEffect(() => {
         const fetchEvent = async () => {
@@ -185,21 +211,29 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
                             </Link>
                         )
                     ) : (
-                        <motion.button
-                            className={`font-bold py-2 px-4 rounded-lg transition-all duration-200 transform flex items-center justify-center gap-2
-                                ${isSubmitting || isPastEvent ? "bg-gray-200 text-gray-500 cursor-not-allowed" : "bg-indigo-600 text-white hover:bg-indigo-800"}
-                            `}
-                            onClick={handleParticipateClick}
-                            disabled={isSubmitting || isPastEvent} 
-                        >
-                            {isSubmitting ? (
-                                <>
-                                    {safeTranslate(t,'participate')} <Spin size="small" />
-                                </>
-                            ) : (
-                                isPastEvent ? safeTranslate(t,'event_expired') : safeTranslate(t,'participate')
-                            )}
-                        </motion.button>
+                        <div className="w-full flex items-center justify-between">
+                            <motion.button
+                                className={`font-bold py-2 px-4 rounded-lg transition-all duration-200 transform flex items-center justify-center gap-2
+                                    ${isSubmitting || isPastEvent ? "bg-gray-200 text-gray-500 cursor-not-allowed" : "bg-indigo-600 text-white hover:bg-indigo-800"}
+                                `}
+                                onClick={handleParticipateClick}
+                                disabled={isSubmitting || isPastEvent} 
+                            >
+                                {isSubmitting ? (
+                                    <>
+                                        {safeTranslate(t,'participate')} <Spin size="small" />
+                                    </>
+                                ) : (
+                                    isPastEvent ? safeTranslate(t,'event_expired') : safeTranslate(t,'participate')
+                                )}
+                            </motion.button>
+                            <button
+                                onClick={() => handleLike(event.id)}
+                                className={`${isLiked ? 'text-red-500' : 'text-gray-400'}`}
+                            >
+                                <FaHeart size={24} className={`transition-colors duration-200 ${isLiked ? 'fill-current' : ''}`} />
+                            </button>
+                        </div>
                     )}
                 </div>
                 )}
