@@ -177,5 +177,6 @@
   "private_event_alert": "A private event will only be accessible from its share link.",
   "new_event": "New Event",
   "no_ticket_description": "🎟️ Get your first ticket here 🎟️",
-  "no_event_description": "📆 Create your first event by clicking the button above 📆"
+  "no_event_description": "📆 Create your first event by clicking the button above 📆",
+  "more_info": "More Info"
 }

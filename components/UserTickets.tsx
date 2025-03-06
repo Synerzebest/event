@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Spin, Button, Modal, Skeleton } from "antd";
+import { Button, Modal, Skeleton } from "antd";
 import { Event } from "@/types/types";
 import { format } from "date-fns";
 import Image from "next/image";
@@ -128,102 +128,100 @@ const UserTickets = () => {
         setSelectedTicketId(null);
     };
 
-    if (loading) {
-        return <div className="w-full flex justify-center items-center"><Spin /></div>;
-    }
-
     return (
         <div className="mb-12">
-            {tickets.length > 0 ? (
-                <ul className="no-scrollbar flex overflow-x-auto sm:overflow-x-hidden sm:flex-wrap items-start gap-4 scroll-snap-x-mandatory scroll-snap-type-x-mandatory py-4 px-2">
-                    {tickets.map(ticket => (
-                        <li 
-                            key={ticket.id} 
-                            className="border rounded mb-2 w-[350px] flex-none flex flex-col gap-4 scroll-snap-start"
-                        >
-                            {events[ticket.eventId] ? (
-                                <>
-                                    <div>
-                                        <Image 
-                                            alt={`${events[ticket.eventId].title}`} 
-                                            src={`${events[ticket.eventId].images[0]}`} 
-                                            width={250}
-                                            height={140}
-                                            className="object-cover w-full h-[250px] max-h-[250px] mx-auto border-0 border-b rounded-t-xl"
-                                        />
-                                    </div>
-                                    <div className="px-4 mb-4 flex flex-col gap-4">
-                                        <div className="w-full flex items-center justify-between">
-                                            <p className="text-lg font-bold">{events[ticket.eventId].title}</p>
-
-                                            {ticket.used ? (
-                                                <p className="text-xs font-semibold text-red-600 bg-red-100 px-3 py-1 rounded-full border border-red-300 w-fit">
-                                                    {safeTranslate(t,'used_ticket_badge')}
-                                                </p>
-                                            ) : (
-                                                <>
-                                                </>
-                                            )}
-                                        </div>
-                                        
-                                        <p className="flex items-center gap-2 text-sm sm:text-base">
-                                            <LuCalendarDays />
-                                            {format(new Date(events[ticket.eventId].date), 'dd MMMM yyyy')}
-                                        </p>
-                                        <p className="flex items-center gap-2 text-sm sm:text-base">
-                                            <IoLocationOutline />
-                                            {events[ticket.eventId].place}
-                                        </p>
-                                        <Button type="primary" onClick={() => handleShowQRCode(ticket)}>
-                                            {safeTranslate(t,'show_qr_code')}
-                                        </Button>
-                                    </div>
-                                </>
-                            ) : (
-                                <div className="flex flex-col gap-4 px-4 py-6">
-                                    <Skeleton.Input active size="small" className="w-full" />
-                                    <Skeleton active paragraph={{ rows: 2 }} className="w-full" />
-                                    <Skeleton.Button active size="default" className="w-full" />
+    {tickets.length > 0 && !loading ? (
+        <div className="w-[95%] mx-auto sm:w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-4 rounded-xl overflow-hidden">
+            <ul className="w-full flex flex-nowrap overflow-x-auto snap-x snap-mandatory scroll-smooth items-start gap-4 no-scrollbar">
+                {tickets.map(ticket => (
+                    <li 
+                        key={ticket.id} 
+                        className="rounded mb-2 min-w-[350px] max-w-[350px] flex-none flex flex-col gap-4 snap-center bg-white rounded-xl"
+                    >
+                        {events[ticket.eventId] ? (
+                            <>
+                                <div>
+                                    <Image 
+                                        alt={`${events[ticket.eventId].title}`} 
+                                        src={`${events[ticket.eventId].images[0]}`} 
+                                        width={250}
+                                        height={140}
+                                        className="object-cover w-full h-[250px] max-h-[250px] mx-auto border-0 border-b rounded-t-xl"
+                                    />
                                 </div>
-                            )}
-                        </li>
-                    ))}
-                </ul>
-            ) : (
-                <div className="sm:w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 w-[95%] mx-auto flex flex-col items-center text-center p-6 border border-gray-300 rounded-lg shadow-md">
-                    <Image src={no_ticket_image} alt="no ticket image" className="w-auto max-h-36 h-full mb-4" width={500} height={200} />
-                    <p className="text-white text-xl font-semibold">{safeTranslate(t, 'no_ticket_yet')}</p>
-                    <p className="text-white text-md mt-2">{safeTranslate(t, 'no_ticket_description')}</p>
-                    <Link href={`/${lng}/explore`} className="bg-blue-500 hover:bg-blue-600 duration-300 font-bold text-lg px-6 py-2 mt-4 text-white rounded-xl">{safeTranslate(t, "explore")}</Link>
-                </div>
-            )}
+                                <div className="px-4 mb-4 flex flex-col gap-4">
+                                    <div className="w-full flex items-center justify-between">
+                                        <p className="text-lg font-bold">{events[ticket.eventId].title}</p>
 
-            {/* Popup Modal pour le QR Code */}
-            <Modal
-                title="QR Code"
-                visible={isModalVisible}
-                onCancel={handleCloseModal}
-                footer={[
-                    <Button key="close" onClick={handleCloseModal}>
-                        {safeTranslate(t,'close')}
-                    </Button>
-                ]}
-            >
-                {selectedTicketId && qrCode[selectedTicketId] ? (
-                    <div className="flex justify-center">
-                        <Image
-                            src={qrCode[selectedTicketId] as string}
-                            alt={`QR Code for Ticket ${selectedTicketId}`}
-                            width={600}
-                            height={600}
-                            className="rounded-lg"
-                        />
-                    </div>
-                ) : (
-                    <p>{safeTranslate(t,'qr_code_loading')}</p>
-                )}
-            </Modal>
+                                        {ticket.used ? (
+                                            <p className="text-xs font-semibold text-red-600 bg-red-100 px-3 py-1 rounded-full border border-red-300 w-fit">
+                                                {safeTranslate(t,'used_ticket_badge')}
+                                            </p>
+                                        ) : null}
+                                    </div>
+                                    
+                                    <p className="flex items-center gap-2 text-sm sm:text-base">
+                                        <LuCalendarDays />
+                                        {format(new Date(events[ticket.eventId].date), 'dd MMMM yyyy')}
+                                    </p>
+                                    <p className="flex items-center gap-2 text-sm sm:text-base">
+                                        <IoLocationOutline />
+                                        {events[ticket.eventId].place}
+                                    </p>
+                                    <Button type="primary" onClick={() => handleShowQRCode(ticket)}>
+                                        {safeTranslate(t,'show_qr_code')}
+                                    </Button>
+                                </div>
+                            </>
+                        ) : (
+                            <div className="flex flex-col gap-4 px-4 py-6">
+                                <Skeleton.Input active size="small" className="w-full" />
+                                <Skeleton active paragraph={{ rows: 2 }} className="w-full" />
+                                <Skeleton.Button active size="default" className="w-full" />
+                            </div>
+                        )}
+                    </li>
+                ))}
+            </ul>
         </div>
+    ) : (
+        <div className="sm:w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 w-[95%] mx-auto flex flex-col items-center text-center p-6 border border-gray-300 rounded-lg shadow-md">
+            <Image src={no_ticket_image} alt="no ticket image" className="w-auto max-h-36 h-full mb-4" width={500} height={200} />
+            <p className="text-white text-xl font-semibold">{safeTranslate(t, 'no_ticket_yet')}</p>
+            <p className="text-white text-md mt-2">{safeTranslate(t, 'no_ticket_description')}</p>
+            <Link href={`/${lng}/explore`} className="bg-indigo-500 hover:bg-indigo-600 duration-300 font-bold text-lg px-6 py-2 mt-4 text-white rounded-xl">
+                {safeTranslate(t, "explore")}
+            </Link>
+        </div>
+    )}
+
+    {/* Popup Modal pour le QR Code */}
+    <Modal
+        title="QR Code"
+        visible={isModalVisible}
+        onCancel={handleCloseModal}
+        footer={[
+            <Button key="close" onClick={handleCloseModal}>
+                {safeTranslate(t,'close')}
+            </Button>
+        ]}
+    >
+        {selectedTicketId && qrCode[selectedTicketId] ? (
+            <div className="flex justify-center">
+                <Image
+                    src={qrCode[selectedTicketId] as string}
+                    alt={`QR Code for Ticket ${selectedTicketId}`}
+                    width={600}
+                    height={600}
+                    className="rounded-lg"
+                />
+            </div>
+        ) : (
+            <p>{safeTranslate(t,'qr_code_loading')}</p>
+        )}
+    </Modal>
+</div>
+
     );
 };
 
