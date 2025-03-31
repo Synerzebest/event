@@ -80,8 +80,12 @@ const UserTickets = () => {
         const data: Ticket[] = await response.json();
         const sortedTickets = data.sort((a, b) => Number(a.used) - Number(b.used));
         setTickets(sortedTickets);
-      } catch (error: any) {
-        setError(error.message || "Unknown error");
+        } catch (err) {
+            if (err instanceof Error) {
+                setError(err.message);
+            } else {
+                setError("Unknown error");
+        }
       } finally {
         setLoading(false);
       }
@@ -149,6 +153,12 @@ const UserTickets = () => {
 
   return (
     <div className="mb-12">
+        {error && (
+            <div className="w-[97%] sm:w-full mx-auto mb-4 bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-lg">
+                {error}
+            </div>
+        )}
+
       {tickets.length > 0 && !loading ? (
         <div className="w-[97%] sm:w-full mx-auto bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-4 rounded-xl overflow-hidden">
           <ul
