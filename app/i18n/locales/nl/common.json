@@ -15,14 +15,14 @@
         "image": "/images/eventmanagment.png"
     },
     {
+      "title": "Gemakkelijk deelnemen",
+      "description": "Vind het evenement dat bij u past en neem er in slechts een paar klikken aan deel !",
+      "image": "/images/participate-event.jpg"
+    },
+    {
         "title": "Evenementplanning",
         "description": "Plan uw evenementen efficiënt met onze intuïtieve tools.",
         "image": "/images/eventplanning.png"
-    },
-    {
-        "title": "Aangepaste uitnodigingen",
-        "description": "Stuur gepersonaliseerde uitnodigingen naar uw gasten.",
-        "image": "/images/custominvitations.png"
     },
     {
         "title": "RSVP-tracking",

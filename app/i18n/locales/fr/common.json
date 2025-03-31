@@ -14,14 +14,14 @@
       "image": "/images/eventmanagment.png"
     },
     {
+      "title": "Rejoignez facilement",
+      "description": "Trouvez l'événement qui vous convient et participez-y en quelques clics !",
+      "image": "/images/participate-event.jpg"
+    },
+    {
       "title": "Planification d'événements",
       "description": "Planifiez vos événements efficacement avec nos outils intuitifs.",
       "image": "/images/eventplanning.png"
-    },
-    {
-      "title": "Invitations personnalisées",
-      "description": "Envoyez des invitations personnalisées à vos invités.",
-      "image": "/images/custominvitations.png"
     },
     {
       "title": "Suivi des RSVP",

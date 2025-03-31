@@ -59,7 +59,7 @@ const SubHero = () => {
                 key={feature.title}
                 whileHover={{ scale: 1.02, boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.08)" }}
                 className="relative bg-white rounded-2xl shadow-lg overflow-hidden
-                           transition-all duration-300 mx-auto border border-gray-200 min-w-[80%] sm:min-w-[60%] md:min-w-[auto] snap-center"
+                           transition-all duration-300 mx-auto border border-gray-200 min-w-[95%] sm:min-w-[60%] md:min-w-[auto] snap-center"
               >
                 {/* Image */}
                 <div className="relative h-40 w-full">

@@ -218,8 +218,8 @@ const CreateEventForm: React.FC = () => {
     
 
       return (
-        <div className="w-[95%] sm:w-3/4 mx-auto relative top-12 flex flex-col gap-8 mb-24">    
-            <div className="w-full flex flex-col md:flex-row bg-white p-8 rounded-lg shadow-lg gap-8 sm:gap-0 border border-gray-300">
+        <div className="w-full sm:w-3/4 mx-auto relative top-12 flex flex-col gap-8 mb-24">    
+            <div className="w-full flex flex-col md:flex-row bg-white gap-8 sm:gap-0 ">
                 {/* Première colonne */}
                 <div className="w-full md:w-1/2 flex flex-col gap-4 pr-4">
                     <p className="text-2xl font-bold mb-2 text-indigo-500">{safeTranslate(t,'event_details')}</p>
