@@ -17,6 +17,7 @@ import useFirebaseUser from "@/lib/useFirebaseUser";
 import Link from "next/link";
 import { safeTranslate } from "@/lib/utils";
 import { FaUser, FaHeart } from "react-icons/fa";
+import ShareModal from "./ShareModal";
 
 interface EventComponentProps {
     eventId: string,
@@ -35,6 +36,7 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
     const { t } = useTranslation(lng, 'common');
     const { user } = useFirebaseUser();
     const [isLiked, setIsLiked] = useState(false);
+  const [shareModalEvent, setShareModalEvent] = useState<Event | null>(null);
 
     const handleLike = async (eventId: string) => {
         if (!user) {
@@ -175,7 +177,7 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
 
             <button
                 className="absolute top-2 right-2 p-2 rounded-full hover:bg-gray-800 hover:bg-opacity-20 focus:outline-none duration-300"
-                onClick={() => setMenuOpen(!menuOpen)}
+                onClick={() => setShareModalEvent(event)}
             >
                 <FaShare className="w-4 h-4 text-white" />
             </button>
@@ -238,6 +240,14 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
                 </div>
                 )}
             </div>
+            {shareModalEvent && (
+                <ShareModal
+                    open={true}
+                    onClose={() => setShareModalEvent(null)}
+                    eventUrl={`${process.env.NEXT_PUBLIC_BASE_URL}/event/${shareModalEvent.id}`}
+                    eventTitle={shareModalEvent.title}
+                />
+            )}
         </motion.div>
     );
 };

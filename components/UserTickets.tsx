@@ -6,8 +6,6 @@ import { format } from "date-fns";
 import Image from "next/image";
 import { LuCalendarDays } from "react-icons/lu";
 import { IoLocationOutline } from "react-icons/io5";
-import { db } from "@/lib/firebaseConfig";
-import { doc, getDoc } from "firebase/firestore";
 import QRCode from 'qrcode';
 import { getAuth } from "firebase/auth";
 import useLanguage from "@/lib/useLanguage";
@@ -15,7 +13,8 @@ import { useTranslation } from "app/i18n";
 import { safeTranslate } from "@/lib/utils";
 import Link from "next/link";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-
+import { motion } from "framer-motion";
+import type { TFunction } from "i18next";
 
 interface Ticket {
   id: string;
@@ -26,17 +25,28 @@ interface Ticket {
 
 const no_ticket_image = "/images/no-ticket.png";
 
+const useIsMobile = (breakpoint = 640) => {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const update = () => setIsMobile(window.innerWidth < breakpoint);
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, [breakpoint]);
+  return isMobile;
+};
+
 const UserTickets = () => {
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [events, setEvents] = useState<{ [key: string]: Event }>({});
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [qrCode, setQrCode] = useState<{ [key: string]: string | null }>({});
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedTicketId, setSelectedTicketId] = useState<string | null>(null);
   const carouselRef = useRef<CarouselRef>(null);
   const lng = useLanguage();
-  const { t } = useTranslation(lng, "common");
+  const { t } = useTranslation(lng, "common") as { t: TFunction };
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const fetchUserTickets = async () => {
@@ -58,9 +68,9 @@ const UserTickets = () => {
         setTickets(sortedTickets);
       } catch (err) {
         if (err instanceof Error) {
-          setError(err.message);
+          console.error(err.message);
         } else {
-          setError("Unknown error");
+          console.error("Unknown error");
         }
       } finally {
         setLoading(false);
@@ -88,20 +98,6 @@ const UserTickets = () => {
 
   const handleShowQRCode = async (ticket: Ticket) => {
     setSelectedTicketId(ticket.id);
-    const ticketRef = doc(db, "tickets", ticket.id);
-    const ticketSnapshot = await getDoc(ticketRef);
-
-    if (!ticketSnapshot.exists()) {
-      setError(`${t('unvalid_ticket')}`);
-      return;
-    }
-
-    const ticketData = ticketSnapshot.data();
-    if (ticketData.used) {
-      setError(`${t('already_used_ticket')}`);
-      return;
-    }
-
     const qrData = JSON.stringify({ eventId: ticket.eventId, ticketId: ticket.id, userId: ticket.userId });
     const qrCodeUrl = await QRCode.toDataURL(qrData);
     setQrCode(prev => ({ ...prev, [ticket.id]: qrCodeUrl }));
@@ -111,85 +107,39 @@ const UserTickets = () => {
   const handleCloseModal = () => {
     setIsModalVisible(false);
     setSelectedTicketId(null);
-    setError(null);
   };
 
   return (
     <div className="mb-12 relative">
-      {error && (
-        <div className="w-[97%] sm:w-full mx-auto mb-4 bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-lg">
-          {error}
-        </div>
-      )}
-  
       {tickets.length > 0 && !loading ? (
         <div className="w-[97%] sm:w-full mx-auto bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-4 rounded-xl overflow-hidden">
-          <Carousel
-            dots={false}
-            infinite={false}
-            ref={carouselRef}
-          >
-            {tickets.map(ticket => (
-              <div key={ticket.id} className="px-2">
-                <div className="rounded bg-white shadow-md flex flex-col gap-4 overflow-hidden rounded-xl">
-                  {events[ticket.eventId] ? (
-                    <>
-                      <Image
-                        alt={events[ticket.eventId].title}
-                        src={events[ticket.eventId].images[0]}
-                        width={250}
-                        height={140}
-                        className="object-cover w-full h-[250px] max-h-[250px] mx-auto"
-                      />
-                      <div className="px-4 mb-4 flex flex-col gap-4">
-                        <div className="w-full flex items-center justify-between">
-                          <p className="text-lg font-bold">{events[ticket.eventId].title}</p>
-                          {ticket.used && (
-                            <p className="text-xs font-semibold text-red-600 bg-red-100 px-3 py-1 rounded-full border border-red-300 w-fit">
-                              {safeTranslate(t, 'used_ticket_badge')}
-                            </p>
-                          )}
-                        </div>
-                        <p className="flex items-center gap-2 text-sm sm:text-base">
-                          <LuCalendarDays />
-                          {format(new Date(events[ticket.eventId].date), 'dd MMMM yyyy')}
-                        </p>
-                        <p className="flex items-center gap-2 text-sm sm:text-base">
-                          <IoLocationOutline />
-                          {events[ticket.eventId].place}
-                        </p>
-                        <Button type="primary" onClick={() => handleShowQRCode(ticket)}>
-                          {safeTranslate(t, 'show_qr_code')}
-                        </Button>
-                      </div>
-                    </>
-                  ) : (
-                    <div className="flex flex-col gap-4 px-4 py-6">
-                      <Skeleton.Input active size="small" className="w-full" />
-                      <Skeleton active paragraph={{ rows: 2 }} className="w-full" />
-                      <Skeleton.Button active size="default" className="w-full" />
-                    </div>
-                  )}
-                </div>
+          {isMobile ? (
+            <>
+              <Carousel dots={false} infinite={false} ref={carouselRef}>
+                {tickets.map(ticket => (
+                  <div key={ticket.id} className="px-2 w-full sm:w-[350px] mx-auto">
+                    <TicketCard ticket={ticket} event={events[ticket.eventId]} onShowQRCode={handleShowQRCode} t={t} />
+                  </div>
+                ))}
+              </Carousel>
+              <div className="flex justify-center gap-4 mt-4">
+                <motion.button whileTap={{scale: 1.3}} onClick={() => carouselRef.current?.prev()} className="bg-white text-black shadow p-2 rounded-full border border-gray-300 hover:shadow-md transition">
+                  <FiChevronLeft size={24} />
+                </motion.button>
+                <motion.button whileTap={{scale: 1.3}} onClick={() => carouselRef.current?.next()} className="bg-white text-black shadow p-2 rounded-full border border-gray-300 hover:shadow-md transition">
+                  <FiChevronRight size={24} />
+                </motion.button>
               </div>
-            ))}
-          </Carousel>
-  
-          {/* Flèches en dessous */}
-          <div className="flex justify-center gap-4 mt-4">
-            <button
-              onClick={() => carouselRef.current?.prev()}
-              className="bg-white text-black shadow p-2 rounded-full border border-gray-300 hover:shadow-md transition"
-            >
-              <FiChevronLeft size={24} />
-            </button>
-            <button
-              onClick={() => carouselRef.current?.next()}
-              className="bg-white text-black shadow p-2 rounded-full border border-gray-300 hover:shadow-md transition"
-            >
-              <FiChevronRight size={24} />
-            </button>
-          </div>
+            </>
+          ) : (
+            <div className="flex gap-4 overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth">
+              {tickets.map(ticket => (
+                <div key={ticket.id} className="snap-center flex-shrink-0 w-full sm:w-[350px] max-w-[350px]">
+                  <TicketCard ticket={ticket} event={events[ticket.eventId]} onShowQRCode={handleShowQRCode} t={t} />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       ) : (
         <div className="sm:w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 w-[95%] mx-auto flex flex-col items-center text-center p-6 border border-gray-300 rounded-lg shadow-md">
@@ -201,16 +151,12 @@ const UserTickets = () => {
           </Link>
         </div>
       )}
-  
+
       <Modal
         title="QR Code"
         open={isModalVisible}
         onCancel={handleCloseModal}
-        footer={[
-          <Button key="close" onClick={handleCloseModal}>
-            {safeTranslate(t, 'close')}
-          </Button>
-        ]}
+        footer={[<Button key="close" onClick={handleCloseModal}>{safeTranslate(t, 'close')}</Button>]}
       >
         {selectedTicketId && qrCode[selectedTicketId] ? (
           <div className="flex justify-center">
@@ -226,6 +172,47 @@ const UserTickets = () => {
           <p>{safeTranslate(t, 'qr_code_loading')}</p>
         )}
       </Modal>
+    </div>
+  );
+};
+
+const TicketCard = ({ ticket, event, onShowQRCode, t }: { ticket: Ticket; event?: Event; onShowQRCode: (t: Ticket) => void; t: TFunction }) => {
+  return event ? (
+    <div className="rounded bg-white shadow-md flex flex-col gap-4 overflow-hidden rounded-xl">
+      <Image
+        alt={event.title}
+        src={event.images[0]}
+        width={250}
+        height={140}
+        className="object-cover w-full h-[250px] max-h-[250px] mx-auto"
+      />
+      <div className="px-4 mb-4 flex flex-col gap-4">
+        <div className="w-full flex items-center justify-between">
+          <p className="text-lg font-bold">{event.title}</p>
+          {ticket.used && (
+            <p className="text-xs font-semibold text-red-600 bg-red-100 px-3 py-1 rounded-full border border-red-300 w-fit">
+              {safeTranslate(t, 'used_ticket_badge')}
+            </p>
+          )}
+        </div>
+        <p className="flex items-center gap-2 text-sm sm:text-base">
+          <LuCalendarDays />
+          {format(new Date(event.date), 'dd MMMM yyyy')}
+        </p>
+        <p className="flex items-center gap-2 text-sm sm:text-base">
+          <IoLocationOutline />
+          {event.place}
+        </p>
+        <Button type="primary" onClick={() => onShowQRCode(ticket)}>
+          {safeTranslate(t, 'show_qr_code')}
+        </Button>
+      </div>
+    </div>
+  ) : (
+    <div className="flex flex-col gap-4 px-4 py-6">
+      <Skeleton.Input active size="small" className="w-full" />
+      <Skeleton active paragraph={{ rows: 2 }} className="w-full" />
+      <Skeleton.Button active size="default" className="w-full" />
     </div>
   );
 };

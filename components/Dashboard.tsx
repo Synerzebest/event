@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import React, { useState, useEffect, useRef } from "react";
-import { Skeleton, notification, Carousel } from "antd";
+import { Skeleton, Carousel } from "antd";
 import type { CarouselRef } from "antd/es/carousel";
 import useFirebaseUser from "@/lib/useFirebaseUser";
 import { Event } from '@/types/types';
@@ -17,23 +17,36 @@ import useLanguage from "@/lib/useLanguage";
 import { useTranslation } from "@/app/i18n";
 import { safeTranslate } from "@/lib/utils"; 
 import ScrollToTopButton from "./ScrollToTopButton";
+import ShareModal from "./ShareModal";
 
 const no_event_image = "/images/no-event.png";
+
+function useIsMobile(breakpoint = 640): boolean {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const update = () => setIsMobile(window.innerWidth < breakpoint);
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, [breakpoint]);
+  return isMobile;
+}
 
 export default function Dashboard() {
   const [events, setEvents] = useState<Event[]>([]);
   const [myEvents, setMyEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState<boolean>(true); 
   const [likedEvents] = useState<string[]>([]);
-  const [menuOpenEventId, setMenuOpenEventId] = useState<string | null>(null); 
-  const menuRef = useRef<HTMLDivElement>(null);
   const [editEvent, setEditEvent] = useState<Event | null>(null); 
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const [shareModalEvent, setShareModalEvent] = useState<Event | null>(null);
   const eventCarouselRef = useRef<CarouselRef>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const lng = useLanguage();
   const { t } = useTranslation(lng, "common");
   const { user } = useFirebaseUser();
-  const userId = user?.uid || "";
+  const userId: string = user?.uid || "";
+  const isMobile: boolean = useIsMobile();
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -53,16 +66,6 @@ export default function Dashboard() {
     };
     fetchEvents();
   }, []);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (menuOpenEventId && menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setMenuOpenEventId(null);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [menuOpenEventId]);
 
   useEffect(() => {
     if (!userId) return;
@@ -86,22 +89,49 @@ export default function Dashboard() {
   };
 
   const handleClosePopup = () => setSelectedEvent(null);
-
-  const handleCopyLink = (eventId: string) => {
-    const eventUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/event/${eventId}`;
-    navigator.clipboard.writeText(eventUrl);
-    notification.success({
-      message: "Link Copied!",
-      description: "Event link has been copied to clipboard.",
-      placement: "topRight",
-    });
-  };
-
   const handleEditEvent = (event: Event) => setEditEvent(event);
   const handleCloseEditPopup = () => setEditEvent(null);
 
   const updateEvent = (updatedEvent: Event) => {
     setEvents((prev) => prev.map((event) => event.id === updatedEvent.id ? { ...event, ...updatedEvent } : event));
+  };
+
+  const renderEventCard = (event: Event) => {
+    const isLiked = likedEvents.includes(event.id);
+
+    return (
+      <div className="relative rounded-xl shadow-lg bg-white">
+        <Image src={event.images[0]} alt={event.title} width={350} height={250} className="object-cover w-full h-[250px] max-h-[250px] mx-auto border-b rounded-t-xl" />
+        <button className="absolute top-2 right-2 p-2 rounded-full hover:bg-gray-800 hover:bg-opacity-20 focus:outline-none duration-300" onClick={() => setShareModalEvent(event)}>
+          <FaShare className="w-4 h-4 text-white" />
+        </button>
+        <div className="p-4">
+          <div className="flex justify-between items-center mb-2">
+            <h3 className="font-bold text-xl">{event.title}</h3>
+            <div className="border border-indigo-600 text-indigo-600 text-sm font-bold py-1 px-2 rounded flex items-center gap-1 whitespace-nowrap">
+              {event.currentGuests ?? 0} / {event.guestLimit} <FaUser />
+            </div>
+          </div>
+          <p className="text-gray-600">{new Date(event.date).toLocaleDateString('fr-FR')} | {event.place}</p>
+          <p className="text-gray-700 mt-2 line-clamp-3">{event.description}</p>
+          <div className="flex justify-between items-center gap-4 mt-4">
+            <div className="flex items-center gap-4">
+              <button className="bg-indigo-500 text-white font-bold py-2 px-4 rounded hover:bg-indigo-600" onClick={() => handleManageEvent(event.id)}>
+                {safeTranslate(t, "more_info")}
+              </button>
+              <button className={`${isLiked ? 'text-red-500' : 'text-gray-400'}`}>
+                <FaHeart size={24} className={`transition-colors duration-200 ${isLiked ? 'fill-current' : ''}`} />
+              </button>
+            </div>
+            {event.createdBy === userId && (
+              <button className="p-2 rounded-full hover:bg-gray-100 duration-300" onClick={() => handleEditEvent(event)}>
+                <IoIosSettings size={25} className="text-gray-500" />
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -126,92 +156,56 @@ export default function Dashboard() {
               ))}
             </div>
           ) : myEvents.length === 0 ? (
-            <div className="w-full flex flex-col items-center text-center p-6 rounded-lg shadow-md">
+            <div className="w-full flex flex-col items-center text-center p-6 rounded-lg">
               <Image src={no_event_image} alt="no ticket image" className="w-auto max-h-36 h-full mb-4" width={500} height={200} />
               <p className="text-white text-xl font-semibold">{safeTranslate(t, 'no_event_yet')}</p>
               <p className="text-white text-md mt-2">{safeTranslate(t, 'no_event_description')}</p>
               <ScrollToTopButton />
             </div>
-          ) : (
+          ) : isMobile ? (
             <>
               <Carousel
                 dots={false}
                 infinite={false}
                 ref={eventCarouselRef}
               >
-                {myEvents.map(event => {
-                  const isLiked = likedEvents.includes(event.id);
-                  const isMenuOpen = menuOpenEventId === event.id;
-
-                  return (
-                    <div key={event.id} className="px-2">
-                      <div className="relative flex-shrink-0 w-full sm:w-[350px] rounded-xl shadow-lg bg-white overflow-hidden">
-                        {isMenuOpen && (
-                          <div ref={menuRef} className="absolute top-[-3rem] z-10 right-2 bg-white border rounded-lg shadow-lg p-2">
-                            <button className="text-gray-800 text-sm px-4 py-2 hover:bg-gray-100 w-full text-left" onClick={() => handleCopyLink(event.id)}>
-                              {safeTranslate(t,'copy_event_link')}
-                            </button>
-                          </div>
-                        )}
-                        <Image src={event.images[0]} alt={event.title} width={350} height={250} className="object-cover w-full h-[250px] max-h-[250px] mx-auto border-b rounded-t-xl" />
-                        <button className="absolute top-2 right-2 p-2 rounded-full hover:bg-gray-800 hover:bg-opacity-20 focus:outline-none duration-300" onClick={() => setMenuOpenEventId(isMenuOpen ? null : event.id)}>
-                          <FaShare className="w-4 h-4 text-white" />
-                        </button>
-                        <div className="p-4">
-                          <div className="flex justify-between items-center mb-2">
-                            <h3 className="font-bold text-xl">{event.title}</h3>
-                            <div className="border border-indigo-600 text-indigo-600 text-sm font-bold py-1 px-2 rounded flex items-center gap-1 whitespace-nowrap">
-                              {event.currentGuests ?? 0} / {event.guestLimit} <FaUser />
-                            </div>
-                          </div>
-                          <p className="text-gray-600">{new Date(event.date).toLocaleDateString('fr-FR')} | {event.place}</p>
-                          <p className="text-gray-700 mt-2">{event.description}</p>
-                          <div className="flex justify-between items-center gap-4 mt-4">
-                            <div className="flex items-center gap-4">
-                              <button className="bg-indigo-500 text-white font-bold py-2 px-4 rounded hover:bg-indigo-600" onClick={() => handleManageEvent(event.id)}>
-                                {safeTranslate(t, "more_info")}
-                              </button>
-                              <button className={`${isLiked ? 'text-red-500' : 'text-gray-400'}`}>
-                                <FaHeart size={24} className={`transition-colors duration-200 ${isLiked ? 'fill-current' : ''}`} />
-                              </button>
-                            </div>
-                            {event.createdBy === userId && (
-                              <button className="p-2 rounded-full hover:bg-gray-100 duration-300" onClick={() => handleEditEvent(event)}>
-                                <IoIosSettings size={25} className="text-gray-500" />
-                              </button>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
+                {myEvents.map(event => (
+                  <div key={event.id} className="px-2">
+                    {renderEventCard(event)}
+                  </div>
+                ))}
               </Carousel>
-
-              {/* Flèches en dessous */}
-              {myEvents.length > 1 && (
-                <div className="flex justify-center gap-4 mt-4">
-                  <button
-                    onClick={() => eventCarouselRef.current?.prev()}
-                    className="bg-white text-black shadow p-2 rounded-full border border-gray-300 hover:shadow-md transition"
-                  >
-                    <FiChevronLeft size={24} />
-                  </button>
-                  <button
-                    onClick={() => eventCarouselRef.current?.next()}
-                    className="bg-white text-black shadow p-2 rounded-full border border-gray-300 hover:shadow-md transition"
-                  >
-                    <FiChevronRight size={24} />
-                  </button>
-                </div>
-              )}
+              <div className="flex justify-center gap-4 mt-4">
+                <button onClick={() => eventCarouselRef.current?.prev()} className="bg-white text-black shadow p-2 rounded-full border border-gray-300 hover:shadow-md transition">
+                  <FiChevronLeft size={24} />
+                </button>
+                <button onClick={() => eventCarouselRef.current?.next()} className="bg-white text-black shadow p-2 rounded-full border border-gray-300 hover:shadow-md transition">
+                  <FiChevronRight size={24} />
+                </button>
+              </div>
             </>
+          ) : (
+            <div ref={scrollRef} className="flex gap-4 overflow-x-auto no-scrollbar pb-2">
+              {myEvents.map(event => (
+                <div key={event.id} className="flex-shrink-0 w-[350px]">
+                  {renderEventCard(event)}
+                </div>
+              ))}
+            </div>
           )}
         </div>
       </section>
 
       {editEvent && <EditEventPopup event={editEvent} onClose={handleCloseEditPopup} onUpdateEvent={updateEvent} />}
       {selectedEvent && <EventPopup event={selectedEvent} onClose={handleClosePopup} />}
+      {shareModalEvent && (
+        <ShareModal
+            open={true}
+            onClose={() => setShareModalEvent(null)}
+            eventUrl={`${process.env.NEXT_PUBLIC_BASE_URL}/event/${shareModalEvent.id}`}
+            eventTitle={shareModalEvent.title}
+        />
+      )}
     </div>
   );
 }

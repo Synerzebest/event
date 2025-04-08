@@ -5,7 +5,7 @@ import { createInstance } from 'i18next';
 import resourcesToBackend from 'i18next-resources-to-backend';
 import { initReactI18next } from 'react-i18next/initReactI18next';
 import { getOptions } from './settings';
-import { i18n as i18nType } from 'i18next';
+import { i18n as i18nType, TFunction } from 'i18next';
 
 // Cache global pour les instances i18n
 const instanceCache = new Map();
@@ -69,21 +69,16 @@ export function useTranslation(
   }, [lng, normalizedNs]); // Dépend seulement des langues et namespaces
 
   if (!i18nInstance) {
-    // Si i18nInstance est null, retournez un objet de secours
+    const fallbackT = ((key: string) => key) as TFunction;
     return {
-      t: (key: string) => key,
+      t: fallbackT,
       i18n: {
         changeLanguage: () => Promise.resolve(),
       },
     };
   }
 
-  return {
-    t: i18nInstance.getFixedT(lng, normalizedNs, options.keyPrefix) as unknown as (
-      key: string,
-      options?: Record<string, unknown>
-    ) => string | object,
-    i18n: i18nInstance,
-  };
+  const t = i18nInstance.getFixedT(lng, normalizedNs, options.keyPrefix) as unknown as TFunction;
+  return { t, i18n: i18nInstance };
 
 }
