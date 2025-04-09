@@ -9,7 +9,7 @@ import { Event } from '@/types/types';
 import EventPopup from "./EventPopup";
 import EditEventPopup from "./EditEventPopup";
 import UserTickets from "./UserTickets";
-import { FaUser, FaHeart } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
 import { FaShare } from "react-icons/fa6";
 import { IoIosSettings } from "react-icons/io";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
@@ -18,6 +18,7 @@ import { useTranslation } from "@/app/i18n";
 import { safeTranslate } from "@/lib/utils"; 
 import ScrollToTopButton from "./ScrollToTopButton";
 import ShareModal from "./ShareModal";
+import LikedEvents from "./LikedEvents";
 
 const no_event_image = "/images/no-event.png";
 
@@ -36,7 +37,6 @@ export default function Dashboard() {
   const [events, setEvents] = useState<Event[]>([]);
   const [myEvents, setMyEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState<boolean>(true); 
-  const [likedEvents] = useState<string[]>([]);
   const [editEvent, setEditEvent] = useState<Event | null>(null); 
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [shareModalEvent, setShareModalEvent] = useState<Event | null>(null);
@@ -97,8 +97,6 @@ export default function Dashboard() {
   };
 
   const renderEventCard = (event: Event) => {
-    const isLiked = likedEvents.includes(event.id);
-
     return (
       <div className="relative rounded-xl shadow-lg bg-white">
         <Image src={event.images[0]} alt={event.title} width={350} height={250} className="object-cover w-full h-[250px] max-h-[250px] mx-auto border-b rounded-t-xl" />
@@ -118,9 +116,6 @@ export default function Dashboard() {
             <div className="flex items-center gap-4">
               <button className="bg-indigo-500 text-white font-bold py-2 px-4 rounded hover:bg-indigo-600" onClick={() => handleManageEvent(event.id)}>
                 {safeTranslate(t, "more_info")}
-              </button>
-              <button className={`${isLiked ? 'text-red-500' : 'text-gray-400'}`}>
-                <FaHeart size={24} className={`transition-colors duration-200 ${isLiked ? 'fill-current' : ''}`} />
               </button>
             </div>
             {event.createdBy === userId && (
@@ -142,7 +137,7 @@ export default function Dashboard() {
 
         <h2 className="text-3xl sm:text-2xl text-center sm:text-start font-bold mb-8">{safeTranslate(t,'my_events')}</h2>
 
-        <div className="w-[95%] mx-auto sm:w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-4 rounded-xl overflow-hidden">
+        <div className="w-[97%] sm:w-full mx-auto sm:w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-4 rounded-xl overflow-hidden">
           {loading ? (
             <div className="flex gap-4">
               {Array.from({ length: 3 }).map((_, index) => (
@@ -194,6 +189,8 @@ export default function Dashboard() {
             </div>
           )}
         </div>
+
+        <LikedEvents userId={userId} />
       </section>
 
       {editEvent && <EditEventPopup event={editEvent} onClose={handleCloseEditPopup} onUpdateEvent={updateEvent} />}

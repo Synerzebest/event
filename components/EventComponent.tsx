@@ -3,7 +3,6 @@
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import { format } from "date-fns";
-import { notification } from 'antd';
 import { FaShare } from "react-icons/fa6";
 import { LuCalendarDays } from "react-icons/lu";
 import { IoLocationOutline } from "react-icons/io5";
@@ -16,8 +15,9 @@ import { Spin } from "antd";
 import useFirebaseUser from "@/lib/useFirebaseUser";
 import Link from "next/link";
 import { safeTranslate } from "@/lib/utils";
-import { FaUser, FaHeart } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
 import ShareModal from "./ShareModal";
+import AnimatedLikeButton from "./ui/animated-like-button";
 
 interface EventComponentProps {
     eventId: string,
@@ -36,14 +36,14 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
     const { t } = useTranslation(lng, 'common');
     const { user } = useFirebaseUser();
     const [isLiked, setIsLiked] = useState(false);
-  const [shareModalEvent, setShareModalEvent] = useState<Event | null>(null);
+    const [shareModalEvent, setShareModalEvent] = useState<Event | null>(null);
 
     const handleLike = async (eventId: string) => {
         if (!user) {
             router.push('/auth/signin');
             return;
-        }
-    
+        } 
+        setIsLiked(prev => !prev);
         try {
             const response = await fetch('/api/likeEvent', {
                 method: 'POST',
@@ -51,17 +51,14 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
                 body: JSON.stringify({ userId: user.uid, eventId }),
             });
     
-            const data = await response.json();
-            if (response.ok) {
-                setIsLiked(true);
-            } else {
-                console.error('Error liking event:', data.error);
+            if (!response.ok) {
+                setIsLiked(prev => !prev);
             }
         } catch (error) {
-            console.error('Error:', error);
+            setIsLiked(prev => !prev);
+            console.error(error);
         }
-    };
-    
+    };    
 
     useEffect(() => {
         const fetchEvent = async () => {
@@ -87,6 +84,25 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
     }, [eventId]);
 
     useEffect(() => {
+        const checkIfLiked = async () => {
+            if (!user || !eventId) return;
+    
+            try {
+                const response = await fetch(`/api/users/${userId}`);
+                const data = await response.json();
+    
+                if (response.ok && data.likedEvents) {
+                    setIsLiked(data.likedEvents.includes(eventId));
+                }
+            } catch (err) {
+                console.error('Error fetching liked events:', err);
+            }
+        };
+    
+        checkIfLiked();
+    }, [user, eventId]);    
+
+    useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (menuOpen && menuRef.current && !menuRef.current.contains(event.target as Node)) {
                 setMenuOpen(false);
@@ -98,16 +114,6 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, [menuOpen]);
-
-    const handleCopyLink = (eventId: string) => {
-        const eventUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/event/${eventId}`;
-        navigator.clipboard.writeText(eventUrl);
-        notification.success({
-            message: "Link Copied!",
-            description: "Event link has been copied to clipboard.",
-            placement: "topRight",
-        });
-    };
 
     const handleParticipateClick = async () => {
         setIsSubmitting(true);
@@ -149,24 +155,6 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
             className="relative flex-1 min-w-[320px] max-w-[350px] rounded-xl shadow-xl bg-white"
             transition={{ type: 'spring', stiffness: 300 }}
         >
-            {menuOpen && (
-                <motion.div 
-                    ref={menuRef}
-                    className="absolute top-[-3rem] z-[100] right-2 bg-white border rounded-lg shadow-lg p-2"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                >
-                    <button
-                        className="text-gray-800 text-sm px-4 py-2 hover:bg-gray-100 w-full text-left"
-                        onClick={() => handleCopyLink(event.id)}
-                    >
-                        {safeTranslate(t,'copy_event_link')}
-                    </button>
-                </motion.div>
-            )}
-
             <Image
                 src={event.images[0]}
                 alt={event.title}
@@ -229,12 +217,8 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
                                     isPastEvent ? safeTranslate(t,'event_expired') : safeTranslate(t,'participate')
                                 )}
                             </motion.button>
-                            <button
-                                onClick={() => handleLike(event.id)}
-                                className={`${isLiked ? 'text-red-500' : 'text-gray-400'}`}
-                            >
-                                <FaHeart size={24} className={`transition-colors duration-200 ${isLiked ? 'fill-current' : ''}`} />
-                            </button>
+                            
+                            <AnimatedLikeButton liked={isLiked} onToggle={() => handleLike(event.id)} />
                         </div>
                     )}
                 </div>

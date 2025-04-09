@@ -1,13 +1,13 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { auth } from "@/lib/firebaseAdmin";
+import { db } from "@/lib/firebaseConfig"; // Assure-toi que c’est bien ta config Firestore (client)
+import { doc, getDoc } from "firebase/firestore"; // depuis firebase/firestore (client SDK)
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    // Vérifier la méthode de la requête
     if (req.method !== "GET") {
         return res.status(405).json({ message: `Method ${req.method} not allowed.` });
     }
 
-    // Récupérer le userId depuis les paramètres de la requête
     const { userId } = req.query;
 
     if (!userId) {
@@ -15,17 +15,32 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     try {
-        // Récupérer les détails de l'utilisateur via Firebase
+        // Obtenir les infos Firebase Auth
         const userRecord = await auth.getUser(userId as string);
-
         if (!userRecord) {
             return res.status(404).json({ message: "User not found" });
         }
 
         const { displayName, photoURL, email, uid } = userRecord;
 
-        // Retourner les détails de l'utilisateur
-        res.status(200).json({ name: displayName, imageUrl: photoURL, userId: uid, email: email });
+        const userDocRef = doc(db, 'users', userId as string);
+        const userSnap = await getDoc(userDocRef);
+
+        let likedEvents: string[] = [];
+
+        if (userSnap.exists()) {
+            const userData = userSnap.data();
+            likedEvents = userData.likedEvents || [];
+        }
+
+        // Retourne les infos fusionnées
+        res.status(200).json({
+            name: displayName,
+            imageUrl: photoURL,
+            userId: uid,
+            email: email,
+            likedEvents, 
+        });
 
     } catch (error) {
         console.error("An error occurred while fetching user details", error);

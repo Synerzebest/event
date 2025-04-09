@@ -2,7 +2,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from "@/lib/firebaseConfig";
 
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method Not Allowed' });
@@ -15,7 +14,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     try {
-        // Récupérer l'utilisateur depuis Firestore
         const userRef = doc(db, 'users', userId);
         const userSnap = await getDoc(userRef);
 
@@ -26,21 +24,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             likedEvents = userData.likedEvents || [];
         }
 
-        // Vérifier si l'événement est déjà liké
+        let updatedLikedEvents;
+
         if (likedEvents.includes(eventId)) {
-            return res.status(200).json({ message: 'Event already liked' });
+            // 🔄 UNLIKE: Remove the eventId
+            updatedLikedEvents = likedEvents.filter(id => id !== eventId);
+            await setDoc(userRef, { likedEvents: updatedLikedEvents }, { merge: true });
+            return res.status(200).json({ message: 'Event unliked successfully', liked: false });
+        } else {
+            // ❤️ LIKE: Add the eventId
+            updatedLikedEvents = [...likedEvents, eventId];
+            await setDoc(userRef, { likedEvents: updatedLikedEvents }, { merge: true });
+            return res.status(200).json({ message: 'Event liked successfully', liked: true });
         }
 
-        // Ajouter l'eventId au tableau
-        likedEvents.push(eventId);
-
-        // Mettre à jour Firestore
-        await setDoc(userRef, { likedEvents }, { merge: true });
-
-        return res.status(200).json({ message: 'Event liked successfully' });
-
     } catch (error) {
-        console.error('Error liking event:', error);
+        console.error('Error toggling like:', error);
         return res.status(500).json({ error: 'Internal Server Error' });
     }
 }
