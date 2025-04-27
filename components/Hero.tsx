@@ -37,12 +37,13 @@ const Hero = () => {
   if (!isLoaded) return <p className="text-center text-white">Chargement...</p>;
 
   return (
-    <div 
-      className="relative top-24 sm:top-36 h-[75vh] sm:h-[70vh] md:h-[65vh] sm:w-[95%] mb-12 w-full mx-auto sm:mx-none overflow-hidden rounded-none sm:rounded-2xl z-20 flex flex-col lg:flex-row items-center justify-center bg-cover bg-center"
-      style={{ backgroundImage: `url(${hero_image})` }}
-    >
+<div 
+  className="relative top-24 sm:top-36 min-h-screen sm:h-[70vh] md:h-[65vh] sm:w-[95%] mb-12 w-full mx-auto sm:mx-none overflow-hidden rounded-none sm:rounded-2xl z-20 flex flex-col lg:flex-row items-center justify-center bg-cover bg-center"
+  style={{ backgroundImage: `url(${hero_image})` }}
+>
+
       {/* Overlay sombre */}
-      <div className="absolute inset-0 bg-black opacity-50"></div>
+      <div className="absolute inset-0 bg-black opacity-50 z-10"></div>
   
       <div className="relative top-0 sm:top-12 z-10 text-center p-4 sm:p-8 flex flex-col justify-center items-center gap-4 lg:text-left">
         <h1 className="text-4xl text-white text-center sm:text-5xl md:text-6xl font-bold w-full break-words">

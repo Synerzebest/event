@@ -45,28 +45,45 @@ const Navbar = ({ lng }: NavbarProps) => {
 
   const desktopDropdownRef = useRef<HTMLDivElement>(null);
   const mobileDropdownRef = useRef<HTMLDivElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      const desktopClickedOutside = desktopDropdownRef.current && !desktopDropdownRef.current.contains(event.target as Node);
-      const mobileClickedOutside = !mobileDropdownRef.current || (mobileDropdownRef.current && !mobileDropdownRef.current.contains(event.target as Node));
-    
-      if (desktopClickedOutside && mobileClickedOutside) {
+      const target = event.target as Node;
+  
+      const clickedOutsideDesktopDropdown = desktopDropdownRef.current && !desktopDropdownRef.current.contains(target);
+      const clickedOutsideMobileDropdown = mobileDropdownRef.current && !mobileDropdownRef.current.contains(target);
+      const clickedOutsideMobileMenu = mobileMenuRef.current && !mobileMenuRef.current.contains(target);
+  
+      if (dropdownOpen && clickedOutsideDesktopDropdown && clickedOutsideMobileDropdown) {
         setDropdownOpen(false);
       }
-    }
-    
   
-    if (dropdownOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
+      if (isOpen && clickedOutsideMobileMenu) {
+        setIsOpen(false);
+      }
     }
+  
+    document.addEventListener("mousedown", handleClickOutside);
   
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [dropdownOpen]); 
+  }, [dropdownOpen, isOpen]);
+  
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isOpen]);
+  
   
   if (!i18n) {
     return <div>Loading...</div>
@@ -151,7 +168,7 @@ const Navbar = ({ lng }: NavbarProps) => {
   
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="absolute top-[5.5rem] left-0 w-full bg-white backdrop-blur-md md:hidden z-40 flex flex-col gap-4 px-6 py-6 rounded-b-2xl shadow-md">
+        <div ref={mobileMenuRef} className="absolute top-[3.5rem] left-0 w-full bg-white backdrop-blur-md md:hidden flex flex-col gap-4 px-6 py-6 rounded-b-2xl z-[1000]">
           <Link href={`/${lng}`} className="block w-full text-gray-800 font-semibold text-lg py-3 px-4 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all">
             {safeTranslate(t,'title')}
           </Link>
