@@ -38,7 +38,7 @@ const Hero = () => {
 
   return (
     <div 
-      className="relative top-24 sm:top-36 h-screen sm:w-[95%] w-full mx-auto sm:mx-none overflow-hidden rounded-none sm:rounded-2xl z-20 flex flex-col lg:flex-row items-center justify-center bg-cover bg-center"
+      className="relative top-24 sm:top-36 h-[75vh] sm:h-[70vh] md:h-[65vh] sm:w-[95%] mb-12 w-full mx-auto sm:mx-none overflow-hidden rounded-none sm:rounded-2xl z-20 flex flex-col lg:flex-row items-center justify-center bg-cover bg-center"
       style={{ backgroundImage: `url(${hero_image})` }}
     >
       {/* Overlay sombre */}
@@ -56,18 +56,19 @@ const Hero = () => {
           {safeTranslate(t, "hero_subtitle")}
         </p>
   
-        <div className="sm:mt-36 mt-12 sm:mt-24 flex flex-col sm:flex-row items-center gap-4">
+        <div className="flex flex-col sm:flex-row items-center gap-4 mt-8">
           <Link href={`/${lng}/explore`}>
-            <button className="flex items-center gap-2 text-xl text-white bg-transparent bg-opacity-80 backdrop-blur-md border border-[rgba(255,255,255,0.3)] py-4 px-6 font-bold rounded-xl hover:bg-indigo-600 duration-300 shadow-lg">
+            <button className="px-6 py-3 rounded-full bg-white/80 text-gray-900 font-semibold text-lg shadow-sm hover:bg-white hover:shadow-md transition-all backdrop-blur-md">
               {safeTranslate(t, "hero_button")}
             </button>
           </Link>
           <Link href={`/${lng}/eventlab`}>
-            <button className="flex items-center gap-2 text-xl text-white bg-transparent bg-opacity-80 backdrop-blur-md border border-[rgba(255,255,255,0.3)] py-4 px-6 font-bold rounded-xl hover:bg-amber-600 duration-300 shadow-lg">
+            <button className="px-6 py-3 rounded-full bg-indigo-500 text-white font-semibold text-lg shadow-md hover:bg-indigo-600 transition-all">
               {safeTranslate(t, "cta_button")}
             </button>
           </Link>
         </div>
+
       </div>
     </div>
   );

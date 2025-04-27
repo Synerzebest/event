@@ -152,7 +152,7 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
 
     return (
         <motion.div 
-            className="relative flex-1 min-w-[320px] max-w-[350px] rounded-xl shadow-xl bg-white"
+            className="relative flex-1 min-w-[320px] max-w-[350px] rounded-xl shadow-md bg-white"
             transition={{ type: 'spring', stiffness: 300 }}
         >
             <Image

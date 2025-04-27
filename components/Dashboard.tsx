@@ -98,7 +98,7 @@ export default function Dashboard() {
 
   const renderEventCard = (event: Event) => {
     return (
-      <div className="relative rounded-xl shadow-lg bg-white">
+      <div className="relative rounded-xl shadow-md bg-white">
         <Image src={event.images[0]} alt={event.title} width={350} height={250} className="object-cover w-full h-[250px] max-h-[250px] mx-auto border-b rounded-t-xl" />
         <button className="absolute top-2 right-2 p-2 rounded-full hover:bg-gray-800 hover:bg-opacity-20 focus:outline-none duration-300" onClick={() => setShareModalEvent(event)}>
           <FaShare className="w-4 h-4 text-white" />
@@ -137,7 +137,7 @@ export default function Dashboard() {
 
         <h2 className="text-3xl sm:text-2xl text-center sm:text-start font-bold mb-8">{safeTranslate(t,'my_events')}</h2>
 
-        <div className="w-[97%] sm:w-full mx-auto sm:w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-4 rounded-xl overflow-hidden">
+        <div className="w-[97%] sm:w-full mx-auto bg-white border border-gray-200 p-6 rounded-2xl shadow-md overflow-hidden">
           {loading ? (
             <div className="flex gap-4">
               {Array.from({ length: 3 }).map((_, index) => (

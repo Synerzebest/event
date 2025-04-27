@@ -5,7 +5,7 @@
   "hero_title": "Eenvoudige Evenementen",
   "hero_subtitle": "EaseEvent helpt u bij het vinden, organiseren en beheren van uw evenementen, of het nu gaat om feesten, conferenties of bruiloften",
   "hero_button": "Evenementen verkennen",
-  "subhero_title": "Ontdek de kenmerken van EventEase",
+  "subhero_title": "Ontdek de kenmerken van EaseEvent",
   "subhero_subtitle": "Stroomlijn uw evenementenplanningsproces met onze krachtige tools die zijn ontworpen voor efficiëntie en gebruiksgemak.",
   "learn_more": "Leer meer",
   "features": [
@@ -69,7 +69,7 @@
   "signin_to_subscribe": "Log in om u te abonneren",
   "faq": {
     "title": "Veelgestelde vragen",
-    "subtitle": "Vind antwoorden op veelgestelde vragen over EventEase.",
+    "subtitle": "Vind antwoorden op veelgestelde vragen over EaseEvent.",
     "items": {
       "1": {
         "header": "Hoe maak ik een evenement aan?",
@@ -94,7 +94,7 @@
     {
       "name": "Karl Johnson",
       "title": "Evenementplanner",
-      "content": "EventEase heeft een revolutie teweeggebracht in de manier waarop ik mijn evenementen beheer. Alles is zo gestroomlijnd en gemakkelijk te gebruiken!",
+      "content": "EaseEvent heeft een revolutie teweeggebracht in de manier waarop ik mijn evenementen beheer. Alles is zo gestroomlijnd en gemakkelijk te gebruiken!",
       "image": "/images/firstuser.png"
     },
     {

@@ -5,7 +5,7 @@
   "hero_title": "Events with Ease",
   "hero_subtitle": "EaseEvent helps you find, organize, and manage your events, whether parties, conferences or weddings.",
   "hero_button": "Explore events",
-  "subhero_title": "Discover the Features of EventEase",
+  "subhero_title": "Discover the Features of EaseEvent",
   "subhero_subtitle": "Streamline your event planning process with our powerful tools designed for efficiency and ease of use.",
   "learn_more": "Learn more",
   "features": [
@@ -69,7 +69,7 @@
   "signin_to_subscribe": "Signin to subscribe",
   "faq": {
     "title": "Frequently Asked Questions",
-    "subtitle": "Find answers to common questions about EventEase.",
+    "subtitle": "Find answers to common questions about EaseEvent.",
     "items": {
       "1": {
         "header": "How can I create an event?",
@@ -94,7 +94,7 @@
     {
       "name": "Karl Johnson",
       "title": "Event Planner",
-      "content": "EventEase has revolutionized how I manage my events. Everything is so streamlined and easy to use!",
+      "content": "EaseEvent has revolutionized how I manage my events. Everything is so streamlined and easy to use!",
       "image": "/images/firstuser.png"
     },
     {

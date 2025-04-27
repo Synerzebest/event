@@ -112,7 +112,7 @@ const UserTickets = () => {
   return (
     <div className="mb-12 relative">
       {tickets.length > 0 && !loading ? (
-        <div className="w-[97%] sm:w-full mx-auto bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-4 rounded-xl overflow-hidden">
+        <div className="w-[97%] sm:w-full mx-auto bg-white border border-gray-200 p-6 rounded-2xl shadow-md overflow-hidden">
           {isMobile ? (
             <>
               <Carousel dots={false} infinite={false} ref={carouselRef}>
@@ -142,11 +142,11 @@ const UserTickets = () => {
           )}
         </div>
       ) : (
-        <div className="sm:w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 w-[95%] mx-auto flex flex-col items-center text-center p-6 border border-gray-300 rounded-lg shadow-md">
+        <div className="sm:w-full w-[95%] mx-auto flex flex-col items-center text-center p-6 bg-white border border-gray-200 rounded-2xl shadow-md">
           <Image src={no_ticket_image} alt="no ticket image" className="w-auto max-h-36 h-full mb-4" width={500} height={200} />
-          <p className="text-white text-xl font-semibold">{safeTranslate(t, 'no_ticket_yet')}</p>
-          <p className="text-white text-md mt-2">{safeTranslate(t, 'no_ticket_description')}</p>
-          <Link href={`/${lng}/explore`} className="bg-indigo-500 hover:bg-indigo-600 duration-300 font-bold text-lg px-6 py-2 mt-4 text-white rounded-xl">
+          <p className="text-gray-700 text-xl font-semibold">{safeTranslate(t, 'no_ticket_yet')}</p>
+          <p className="text-gray-700 text-md mt-2">{safeTranslate(t, 'no_ticket_description')}</p>
+          <Link href={`/${lng}/explore`} className="bg-indigo-500 hover:bg-indigo-600 duration-300 font-bold text-lg px-6 py-2 mt-4 text-gray-700 rounded-xl">
             {safeTranslate(t, "explore")}
           </Link>
         </div>
@@ -178,7 +178,7 @@ const UserTickets = () => {
 
 const TicketCard = ({ ticket, event, onShowQRCode, t }: { ticket: Ticket; event?: Event; onShowQRCode: (t: Ticket) => void; t: TFunction }) => {
   return event ? (
-    <div className="rounded bg-white shadow-md flex flex-col gap-4 overflow-hidden rounded-xl">
+    <div className="rounded bg-white shadow-md flex flex-col gap-4 overflow-hidden rounded-xl mb-2">
       <Image
         alt={event.title}
         src={event.images[0]}
