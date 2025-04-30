@@ -43,18 +43,12 @@ const Hero = () => {
       {/* Blobs de fond animés */}
       <motion.div
         className="absolute -top-32 -left-32 w-[400px] h-[400px] bg-indigo-400 opacity-20 rounded-full blur-3xl z-0"
-        animate={{ scale: [1, 1.1, 1] }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
         className="absolute top-48 -right-32 w-[400px] h-[400px] bg-pink-400 opacity-20 rounded-full blur-3xl z-0"
-        animate={{ scale: [1, 1.2, 1] }}
-        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
         className="absolute bottom-[-10rem] left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-purple-400 opacity-25 rounded-full blur-[120px] z-0"
-        animate={{ scale: [1, 1.05, 1] }}
-        transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
       />
 
       {/* Contenu */}
