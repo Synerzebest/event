@@ -65,7 +65,7 @@ const PricingTable = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
     
 
     return (
-        <div className="py-20 relative top-64">
+        <div className="py-20 relative top-0">
             <h2 className="text-center text-4xl font-bold mb-12">{safeTranslate(t,'choose_plan')}</h2>
 
             {activePlan !== "STARTER" && (

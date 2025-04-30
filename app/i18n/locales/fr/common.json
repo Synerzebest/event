@@ -1,9 +1,10 @@
 {
   "title": "Accueil",
   "explore": "Explorer",
-  "hero_title_words": ["Trouvez", "Créez", "Managez"],
-  "hero_title": "des événements avec simplicité",
-  "hero_subtitle": "EaseEvent vous aide à trouver, organiser et gérer vos événements, que ce soient des soirées, des conférences ou des mariages",
+  "hero_title_words": ["Trouvez", "Créez", "Gérez"],
+  "hero_title": "vos événements avec simplicité",
+  "hero_subtitle": "Avec EaseEvent, créez vos événements ou rejoignez ceux qui vous ressemblent.",
+  "suggestion": "Où souhaitez-vous sortir ?",
   "hero_button": "Explorer les événements",
   "subhero_title": "Découvrez les fonctionnalités d'EaseEvent",
   "subhero_subtitle": "Rationalisez votre processus de planification d’événements grâce à nos outils puissants conçus pour être efficaces et faciles à utiliser.",

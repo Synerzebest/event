@@ -2,23 +2,25 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { Input, Button } from "antd";
+import { IoLocationOutline } from "react-icons/io5";
+import { FiSearch } from "react-icons/fi";
 import { FlipWords } from "./ui/flip-words";
 import useLanguage from "@/lib/useLanguage";
 import { useTranslation } from "@/app/i18n";
 import { i18n as I18nType } from "i18next";
+import { motion } from "framer-motion";
 
-const hero_image = "/images/hero-bg.png";
 
 const Hero = () => {
   const lng = useLanguage();
   const { t, i18n } = useTranslation(lng, "common");
   const i18nInstance = i18n as I18nType | null;
-  
   const [isLoaded, setIsLoaded] = useState(false);
+  const [location, setLocation] = useState("");
 
   useEffect(() => {
     if (!i18nInstance) return;
-
     if (i18nInstance.language !== lng) {
       i18nInstance.changeLanguage(lng).then(() => {
         document.cookie = `i18next=${lng}; path=/`;
@@ -37,43 +39,64 @@ const Hero = () => {
   if (!isLoaded) return <p className="text-center text-white">Chargement...</p>;
 
   return (
-<div 
-  className="relative top-24 sm:top-36 min-h-screen sm:h-[70vh] md:h-[65vh] sm:w-[95%] mb-12 w-full mx-auto sm:mx-none overflow-hidden rounded-none sm:rounded-2xl z-20 flex flex-col lg:flex-row items-center justify-center bg-cover bg-center"
-  style={{ backgroundImage: `url(${hero_image})` }}
->
+    <div className="relative min-h-screen sm:h-[70vh] md:h-[65vh] w-full mx-auto overflow-hidden flex flex-col items-center justify-center">
+      {/* Blobs de fond animés */}
+      <motion.div
+        className="absolute -top-32 -left-32 w-[400px] h-[400px] bg-indigo-400 opacity-20 rounded-full blur-3xl z-0"
+        animate={{ scale: [1, 1.1, 1] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute top-48 -right-32 w-[400px] h-[400px] bg-pink-400 opacity-20 rounded-full blur-3xl z-0"
+        animate={{ scale: [1, 1.2, 1] }}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute bottom-[-10rem] left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-purple-400 opacity-25 rounded-full blur-[120px] z-0"
+        animate={{ scale: [1, 1.05, 1] }}
+        transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+      />
 
-      {/* Overlay sombre */}
-      <div className="absolute inset-0 bg-black opacity-50 z-10"></div>
-  
-      <div className="relative top-0 sm:top-12 z-10 text-center p-4 sm:p-8 flex flex-col justify-center items-center gap-4 lg:text-left">
-        <h1 className="text-4xl text-white text-center sm:text-5xl md:text-6xl font-bold w-full break-words">
-          <span className="inline">
-            <FlipWords />
-          </span>
-          {" "}{safeTranslate(t, "hero_title")}
+      {/* Contenu */}
+      <div className="z-10 text-center px-4 sm:px-12 flex flex-col justify-center items-center gap-6 w-full">
+        <h1 className="text-4xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight">
+          <FlipWords className="text-indigo-600" /> {safeTranslate(t, "hero_title")}
         </h1>
-  
-        <p className="text-lg text-center sm:text-xl md:text-2xl text-gray-300">
+
+        <p className="text-lg text-gray-600 mt-4">
           {safeTranslate(t, "hero_subtitle")}
         </p>
-  
-        <div className="flex flex-col sm:flex-row items-center gap-4 mt-8">
-          <Link href={`/${lng}/explore`}>
-            <button className="px-6 py-3 rounded-full bg-white/80 text-gray-900 font-semibold text-lg shadow-sm hover:bg-white hover:shadow-md transition-all backdrop-blur-md">
-              {safeTranslate(t, "hero_button")}
-            </button>
-          </Link>
-          <Link href={`/${lng}/eventlab`}>
-            <button className="px-6 py-3 rounded-full bg-indigo-500 text-white font-semibold text-lg shadow-md hover:bg-indigo-600 transition-all">
-              {safeTranslate(t, "cta_button")}
-            </button>
-          </Link>
+
+        <div className="w-full flex flex-col gap-2 mt-4 items-center">
+          <p className="text-sm text-gray-500 font-medium">{safeTranslate(t, "suggestion")}</p>
+          <div className="w-full max-w-md relative flex justify-center">
+            <Input
+              size="large"
+              placeholder="Bruxelles, Liège, ..."
+              prefix={<IoLocationOutline className="text-gray-500 text-lg" />}
+              className="w-full rounded-full bg-gray-50 focus:bg-white transition-colors border border-gray-300 focus:border-gray-400 shadow-inner"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              suffix={<FiSearch className="text-gray-500 text-lg" />}
+            />
+          </div>
         </div>
 
+        <div className="flex flex-col sm:flex-row items-center gap-3 mt-6">
+          <Link href={`/${lng}/explore`}>
+            <Button size="large" type="default" className="rounded-full px-6">
+              {safeTranslate(t, "hero_button")}
+            </Button>
+          </Link>
+          <Link href={`/${lng}/eventlab`}>
+            <Button size="large" type="primary" className="rounded-full px-6 bg-indigo-600 hover:bg-indigo-700">
+              {safeTranslate(t, "cta_button")}
+            </Button>
+          </Link>
+        </div>
       </div>
     </div>
   );
-  
 };
 
 export default Hero;
