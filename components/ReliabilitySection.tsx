@@ -2,7 +2,6 @@ import React from 'react';
 import Image from "next/image";
 import { useTranslation } from "../app/i18n";
 import { safeTranslate } from "@/lib/utils";
-import { motion } from "framer-motion"
 
 const backup = "/images/backup.png";
 const security = "/images/security.png";
@@ -12,13 +11,6 @@ const ReliabilitySection = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
     const { t } = useTranslation(lng, "common");
     return (
         <section className="py-16 relative top-64">
-            <motion.div
-                className="absolute top-48 -left-32 w-[400px] h-[400px] bg-red-400 opacity-20 rounded-full blur-3xl z-0"
-            />
-            <motion.div
-                className="absolute bottom-[-10rem] left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-purple-400 opacity-25 rounded-full blur-[120px] z-0"
-            />
-
             <div className="container mx-auto">
                 {/* Title */}
                 <h2 className="text-4xl font-bold text-center mb-8">{safeTranslate(t,'security_title')}</h2>
