@@ -159,6 +159,7 @@
   "seconds": "Secondes",
   "event_happening": "L'événement a déjà eu lieu.",
   "form_title": "Titre",
+  "form_city": "Ville",
   "form_place": "Lieu",
   "form_description": "Description",
   "form_category": "Catégorie",
@@ -172,7 +173,7 @@
   "footer_content": "Simplifie la gestion des événements et fait de vos événements une réussite.",
   "quick_links": "Liens rapides",
   "about_us": "À propos de nous",
-  "terms_and_conditions": "Conditions d'utilisation",
+  "terms_and_conditions": "Conditions Générales",
   "privacy_policy": "Politique de confidentialité",
   "plan_limit": "{{plan}} plan: {{max}} max",
   "unlimited": "Illimité",
@@ -181,5 +182,6 @@
   "no_ticket_description": "🎟️ Obtenez votre premier ticket ici 🎟️",
   "no_event_description": "📆 Créez votre premier événement en cliquant sur le bouton au-dessus 📆",
   "more_info": "Plus d'info",
-  "share": "Partager"
+  "share": "Partager",
+  "accept_terms_text": "J'ai lu et accepte les "
 }

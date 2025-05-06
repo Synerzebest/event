@@ -159,6 +159,7 @@
   "seconds": "Seconden",
   "event_happening": "Het evenement heeft al plaatsgevonden.",
   "form_title": "Titel",
+  "form_city": "Stad",
   "form_place": "Plaats",
   "form_description": "Beschrijving",
   "form_category": "Categorie",
@@ -180,5 +181,6 @@
   "no_ticket_description": "🎟️ Koop hier uw eerste ticket 🎟️",
   "no_event_description": "📆 Maak uw eerste evenement aan door op de knop hierboven te klikken 📆",
   "more_info": "Meer info",
-  "share": "Delen"
+  "share": "Delen",
+  "accept_terms_text": "Ik heb dit gelezen en ga hiermee akkoord:  "
 }

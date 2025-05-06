@@ -5,6 +5,7 @@ import { getAuth } from "firebase-admin/auth";
 
 type EventData = {
     title: string;
+    city: string;
     place: string;
     date: string;
     description: string;
@@ -39,7 +40,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const eventData: EventData = req.body;
 
         // Validation des champs obligatoires de l'événement
-        if (!eventData.title || !eventData.place || !eventData.date || !eventData.description || !eventData.category || !eventData.organizers) {
+        if (!eventData.title || !eventData.city || !eventData.place || !eventData.date || !eventData.description || !eventData.category || !eventData.organizers) {
             return res.status(400).json({ error: 'Missing required fields' });
         }
 

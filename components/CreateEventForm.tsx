@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import useFirebaseUser from "@/lib/useFirebaseUser";
-import { Input, DatePicker, Radio, InputNumber, Upload, Button, notification, Select, Alert } from "antd";
+import { Input, DatePicker, Radio, InputNumber, Upload, Button, notification, Select, Alert, Checkbox } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { addDoc, collection } from "firebase/firestore";
@@ -13,6 +13,7 @@ import { useTranslation } from "../app/i18n"
 import useLanguage from "@/lib/useLanguage";
 import { categories } from "@/constants/constants";
 import { safeTranslate } from "@/lib/utils";
+import Link from 'next/link';
 
 
 const { TextArea } = Input;
@@ -49,6 +50,7 @@ const CreateEventForm: React.FC = () => {
         getGuestLimit(user?.nickname)
     );
     const [guestLimit, setGuestLimit] = useState<number>(getGuestLimit(user?.nickname));
+    const [acceptedTerms, setAcceptedTerms] = useState(false);
 
     useEffect(() => {
         if (user?.nickname) {
@@ -62,6 +64,7 @@ const CreateEventForm: React.FC = () => {
     const [formData, setFormData] = useState({
         title: '',
         place: '',
+        city: '',
         description: '',
         privacy: 'public',
         guestLimit: guestLimit,
@@ -232,6 +235,13 @@ const CreateEventForm: React.FC = () => {
                     />
                     <Input 
                         className="rounded-md shadow-sm border-gray-300 focus:border-indigo-500" 
+                        name="title" 
+                        onChange={(e) => setFormData({...formData, city: e.target.value})} 
+                        placeholder={`${safeTranslate(t,'form_city')}`} 
+                        required 
+                    />
+                    <Input 
+                        className="rounded-md shadow-sm border-gray-300 focus:border-indigo-500" 
                         name="place" 
                         onChange={(e) => setFormData({...formData, place: e.target.value})} 
                         placeholder={`${safeTranslate(t,'form_place')}`} 
@@ -255,7 +265,7 @@ const CreateEventForm: React.FC = () => {
                     <Select
                         className="rounded-md shadow-sm border-gray-300 focus:border-indigo-500"
                         showSearch
-                        placeholder={`${t('form_category')}`}
+                        placeholder={`${safeTranslate(t, 'form_category')}`}
                         optionFilterProp="label"
                         onChange={(value) => setFormData({...formData, category: value})}
                         options={categories}
@@ -269,7 +279,7 @@ const CreateEventForm: React.FC = () => {
                                 plan: user?.nickname 
                                     ? user.nickname.charAt(0).toUpperCase() + user.nickname.slice(1) 
                                     : "Starter", 
-                                max: maxGuestLimit === Infinity ? t("unlimited") : maxGuestLimit 
+                                max: maxGuestLimit === Infinity ? safeTranslate(t, "unlimited") : maxGuestLimit 
                             })}
                             type="info"
                             showIcon
@@ -321,7 +331,7 @@ const CreateEventForm: React.FC = () => {
                                                 <Input 
                                                     value={ticket.name} 
                                                     onChange={(e) => updateTicket(index, "name", e.target.value)} 
-                                                    placeholder={`${t('ticket_name')}`}
+                                                    placeholder={`${safeTranslate(t, 'ticket_name')}`}
                                                     required 
                                                 />
                                             </div>
@@ -333,7 +343,7 @@ const CreateEventForm: React.FC = () => {
                                                     value={ticket.price}
                                                     onChange={(value) => updateTicket(index, "price", value)}
                                                     min={0}
-                                                    placeholder={`${t('price')}`}
+                                                    placeholder={`${safeTranslate(t, 'price')}`}
                                                     required
                                                     className="w-full"
                                                 />
@@ -346,7 +356,7 @@ const CreateEventForm: React.FC = () => {
                                                     value={ticket.quantity}
                                                     onChange={(value) => updateTicket(index, "quantity", value)}
                                                     min={1}
-                                                    placeholder={`${t('quantity')}`}
+                                                    placeholder={`${safeTranslate(t, 'quantity')}`}
                                                     required
                                                     className="w-full"
                                                 />
@@ -439,11 +449,24 @@ const CreateEventForm: React.FC = () => {
                         )}
                     </Upload>
     
+                    <Checkbox
+                        checked={acceptedTerms}
+                        onChange={(e) => setAcceptedTerms(e.target.checked)}
+                        className="mb-4"
+                    >
+                        {safeTranslate(t, "accept_terms_text")}
+                        <Link href={`/${lng}/terms-and-conditions`} className="underline text-blue-500">{safeTranslate(t, "terms_and_conditions")}</Link>
+                    </Checkbox>
+
                     <Button 
                         onClick={handleSubmit} 
                         loading={uploading} 
-                        disabled={uploading}
-                        className="mt-4 w-full bg-indigo-500 hover:bg-indigo-600 font-bold text-white text-lg py-6"
+                        disabled={uploading || !acceptedTerms}
+                        className={`mt-4 w-full font-bold text-white text-lg py-6 ${
+                            uploading || !acceptedTerms
+                              ? 'bg-indigo-300 cursor-not-allowed'
+                              : 'bg-indigo-500 hover:bg-indigo-600'
+                          }`}
                     >
                         {safeTranslate(t,'create_event_button')}
                     </Button>

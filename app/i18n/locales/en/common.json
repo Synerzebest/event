@@ -159,6 +159,7 @@
   "seconds": "Seconds",
   "event_happening": "Event is happening now !",
   "form_title": "Title",
+  "form_city": "City",
   "form_place": "Place",
   "form_description": "Description",
   "form_category": "Category",
@@ -180,5 +181,6 @@
   "no_ticket_description": "🎟️ Get your first ticket here 🎟️",
   "no_event_description": "📆 Create your first event by clicking the button above 📆",
   "more_info": "More Info",
-  "share": "Share"
+  "share": "Share",
+  "accept_terms_text": "I have read and agree to the "
 }
