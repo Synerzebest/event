@@ -182,5 +182,8 @@
   "no_event_description": "📆 Maak uw eerste evenement aan door op de knop hierboven te klikken 📆",
   "more_info": "Meer info",
   "share": "Delen",
-  "accept_terms_text": "Ik heb dit gelezen en ga hiermee akkoord:  "
+  "accept_terms_text": "Ik heb dit gelezen en ga hiermee akkoord:  ",
+  "signup": "Aanmelden",
+  "signin": "Inloggen",
+  "found": "Gevonden"
 }

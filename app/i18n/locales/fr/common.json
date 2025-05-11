@@ -183,5 +183,8 @@
   "no_event_description": "📆 Créez votre premier événement en cliquant sur le bouton au-dessus 📆",
   "more_info": "Plus d'info",
   "share": "Partager",
-  "accept_terms_text": "J'ai lu et accepte les "
+  "accept_terms_text": "J'ai lu et accepte les ",
+  "signup": "Créer un compte",
+  "signin": "Connexion",
+  "found": "Trouvé(s)"
 }

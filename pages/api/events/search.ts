@@ -33,9 +33,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             const lowercasedTerm = searchTerm.toLowerCase();
             filteredEvents = filteredEvents.filter(event =>
                 event.title.toLowerCase().includes(lowercasedTerm) || 
-                event.place.toLowerCase().includes(lowercasedTerm) // Recherche dans le champ "place"
+                event.place.toLowerCase().includes(lowercasedTerm) ||
+                event.city?.toLowerCase().includes(lowercasedTerm)
             );
         }
+        console.log("Query:", { searchTerm, category });
+        console.log("Filtered:", filteredEvents.map(e => e.city));
 
         res.status(200).json(filteredEvents);
     } catch (error) {

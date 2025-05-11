@@ -24,6 +24,7 @@ export interface Event {
     description: string;
     date: string;
     place: string;
+    city: string;
     tickets: Ticket[]; 
     organizers: string[];
     imageUrl?: string;

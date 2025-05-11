@@ -11,6 +11,7 @@ import { useTranslation } from '@/app/i18n';
 import useLanguage from '@/lib/useLanguage';
 import { FaSearch } from "react-icons/fa";
 import { safeTranslate } from "@/lib/utils";
+import { useSearchParams } from "next/navigation";
 
 const categories = [
     { value: "music", label: "Music" },
@@ -46,31 +47,55 @@ const SearchAndFilters = () => {
     const lng = useLanguage();
     const { t } = useTranslation(lng, "common");
 
+    const [initialSearchDone, setInitialSearchDone] = useState(false);
+    const searchParams = useSearchParams();
+
+    useEffect(() => {
+        if (!searchParams) return;
+        const queryCity = searchParams.get("city");
+
+        if (queryCity && !initialSearchDone) {
+            setInitialSearchDone(true);
+
+            setTimeout(() => {
+            handleSearch(queryCity);
+            }, 100);
+        }
+    }, [searchParams, initialSearchDone]);
+
+      
+
     // Handle event search
-    const handleSearch = async () => {
+    const handleSearch = async (term?: string) => {
         setLoading(true);
         try {
-            const queryParams = new URLSearchParams({
-                searchTerm,
-                category,
-            });
-
-            const response = await fetch(`/api/events/search?${queryParams}`, {
-                method: 'GET',
-            });
-
-            if (!response.ok) {
-                throw new Error('Error fetching events');
-            }
-
-            const data: Event[] = await response.json();
-            setEvents(data);
-            setHasSearched(true);
-            setLoading(false);
+          const queryParams = new URLSearchParams();
+      
+          if (term || searchTerm) {
+            queryParams.append("searchTerm", term ?? searchTerm);
+          }
+      
+          if (category) {
+            queryParams.append("category", category);
+          }
+      
+          const response = await fetch(`/api/events/search?${queryParams}`, {
+            method: 'GET',
+          });
+      
+          if (!response.ok) {
+            throw new Error('Error fetching events');
+          }
+      
+          const data: Event[] = await response.json();
+          setEvents(data);
+          setHasSearched(true);
+          setLoading(false);
         } catch (error) {
-            console.error("Error fetching events", error);
+          console.error("Error fetching events", error);
         }
     };
+      
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -107,7 +132,7 @@ const SearchAndFilters = () => {
                     className="w-full px-4 py-2 bg-transparent border-none focus:outline-none text-white placeholder-gray-100"
                 />
                 <button
-                    onClick={handleSearch}
+                    onClick={() => handleSearch()}
                     className="ml-3 p-3 bg-indigo-600 rounded-full hover:bg-indigo-700 transition duration-300"
                 >
                     <FaSearch size={20} />
@@ -145,7 +170,7 @@ const SearchAndFilters = () => {
                     <>
                         {hasSearched && (
                             <div className="w-full mt-4 text-2xl font-bold sm:text-start text-center">
-                                {events.length} {events.length === 1 || events.length === 0 ? 'Event' : 'Events'} Found
+                                {events.length} {events.length === 1 || events.length === 0 ? 'Event' : 'Events'} {safeTranslate(t, "found")}
                             </div>
                         )}
 

@@ -153,8 +153,8 @@ export default function Dashboard() {
           ) : myEvents.length === 0 ? (
             <div className="w-full flex flex-col items-center text-center p-6 rounded-lg">
               <Image src={no_event_image} alt="no ticket image" className="w-auto max-h-36 h-full mb-4" width={500} height={200} />
-              <p className="text-white text-xl font-semibold">{safeTranslate(t, 'no_event_yet')}</p>
-              <p className="text-white text-md mt-2">{safeTranslate(t, 'no_event_description')}</p>
+              <p className="text-gray-700 text-xl font-semibold">{safeTranslate(t, 'no_event_yet')}</p>
+              <p className="text-gray-700 text-md mt-2">{safeTranslate(t, 'no_event_description')}</p>
               <ScrollToTopButton />
             </div>
           ) : isMobile ? (

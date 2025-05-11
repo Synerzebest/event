@@ -125,11 +125,11 @@ const Navbar = ({ lng }: NavbarProps) => {
             <>
               <li className="font-smibold cursor-pointer text-lg text-gray-700 hover:text-indigo-700 hover:bg-white/70
               transition-all duration-300 py-2 px-4 rounded-lg">
-                <Link href="/auth/signin">Signin</Link>
+                <Link href="/auth/signin">{safeTranslate(t, "signin")}</Link>
               </li>
               <li className="font-smibold cursor-pointer text-lg text-gray-700 hover:text-indigo-700 hover:bg-white/70
               transition-all duration-300 py-2 px-4 rounded-lg">
-                <Link href="/auth/signup">Signup</Link>
+                <Link href="/auth/signup">{safeTranslate(t, "signup")}</Link>
               </li>
             </>
           )}

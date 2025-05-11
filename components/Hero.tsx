@@ -10,6 +10,7 @@ import useLanguage from "@/lib/useLanguage";
 import { useTranslation } from "@/app/i18n";
 import { i18n as I18nType } from "i18next";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 
 const Hero = () => {
@@ -18,6 +19,7 @@ const Hero = () => {
   const i18nInstance = i18n as I18nType | null;
   const [isLoaded, setIsLoaded] = useState(false);
   const [location, setLocation] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
     if (!i18nInstance) return;
@@ -34,6 +36,13 @@ const Hero = () => {
   const safeTranslate = (t: (key: string, options?: Record<string, unknown>) => string | object, key: string, options?: Record<string, unknown>): string => {
     const result = t(key, options);
     return typeof result === "string" ? result : JSON.stringify(result);
+  };
+
+  const handleSearch = () => {
+    if (location.trim()) {
+      const query = encodeURIComponent(location.trim());
+      router.push(`/${lng}/explore?city=${query}`);
+    }
   };
 
   if (!isLoaded) return <p className="text-center text-white">Chargement...</p>;
@@ -71,6 +80,7 @@ const Hero = () => {
               className="w-full rounded-full bg-gray-50 focus:bg-white transition-colors border border-gray-300 focus:border-gray-400 shadow-inner"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
+              onPressEnter={handleSearch}
               suffix={<FiSearch className="text-gray-500 text-lg" />}
             />
           </div>

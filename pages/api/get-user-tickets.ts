@@ -26,7 +26,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         // Vérifier et décoder le token
         const decodedToken = await auth.verifyIdToken(token);
         const uid = decodedToken.uid;  // Extraire l'UID de l'utilisateur depuis le token
-        console.log("UID décodé depuis le token :", uid);
 
         // Effectuer la requête Firestore pour récupérer les tickets de l'utilisateur
         const ticketsRef = collection(db, 'tickets');
@@ -37,6 +36,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             id: doc.id,
             ...doc.data(),
         } as Ticket));
+
+        if (userTickets.length === 0) {
+            return res.status(404).json({ error: "Aucun ticket trouvé pour cet utilisateur" });
+        }
 
         return res.status(200).json(userTickets);
     } catch (error) {

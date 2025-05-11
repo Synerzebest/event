@@ -182,5 +182,8 @@
   "no_event_description": "📆 Create your first event by clicking the button above 📆",
   "more_info": "More Info",
   "share": "Share",
-  "accept_terms_text": "I have read and agree to the "
+  "accept_terms_text": "I have read and agree to the ",
+  "signup": "Signup",
+  "signin": "Signin",
+  "found": "Foud"
 }
