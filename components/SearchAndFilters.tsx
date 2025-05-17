@@ -122,31 +122,38 @@ const SearchAndFilters = () => {
     };
 
     return (
-        <div className="relative top-36 w-11/12 mx-auto p-4 rounded-lg mb-8">
-            <div className="w-full md:w-2/3 lg:w-1/2 flex items-center bg-indigo-500 text-white p-3 rounded-full shadow-xl backdrop-blur-md mx-auto transition-all duration-300">
+        <div className="relative top-24 w-11/12 mx-auto p-4 rounded-2xl">
+            <div className="w-full md:w-2/3 lg:w-1/2 flex items-center bg-white border border-gray-200 p-1.5 rounded-full shadow-md backdrop-blur-sm mx-auto transition-all duration-300">
                 <input
                     type="text"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') handleSearch();
+                    }}
                     placeholder={safeTranslate(t, 'search_placeholder')}
-                    className="w-full px-4 py-2 bg-transparent border-none focus:outline-none text-white placeholder-gray-100"
+                    className="w-full px-3 py-1.5 bg-transparent border-none focus:outline-none text-gray-800 placeholder-gray-400 text-sm"
                 />
                 <button
                     onClick={() => handleSearch()}
-                    className="ml-3 p-3 bg-indigo-600 rounded-full hover:bg-indigo-700 transition duration-300"
+                    className="ml-1.5 p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition duration-200"
                 >
-                    <FaSearch size={20} />
+                    <FaSearch size={16} className="text-gray-600" />
                 </button>
                 <button
                     onClick={toggleFilters}
-                    className="ml-2 p-3 bg-indigo-600 rounded-full hover:bg-indigo-700 transition duration-300"
+                    className="ml-1 p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition duration-200"
                 >
-                    {showFilters ? <IoMdClose size={20} /> : <LuSlidersHorizontal size={20} />}
+                    {showFilters ? (
+                        <IoMdClose size={16} className="text-gray-600" />
+                    ) : (
+                        <LuSlidersHorizontal size={16} className="text-gray-600" />
+                    )}
                 </button>
             </div>
 
             {showFilters && (
-                <div ref={filterRef} className="absolute left-1/2 translate-x-[-50%] w-[275px] mt-4 bg-gray-50 p-4 rounded-lg shadow-lg">
+                <div ref={filterRef} className="absolute left-1/2 mt-4 translate-x-[-50%] w-[275px] bg-white border border-gray-200 p-4 rounded-xl shadow-lg">
                     <div className="flex justify-center">
                         <Select
                             className="w-11/12 mx-auto"
@@ -161,28 +168,28 @@ const SearchAndFilters = () => {
                 </div>
             )}
 
-            <div className="w-full mx-auto flex flex-col gap-8 mt-8">
-                {loading ? (
+                <div className="w-full mx-auto flex flex-col gap-8 mt-8">
+                    {loading ? (
                     <div className="w-full mt-8 flex justify-center">
                         <Spin />
                     </div>
-                ) : (
+                    ) : (
                     <>
                         {hasSearched && (
-                            <div className="w-full mt-4 text-2xl font-bold sm:text-start text-center">
-                                {events.length} {events.length === 1 || events.length === 0 ? 'Event' : 'Events'} {safeTranslate(t, "found")}
-                            </div>
+                        <div className="w-full mt-4 text-2xl font-bold text-gray-800 sm:text-start text-center">
+                            {events.length} {events.length === 1 || events.length === 0 ? 'Event' : 'Events'} {safeTranslate(t, "found")}
+                        </div>
                         )}
 
                         <div className="w-full flex flex-row flex-wrap gap-4">
-                            {events.map((event) => (
-                                <EventComponent key={event.id} eventId={event.id} userId={userId} participateButton={true} />
-                            ))}
+                        {events.map((event) => (
+                            <EventComponent key={event.id} eventId={event.id} userId={userId} participateButton={true} />
+                        ))}
                         </div>
                     </>
-                )}
+                    )}
+                </div>
             </div>
-        </div>
     );
 };
 
