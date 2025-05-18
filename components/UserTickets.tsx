@@ -146,7 +146,7 @@ const UserTickets = () => {
           <Image src={no_ticket_image} alt="no ticket image" className="w-auto max-h-36 h-full mb-4" width={500} height={200} />
           <p className="text-gray-700 text-xl font-semibold">{safeTranslate(t, 'no_ticket_yet')}</p>
           <p className="text-gray-700 text-md mt-2">{safeTranslate(t, 'no_ticket_description')}</p>
-          <Link href={`/${lng}/explore`} className="bg-indigo-500 hover:bg-indigo-600 duration-300 font-bold text-lg px-6 py-2 mt-4 text-gray-700 rounded-xl">
+          <Link href={`/${lng}/explore`} className="bg-indigo-500 hover:bg-indigo-600 duration-300 font-bold text-lg px-6 py-2 mt-4 text-white rounded-xl">
             {safeTranslate(t, "explore")}
           </Link>
         </div>

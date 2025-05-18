@@ -43,36 +43,34 @@ const Countdown = ({ eventDate }: { eventDate: string }) => {
     }, [eventDate]);
 
     return (
-        <div className="relative top-12 flex items-center justify-center p-4 rounded-lg">
+        <div className="relative top-12 flex items-center justify-center p-4 rounded-xl mb-12">
             {timeLeft.days > 0 ? (
-                <div className="text-center">
-                    <h3 className="text-3xl font-semibold">{safeTranslate(t,'event_start')}</h3>
-                    <div className="flex space-x-4 mt-2 text-gray-600">
-                        <div className="flex flex-col">
-                            <span className="text-4xl font-semibold">{timeLeft.days}</span>
-                            <span className="text-xs uppercase">{safeTranslate(t,'days')}</span>
+                <div className="flex items-center gap-3 sm:gap-4 text-gray-800">
+                {[
+                    { value: timeLeft.days, label: safeTranslate(t, "days") },
+                    { value: timeLeft.hours, label: safeTranslate(t, "hours") },
+                    { value: timeLeft.minutes, label: safeTranslate(t, "minutes") },
+                    { value: timeLeft.seconds, label: safeTranslate(t, "seconds") }
+                ].map(({ value, label }, i) => (
+                    <div key={i} className="flex flex-col items-center">
+                        <div className="min-w-[48px] px-3 py-2 bg-white rounded-xl shadow-sm border border-gray-200 text-2xl sm:text-3xl font-semibold">
+                            {String(value).padStart(2, '0')}
                         </div>
-                        <div className="flex flex-col">
-                            <span className="text-4xl font-semibold">{timeLeft.hours}</span>
-                            <span className="text-xs uppercase">{safeTranslate(t,'hours')}</span>
-                        </div>
-                        <div className="flex flex-col">
-                            <span className="text-4xl font-semibold">{timeLeft.minutes}</span>
-                            <span className="text-xs uppercase">{safeTranslate(t,'minutes')}</span>
-                        </div>
-                        <div className="flex flex-col">
-                            <span className="text-4xl font-semibold">{timeLeft.seconds}</span>
-                            <span className="text-xs uppercase">{safeTranslate(t,'seconds')}</span>
+                        <div className="mt-1 text-xs text-gray-500 uppercase tracking-wide">
+                            {label}
                         </div>
                     </div>
+                ))}
                 </div>
             ) : (
                 <div className="text-center">
-                    <h3 className="text-2xl font-semibold text-gray-800">{safeTranslate(t,'event_happening')}</h3>
+                    <h3 className="text-2xl font-semibold text-gray-800">
+                        {safeTranslate(t, 'event_happening')}
+                    </h3>
                 </div>
             )}
         </div>
-
+    
     );
 };
 

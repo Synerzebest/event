@@ -54,42 +54,37 @@ const Page = ({ params: { lng } }: PageProps) => {
       }, [i18n])
     
       if (isLoading) {
-        return <div className="w-screen h-screen flex items-center justify-center text-4xl text-white px-4 py-2 font-bold">Eventease</div>
+        return <div className="w-screen h-screen flex items-center justify-center text-4xl text-white px-4 py-2 font-bold">EaseEvent</div>
       }
 
     return (
-        <div className="relative top-36">
+        <>
+            <Navbar lng={lng}/>
             {loading ? (
                 <>
-                    <Navbar lng={lng}/>
                     <div className="w-full flex justify-center relative top-24">
                         <Spin size="large" />
                     </div>
                 </>
             ) : !event ? (
                 <>
-                    <Navbar lng={lng}/>
                     <div className="w-full flex justify-center relative top-24">
                         <p>Nothing to see here</p>
                     </div>
                 </>
             ) : (
                 <>
-                    <Navbar lng={lng}/>
-                    <div className="w-full flex flex-col items-center gap-32">
-                        <div className="relative top-36">
+                        <div className="w-full flex justify-center relative top-8">
                             <Countdown eventDate={event.date} />
                         </div>
 
-                        <div className="w-11/12 mx-auto flex justify-center">
+                        <div className="w-full flex justify-center relative top-12">
                             <EventComponent eventId={eventId} userId={userId} participateButton={true} />
                         </div>
-                    </div>
-                    <Footer />
                 </>
             )}
-            
-        </div>
+            <Footer />
+        </>
     );
 };
 
