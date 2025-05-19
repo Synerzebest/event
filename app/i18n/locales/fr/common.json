@@ -52,17 +52,20 @@
   "choose_plan": "Choisissez votre abonnement",
   "choose_plan_button": "S'abonner",
   "starter_plan_description": "Pour les événements en petit comité",
-  "starter_plan_commission": "15% de commission sur chaque vente de ticket",
+  "starter_plan_commission": "5% de commission sur chaque vente de ticket",
   "starter_plan_guest": "Jusqu'à 100 invités",
   "starter_plan_advantage": "Assistance basique",
-  "premium_plan_description": "Pour des événements plus importants",
-  "premium_plan_commission": "5% de commission sur chaque vente de ticket",
-  "premium_plan_advantage": "Assistance prioritaire",
-  "premium_plan_guest": "Jusqu'à 500 invités",
-  "pro_plan_description": "Pour les événements de grande envergure",
+  "starter_plan_statistics": "Statistiques basiques",
+  "standard_plan_description": "Pour des événements plus importants",
+  "standard_plan_commission": "3% de commission sur chaque vente de ticket",
+  "standard_plan_advantage": "Assistance prioritaire",
+  "standard_plan_guest": "Jusqu'à 500 invités",
+  "standard_plan_statistics": "Statistiques avancées",
+  "pro_plan_description": "Pour les grands événements",
   "pro_plan_commission": "1% de commission sur chaque vente de ticket",
   "pro_plan_advantage": "Assistance dédiée",
   "pro_plan_guest": "Un nombre illimité d'invités",
+  "pro_plan_statistics": "Statistiques pro",
   "active_subscription_message": "Vous avez déjà un abonnement actif. Pour changer d'abonnement, veuillez d'abord résilier votre abonnement actuel.",
   "active_plan": "Actif",
   "default_plan": "Par défaut",
@@ -93,19 +96,19 @@
   "testimonials_title": "Avis de nos utilisateurs",
   "testimonials": [
     {
-      "name": "Karl Johnson",
+      "name": "Hector",
       "title": "Planificateur d'événements",
       "content": "EaseEvent a révolutionné la façon dont je gère mes événements. Tout est si simple à utiliser !",
       "image": "/images/firstuser.png"
     },
     {
-      "name": "Michael Lee",
+      "name": "Michael",
       "title": "Coordonnateur de mariage",
       "content": "J’aime la facilité avec laquelle il est possible d’organiser chaque détail de mes événements. Cela me fait gagner des heures de travail !",
       "image": "/images/thirduser.png"
     },
     {
-      "name": "Sara Martinez",
+      "name": "Sara",
       "title": "Responsable des événements corporatifs",
       "content": "L’outil de gestion budgétaire est une bouée de sauvetage. Je n'ai plus à m'inquiéter des dépenses excessives !",
       "image": "/images/seconduser.png"
@@ -186,5 +189,6 @@
   "accept_terms_text": "J'ai lu et accepte les ",
   "signup": "Créer un compte",
   "signin": "Connexion",
-  "found": "Trouvé(s)"
+  "found": "Trouvé(s)",
+  "no_commitment_message": "Sans engagement. Résiliez à tout moment."
 }

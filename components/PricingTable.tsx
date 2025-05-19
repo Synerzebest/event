@@ -5,14 +5,19 @@ import { useTranslation } from "../app/i18n";
 import useFirebaseUser from "@/lib/useFirebaseUser";
 import { fetchStripeSubscriptionStatus } from "@/lib/stripe";
 import { useRouter } from "next/navigation";
-import { Alert } from "antd";
 import { safeTranslate } from "@/lib/utils";
+import {
+    HiUserGroup,
+    HiChartBar,
+    HiChatBubbleLeftRight,
+    HiTicket,
+} from "react-icons/hi2";
 
-type PlanType = "STARTER" | "PREMIUM" | "PRO";
+type PlanType = "STARTER" | "STANDARD" | "PRO";
 
 const priceIds: Record<PlanType, string | undefined> = {
     STARTER: process.env.NEXT_PUBLIC_PRICE_ID_STARTER,
-    PREMIUM: process.env.NEXT_PUBLIC_PRICE_ID_PREMIUM,
+    STANDARD: process.env.NEXT_PUBLIC_PRICE_ID_STANDARD,
     PRO: process.env.NEXT_PUBLIC_PRICE_ID_PRO,
 };
 
@@ -30,6 +35,7 @@ const PricingTable = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
             }
         };
         checkSubscriptionStatus();
+        console.log(activePlan)
     }, [user]);
 
     const handleSubscribe = async (priceId: string) => {
@@ -66,88 +72,91 @@ const PricingTable = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
 
     return (
         <div className="py-20 relative top-0">
-            <h2 className="text-center text-4xl font-bold mb-12">{safeTranslate(t,'choose_plan')}</h2>
-
-            {activePlan !== "STARTER" && (
-                <div className="w-11/12 mx-auto flex justify-center mb-12">
-                    <Alert showIcon message={safeTranslate(t,'active_subscription_message')} />
-                </div>
-            )}
+            <h2 className="text-center text-4xl font-bold mb-12">{safeTranslate(t, 'choose_plan')}</h2>
 
             <div className="flex flex-col lg:flex-row items-center justify-center gap-8">
-                {["Starter", "Premium", "Pro"].map((plan) => {
+                {["Starter", "Standard", "Pro"].map((plan) => {
                     const planType = plan.toUpperCase() as PlanType;
                     const isActive = planType === activePlan;
+                    const isStandard = plan === "Standard";
 
                     return (
                         <div
                             key={planType}
-                            className={`relative w-[95%] lg:w-1/4 bg-gray-50 rounded-2xl shadow-lg p-8 text-center border border-gray-300
-                                transition-all duration-300 transform hover:scale-105 hover:shadow-2xl ${
-                                    plan === "Premium" ? "border-2 border-indigo-500" : ""
+                            className={`relative w-[95%] lg:w-1/4 rounded-2xl p-8 text-center border 
+                                transition-all duration-300 transform ${
+                                isStandard
+                                    ? "bg-white border-indigo-500 border-2 shadow-xl hover:shadow-2xl"
+                                    : "bg-gray-50 border-gray-300 shadow-lg hover:shadow-2xl"
                                 }`}
                         >
-                            {/* Badge pour le plan populaire */}
-                            {plan === "Premium" && (
+                            {isStandard && (
                                 <span className="absolute top-3 right-3 bg-indigo-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
-                                    {safeTranslate(t,'famous')}
+                                {safeTranslate(t, 'famous')}
                                 </span>
                             )}
 
-                            {/* Titre du plan */}
                             <h3 className="text-2xl font-extrabold text-gray-900 mb-4">{plan}</h3>
 
-                            {/* Prix */}
                             <p className="text-5xl font-bold text-gray-900 mb-4">
-                                {plan === "Starter" ? "0€" : plan === "Premium" ? "19.99€" : "49.99€"}
+                                {plan === "Starter" ? "0€" : plan === "Standard" ? "12.99€" : "29.99€"}
                                 <span className="text-lg text-gray-500">/mo</span>
                             </p>
 
-                            {/* Description */}
-                            <p className="text-gray-600 mb-6">{safeTranslate(t,`${plan.toLowerCase()}_plan_description`)}</p>
+                            <p className="text-gray-600 mb-6">{safeTranslate(t, `${plan.toLowerCase()}_plan_description`)}</p>
 
-                            {/* Avantages */}
                             <ul className="text-gray-700 text-left mx-auto w-fit mb-6">
                                 <li className="mb-2 flex items-center">
-                                    ✅ {safeTranslate(t,`${plan.toLowerCase()}_plan_advantage`)}
+                                    <HiUserGroup className="text-indigo-500 mr-2 w-5 h-5" /> 
+                                    {safeTranslate(t, `${plan.toLowerCase()}_plan_guest`)}
                                 </li>
                                 <li className="mb-2 flex items-center">
-                                    ✅ {safeTranslate(t,`${plan.toLowerCase()}_plan_guest`)}
+                                    <HiTicket className="text-indigo-500 mr-2 w-5 h-5" />
+                                    {safeTranslate(t, `${plan.toLowerCase()}_plan_commission`)}
                                 </li>
                                 <li className="mb-2 flex items-center">
-                                    ✅ {safeTranslate(t,`${plan.toLowerCase()}_plan_commission`)}
+                                    <HiChartBar className="text-indigo-500 mr-2 w-5 h-5" />
+                                    {safeTranslate(t, `${plan.toLowerCase()}_plan_statistics`)}
+                                </li>
+                                <li className="mb-2 flex items-center">
+                                    <HiChatBubbleLeftRight className="text-indigo-500 mr-2 w-5 h-5" />
+                                    {safeTranslate(t, `${plan.toLowerCase()}_plan_advantage`)}
                                 </li>
                             </ul>
 
-                            {/* Bouton d'abonnement */}
                             {planType === "STARTER" ? (
                                 <span className="py-2 px-6 rounded-full text-lg font-semibold bg-indigo-500 text-white">
-                                    {safeTranslate(t,"default_plan")}
+                                {safeTranslate(t, "default_plan")}
                                 </span>
                             ) : isActive ? (
                                 <span className="py-2 px-6 rounded-full text-lg font-semibold bg-green-500 text-white">
-                                    {safeTranslate(t,"active_plan")}
+                                {safeTranslate(t, "active_plan")}
                                 </span>
                             ) : (
                                 <button
                                     onClick={() => handleSubscribe(priceIds[planType]!)}
-                                    disabled={activePlan !== "STARTER" && !isActive} 
+                                    disabled={activePlan !== "STARTER" && !isActive}
                                     className={`py-2 px-6 rounded-full text-lg font-semibold transition-all ${
                                         isActive
-                                            ? "bg-green-500 text-white"
-                                            : activePlan !== "STARTER" && !isActive
-                                            ? "bg-gray-300 text-gray-500 cursor-not-allowed" 
-                                            : "bg-indigo-500 text-white hover:bg-indigo-600"
+                                        ? "bg-green-500 text-white"
+                                        : activePlan !== "STARTER"
+                                        ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                                        : "bg-indigo-500 text-white hover:bg-indigo-600"
                                     }`}
                                 >
-                                    {isActive ? safeTranslate(t,"active_plan") : safeTranslate(t,"choose_plan_button")}
+                                    {isActive ? safeTranslate(t, "active_plan") : safeTranslate(t, "choose_plan_button")}
                                 </button>
                             )}
                         </div>
                     );
                 })}
             </div>
+
+        {/* Message de réassurance */}
+        <div className="mt-12 text-center">
+            <p className="text-sm text-gray-500">{safeTranslate(t, "no_commitment_message") ?? "Aucun engagement. Résiliez à tout moment."}</p>
         </div>
+    </div>
     );
 };
 

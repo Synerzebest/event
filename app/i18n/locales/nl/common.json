@@ -52,17 +52,20 @@
   "choose_plan": "Kies uw abonnement",
   "choose_plan_button": "Abonneren",
   "starter_plan_description": "Voor kleinschalige evenementen",
-  "starter_plan_commission": "15% commissie op elke ticketverkoop",
+  "starter_plan_commission": "5% commissie op elke ticketverkoop",
   "starter_plan_advantage": "Basis ondersteuning",
   "starter_plan_guest": "Tot 100 gasten",
-  "premium_plan_description": "Voor grotere evenementen",
-  "premium_plan_commission": "5% commissie op elke ticketverkoop",
-  "premium_plan_advantage": "Prioritaire ondersteuning",
-  "premium_plan_guest": "Tot 500 gasten",
+  "starter_plan_statistics": "Basisstatistieken",
+  "standard_plan_description": "Voor grotere evenementen",
+  "standard_plan_commission": "3% commissie op elke ticketverkoop",
+  "standard_plan_advantage": "Prioritaire ondersteuning",
+  "standard_plan_guest": "Tot 500 gasten",
+  "standard_plan_statistics": "Geavanceerde statistieken",
   "pro_plan_description": "Voor grootschalige evenementen",
   "pro_plan_commission": "1% commissie op elke ticketverkoop",
   "pro_plan_advantage": "Toegewijde ondersteuning",
   "pro_plan_guest": "Onbeperkt gast",
+  "pro_plan_statistics": "Pro-inzichten",
   "active_subscription_message": "U heeft al een actief abonnement. Om van abonnement te veranderen, dient u eerst uw huidige abonnement op te zeggen.",
   "active_plan": "Actief",
   "default_plan": "Standaard Plan",
@@ -93,19 +96,19 @@
   "testimonials_title": "Wat Onze Gebruikers Zeggen",
   "testimonials": [
     {
-      "name": "Karl Johnson",
+      "name": "Hector",
       "title": "Evenementplanner",
       "content": "EaseEvent heeft een revolutie teweeggebracht in de manier waarop ik mijn evenementen beheer. Alles is zo gestroomlijnd en gemakkelijk te gebruiken!",
       "image": "/images/firstuser.png"
     },
     {
-      "name": "Michael Lee",
+      "name": "Michael",
       "title": "Bruiloft Coördinator",
       "content": "Ik vind het geweldig hoe gemakkelijk het is om elk detail van mijn evenementen te organiseren. Het scheelt mij uren werk!",
       "image": "/images/thirduser.png"
     },
     {
-      "name": "Sara Martinez",
+      "name": "Sara",
       "title": "Manager bedrijfsevenementen",
       "content": "De budgetbeheertool is een redder in nood. Ik hoef me geen zorgen meer te maken over te hoge uitgaven!",
       "image": "/images/seconduser.png"
@@ -185,5 +188,6 @@
   "accept_terms_text": "Ik heb dit gelezen en ga hiermee akkoord:  ",
   "signup": "Aanmelden",
   "signin": "Inloggen",
-  "found": "Gevonden"
+  "found": "Gevonden",
+  "no_commitment_message": "Geen verplichting. Annuleer op elk gewenst moment."
 }

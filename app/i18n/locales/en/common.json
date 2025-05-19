@@ -52,17 +52,20 @@
   "choose_plan": "Choose Your Plan",
   "choose_plan_button": "Subscribe",
   "starter_plan_description": "For small-scale events",
-  "starter_plan_commission": "15% commission on each ticket sale",
+  "starter_plan_commission": "5% commission on each ticket sale",
   "starter_plan_advantage": "Basic support",
   "starter_plan_guest": "Up to 100 guests",
-  "premium_plan_description": "For larger events",
-  "premium_plan_commission": "5% commission on each ticket sale",
-  "premium_plan_advantage": "Priority support",
-  "premium_plan_guest": "Up to 500 guests",
+  "starter_plan_statistics": "Basic analytics",
+  "standard_plan_description": "For larger events",
+  "standard_plan_commission": "3% commission on each ticket sale",
+  "standard_plan_advantage": "Priority support",
+  "standard_plan_guest": "Up to 500 guests",
+  "standard_plan_statistics": "Advanced analytics",
   "pro_plan_description": "For large-scale events",
   "pro_plan_commission": "1% commission on each ticket sale",
   "pro_plan_advantage": "Dedicated support",
   "pro_plan_guest": "Unlimited guests",
+  "pro_plan_statistics": "Pro-level analytics",
   "active_subscription_message": "You already have an active subscription. To change your subscription, please cancel your current subscription first.",
   "active_plan": "Active",
   "default_plan": "Default Plan",
@@ -93,19 +96,19 @@
   "testimonials_title": "What Our Users Say",
   "testimonials": [
     {
-      "name": "Karl Johnson",
+      "name": "Hector",
       "title": "Event Planner",
       "content": "EaseEvent has revolutionized how I manage my events. Everything is so streamlined and easy to use!",
       "image": "/images/firstuser.png"
     },
     {
-      "name": "Michael Lee",
+      "name": "Michael",
       "title": "Wedding Coordinator",
       "content": "I love how easy it is to organize every detail of my events. It saves me hours of work!",
       "image": "/images/thirduser.png"
     },
     {
-      "name": "Sara Martinez",
+      "name": "Sara",
       "title": "Corporate Events Manager",
       "content": "The budget management tool is a lifesaver. I no longer have to worry about overspending!",
       "image": "/images/seconduser.png"
@@ -185,5 +188,6 @@
   "accept_terms_text": "I have read and agree to the ",
   "signup": "Signup",
   "signin": "Signin",
-  "found": "Foud"
+  "found": "Foud",
+  "no_commitment_message": "No commitment. Cancel anytime."
 }
