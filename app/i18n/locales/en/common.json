@@ -54,7 +54,7 @@
   "starter_plan_description": "For small-scale events",
   "starter_plan_commission": "5% commission on each ticket sale",
   "starter_plan_advantage": "Basic support",
-  "starter_plan_guest": "Up to 100 guests",
+  "starter_plan_guest": "Up to 50 guests",
   "starter_plan_statistics": "Basic analytics",
   "standard_plan_description": "For larger events",
   "standard_plan_commission": "3% commission on each ticket sale",
@@ -189,5 +189,13 @@
   "signup": "Signup",
   "signin": "Signin",
   "found": "Foud",
-  "no_commitment_message": "No commitment. Cancel anytime."
+  "no_commitment_message": "No commitment. Cancel anytime.",
+  "confirm_registration": "Confirm Registration",
+  "available": "Available",
+  "sold_out": "Sold Out",
+  "last_name": "Lastname",
+  "first_name": "Firstname",
+  "name_required": "Please enter your first and last name",
+  "buy_ticket": "Get a ticket",
+  "choose_ticket": "Choose a ticket"
 }

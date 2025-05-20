@@ -14,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(405).json({ message: 'Méthode non autorisée' });
     }
 
-    const { eventId, ticketName, userId } = req.body;
+    const { eventId, ticketName, userId, firstName, lastName } = req.body;
 
     if (!eventId || !ticketName || !userId) {
         return res.status(400).json({ message: 'Les paramètres requis sont manquants.' });
@@ -58,12 +58,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         // Ajout du ticket dans la collection "tickets" pour l'utilisateur
         const ticketData = {
-            eventId: eventId,
+            eventId,
             name: ticketName,
-            price: 0, // Prix du ticket gratuit
-            purchaseDate: new Date().toISOString(), // Date de l'achat
-            used: false, // Le ticket n'est pas utilisé par défaut
-            userId: userId, // ID de l'utilisateur qui a réservé le ticket
+            price: 0,
+            purchaseDate: new Date().toISOString(),
+            used: false,
+            userId,
+            firstName,
+            lastName,
         };
 
         // Enregistrement du ticket dans la collection "tickets"

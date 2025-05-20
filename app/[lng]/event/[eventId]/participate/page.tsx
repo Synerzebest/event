@@ -14,6 +14,8 @@ import { loadStripe } from '@stripe/stripe-js';
 import { motion } from "framer-motion";
 import useLanguage from "@/lib/useLanguage";
 import { useRouter } from "next/navigation";
+import { safeTranslate } from "@/lib/utils";
+import { useTranslation } from "@/app/i18n";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!);
 
@@ -31,12 +33,14 @@ const Page = () => {
     const [loading, setLoading] = useState(true);
     const [selectedTicket, setSelectedTicket] = useState<string | null>(null);
     const [selectedTicketPrice, setSelectedTicketPrice] = useState<number | null>(null);
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     const { user } = useFirebaseUser();
     const userId = user?.uid || "";
     const router = useRouter();
     const [processing, setProcessing] = useState<boolean>(false);
-
     const lng = useLanguage();
+    const { t } = useTranslation(lng, "common");
 
     const handleCheckout = async () => {
         setProcessing(true)
@@ -51,6 +55,12 @@ const Page = () => {
             setProcessing(false);
             return;
         }
+
+        if (!firstName.trim() || !lastName.trim()) {
+            message.error(safeTranslate(t, "name_required"));
+            setProcessing(false);
+            return;
+          }
     
         const selectedTicketData = event.tickets.find(ticket => ticket.name === selectedTicket);
     
@@ -72,6 +82,8 @@ const Page = () => {
                         eventId,
                         ticketName: selectedTicketData.name,
                         userId,
+                        firstName,
+                        lastName
                     }),
                 });
     
@@ -114,6 +126,8 @@ const Page = () => {
                     },
                     userId,
                     eventId,
+                    firstName,
+                    lastName
                 }),
             });
     
@@ -206,11 +220,11 @@ const Page = () => {
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.2 }}
                 >
-                    <h3 className="text-3xl font-semibold mb-6 text-gray-800">Acheter un Ticket</h3>
+                    <h3 className="text-3xl font-semibold mb-6 text-gray-800">{safeTranslate(t, "buy_ticket")}</h3>
 
                     {/* Choix du ticket */}
                     <div className="flex flex-col w-full mb-8">
-                        <label className="text-lg font-medium text-gray-600 mb-2">Choisir un Ticket</label>
+                        <label className="text-lg font-medium text-gray-600 mb-2">{safeTranslate(t, "choose_ticket")}</label>
                         <Select
                             placeholder="Sélectionner un ticket"
                             value={selectedTicket}
@@ -221,15 +235,42 @@ const Page = () => {
                             {event.tickets.map((ticket) => (
                                 <Select.Option key={ticket.name} value={ticket.name} disabled={ticket.quantity <= 0}>
                                     <div className="flex justify-between items-center">
-                                    <span>{ticket.name}</span>
+                                        <div className="flex items-center gap-2">
+                                            <span>{ticket.name}</span>
+                                            <span className="text-gray-500">({ticket.price}€)</span>
+                                        </div>
                                     <span className="text-gray-500">
-                                        {ticket.quantity > 0 ? `${ticket.quantity} disponibles` : "Épuisé"}
+                                        {ticket.quantity > 0 ? `${ticket.quantity} ${safeTranslate(t, "available")}` : safeTranslate(t, "sold_out")}
                                     </span>
                                     </div>
                                 </Select.Option>
                             ))}
                         </Select>
                     </div>
+
+                    <div className="flex flex-col md:flex-row gap-4 mb-6">
+                        <div className="flex-1">
+                            <label className="text-lg font-medium text-gray-600 mb-2 block">{safeTranslate(t, "first_name")}</label>
+                            <input
+                            type="text"
+                            value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)}
+                            className="w-full border border-gray-300 px-4 py-2 rounded-md shadow-sm focus:ring focus:ring-blue-500"
+                            required
+                            />
+                        </div>
+                        <div className="flex-1">
+                            <label className="text-lg font-medium text-gray-600 mb-2 block">{safeTranslate(t, "last_name")}</label>
+                            <input
+                            type="text"
+                            value={lastName}
+                            onChange={(e) => setLastName(e.target.value)}
+                            className="w-full border border-gray-300 px-4 py-2 rounded-md shadow-sm focus:ring focus:ring-blue-500"
+                            required
+                            />
+                        </div>
+                    </div>
+
 
                     <Button
                         type="primary"
@@ -241,7 +282,7 @@ const Page = () => {
                         {processing ? (
                             <Spin size="small" /> // Affiche un spinner pendant le traitement
                         ) : (
-                            `Confirm Registration ${selectedTicketPrice ? `(${selectedTicketPrice} €)` : ""}`
+                            `${safeTranslate(t, "confirm_registration")} ${selectedTicketPrice ? `(${selectedTicketPrice} €)` : ""}`
                         )}
                     </Button>
                 </motion.div>

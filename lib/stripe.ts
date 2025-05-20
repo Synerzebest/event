@@ -8,7 +8,7 @@ export const fetchStripeSubscriptionStatus = async (customerId: string): Promise
 
         const priceIdToPlan: Record<string, PlanType> = {
             [process.env.NEXT_PUBLIC_PRICE_ID_STARTER!]: "STARTER",
-            [process.env.NEXT_PUBLIC_PRICE_ID_PREMIUM!]: "STANDARD",
+            [process.env.NEXT_PUBLIC_PRICE_ID_STANDARD!]: "STANDARD",
             [process.env.NEXT_PUBLIC_PRICE_ID_PRO!]: "PRO",
         };
 

@@ -77,7 +77,6 @@ const PricingTable = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
             <div className="flex flex-col lg:flex-row items-center justify-center gap-8">
                 {["Starter", "Standard", "Pro"].map((plan) => {
                     const planType = plan.toUpperCase() as PlanType;
-                    const isActive = planType === activePlan;
                     const isStandard = plan === "Standard";
 
                     return (
@@ -124,7 +123,48 @@ const PricingTable = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
                                 </li>
                             </ul>
 
-                            {planType === "STARTER" ? (
+                            {(() => {
+  const isSubscribed = activePlan !== "STARTER"; // user a payé
+  const isOtherPlan = planType !== activePlan;
+
+  const shouldDisable = isSubscribed && isOtherPlan;
+
+  const baseClasses = "py-2 px-6 rounded-full text-lg font-semibold transition-all";
+
+  // Si plan actif → bouton violet "Actif"
+  if (planType === activePlan) {
+    return (
+      <span className={`${baseClasses} bg-indigo-500 text-white`}>
+        {safeTranslate(t, "active_plan")}
+      </span>
+    );
+  }
+
+  // Si plan inactif mais désactivé (autre que plan actif)
+  if (shouldDisable) {
+    return (
+      <button
+        disabled
+        className={`${baseClasses} bg-gray-300 text-gray-500 cursor-not-allowed`}
+      >
+        {safeTranslate(t, "choose_plan_button")}
+      </button>
+    );
+  }
+
+  // Cas normal : plan sélectionnable (ex : user est STARTER)
+  return (
+    <button
+      onClick={() => handleSubscribe(priceIds[planType]!)}
+      className={`${baseClasses} bg-indigo-500 text-white hover:bg-indigo-600`}
+    >
+      {safeTranslate(t, "choose_plan_button")}
+    </button>
+  );
+})()}
+
+
+                            {/* {planType === "STARTER" ? (
                                 <span className="py-2 px-6 rounded-full text-lg font-semibold bg-indigo-500 text-white">
                                 {safeTranslate(t, "default_plan")}
                                 </span>
@@ -146,7 +186,7 @@ const PricingTable = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
                                 >
                                     {isActive ? safeTranslate(t, "active_plan") : safeTranslate(t, "choose_plan_button")}
                                 </button>
-                            )}
+                            )} */}
                         </div>
                     );
                 })}
@@ -154,7 +194,7 @@ const PricingTable = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
 
         {/* Message de réassurance */}
         <div className="mt-12 text-center">
-            <p className="text-sm text-gray-500">{safeTranslate(t, "no_commitment_message") ?? "Aucun engagement. Résiliez à tout moment."}</p>
+            <p className="text-sm text-gray-500">{safeTranslate(t, "no_commitment_message")}</p>
         </div>
     </div>
     );

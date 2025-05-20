@@ -54,7 +54,7 @@
   "starter_plan_description": "Voor kleinschalige evenementen",
   "starter_plan_commission": "5% commissie op elke ticketverkoop",
   "starter_plan_advantage": "Basis ondersteuning",
-  "starter_plan_guest": "Tot 100 gasten",
+  "starter_plan_guest": "Tot 50 gasten",
   "starter_plan_statistics": "Basisstatistieken",
   "standard_plan_description": "Voor grotere evenementen",
   "standard_plan_commission": "3% commissie op elke ticketverkoop",
@@ -189,5 +189,13 @@
   "signup": "Aanmelden",
   "signin": "Inloggen",
   "found": "Gevonden",
-  "no_commitment_message": "Geen verplichting. Annuleer op elk gewenst moment."
+  "no_commitment_message": "Geen verplichting. Annuleer op elk gewenst moment.",
+  "confirm_registration": "Registratie bevestigen",
+  "available": "Beschikbaar",
+  "sold_out": "Uitverkocht",
+  "last_name": "Achternaam",
+  "first_name": "Voornaam",
+  "name_required": "Vul uw voor- en achternaam in",
+  "buy_ticket": "Ticket kopen",
+  "choose_ticket": "Ticket kiezen"
 }

@@ -49,7 +49,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ error: `Method ${req.method} not allowed.` });
   }
 
-  const { ticket, eventId, userId } = req.body;
+  const { ticket, eventId, userId, firstName, lastName } = req.body;
 
   try {
     if (ticket.price === 0) {
@@ -62,15 +62,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Récupérer les détails de l'organisateur
     const { stripeAccountId, subscriptionId } = await getOrganizerDetails(eventId);
 
-    let applicationFeePercentage = 0.15; // Par défaut pour 'starter'
+    let applicationFeePercentage = 0.5; // Par défaut pour 'starter'
 
     if (subscriptionId) {
       // Récupérer les détails de l'abonnement via Stripe
       const subscription = await stripe.subscriptions.retrieve(subscriptionId);
       const plan = subscription.items.data[0].price.metadata.nickname || 'starter';
 
-      if (plan.toLowerCase() === 'premium') {
-        applicationFeePercentage = 0.05; // Premium : 5%
+      if (plan.toLowerCase() === 'standard') {
+        applicationFeePercentage = 0.03; // Standard : 5%
       } else if (plan.toLowerCase() === 'pro') {
         applicationFeePercentage = 0.01; // Pro : 1%
       }
@@ -98,7 +98,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         event_id: eventId,
         ticket_name: ticket.name,
         ticket_quantity: ticket.quantity,
-        user_id: userId
+        user_id: userId,
+        first_name: firstName,
+        last_name: lastName,
       },
       payment_intent_data: {
         application_fee_amount: Math.round(ticket.price * 100 * applicationFeePercentage),

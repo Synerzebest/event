@@ -35,7 +35,7 @@ const CreateEventForm: React.FC = () => {
             case "premium":
                 return 500;
             default:
-                return 100; // Free subscription
+                return 50; // Free subscription
         }
     };
 

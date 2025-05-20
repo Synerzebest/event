@@ -85,6 +85,8 @@ async function handleTicketPurchase(session: Stripe.Checkout.Session) {
   const ticketQuantity = session.metadata?.ticket_quantity;
   const ticketPrice = session.amount_total ? session.amount_total / 100 : 0;
   const userId = session.metadata?.user_id;
+  const firstName = session.metadata?.first_name || "";
+  const lastName = session.metadata?.last_name || "";
 
   if (eventId && ticketName && ticketQuantity) {
     try {
@@ -99,6 +101,8 @@ async function handleTicketPurchase(session: Stripe.Checkout.Session) {
         purchaseDate: new Date().toISOString(),
         used: false, // Le ticket n'est pas utilisé par défaut
         userId: userId,
+        firstName: firstName,
+        lastName: lastName,
       };
 
       const ticketRef = firestore.collection('tickets').doc();
@@ -194,7 +198,7 @@ async function updateUserSubscription(customerId: string, subscriptionId: string
 
     const userDoc = querySnapshot.docs[0];
 
-    // 🔥 Mise à jour de Firestore avec le nickname et subscriptionId
+    // Mise à jour de Firestore avec le nickname et subscriptionId
     await userDoc.ref.update({
       subscriptionId: subscriptionId,
       nickname: nickname.toLowerCase(),

@@ -71,7 +71,7 @@ const LikedEvents: React.FC<LikedEventsProps> = ({ userId }) => {
               width={500}
               height={200}
             />
-            <p className="text-white text-xl font-semibold">
+            <p className="text-gray-700 text-xl font-semibold">
               {safeTranslate(t, 'no_favorite_events')}
             </p>
           </div>
