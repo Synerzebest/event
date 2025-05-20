@@ -51,7 +51,7 @@ const Hero = () => {
     <div className="relative min-h-screen sm:h-[70vh] md:h-[65vh] w-full mx-auto overflow-hidden flex flex-col items-center justify-center">
       {/* Blobs de fond */}
       <motion.div
-        className="absolute top-0 md:-top-32 left-24 md:-left-32 w-[400px] h-[400px] bg-indigo-400 opacity-20 rounded-full blur-3xl z-0"
+        className="hidden md:block absolute top-0 md:-top-32 left-24 md:-left-32 w-[400px] h-[400px] bg-indigo-400 opacity-20 rounded-full blur-3xl z-0"
       />
       <motion.div
         className="hidden md:block absolute top-48 -right-32 w-[400px] h-[400px] bg-pink-400 opacity-20 rounded-full blur-3xl z-0"
