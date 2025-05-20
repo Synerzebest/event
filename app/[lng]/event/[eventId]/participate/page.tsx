@@ -2,13 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { Navbar, Footer } from "@/components";
+import { Navbar, Footer, EventComponent } from "@/components";
 import { Spin, Button, message, Select } from 'antd';
 import useFirebaseUser from '@/lib/useFirebaseUser';
-import Image from 'next/image'; 
-import { format } from "date-fns";
-import { LuCalendarDays } from "react-icons/lu";
-import { IoLocationOutline } from "react-icons/io5";
 import { Ticket } from "@/types/types";
 import { loadStripe } from '@stripe/stripe-js';
 import { motion } from "framer-motion";
@@ -203,19 +199,17 @@ const Page = () => {
         );
     }
 
-    const formattedDate = format(new Date(event.date), 'dd MMMM yyyy');
-
     return (
         <>
             <Navbar lng={lng} />
             <motion.div
-                className="relative top-36 flex flex-col md:flex-row w-11/12 mx-auto gap-8 pt-10"
+                className="relative top-16 sm:top-36 flex flex-col md:flex-row w-[98%] items-center w-11/12 mx-auto gap-8 pt-10"
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, ease: "easeInOut" }}
             >
                 <motion.div
-                    className="w-full md:w-2/3 flex flex-col bg-white p-8 shadow-lg rounded-xl"
+                    className="w-full md:w-2/3 flex flex-col border border-gray-200 rounded-2xl bg-gray-50 p-8"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.2 }}
@@ -229,7 +223,7 @@ const Page = () => {
                             placeholder="Sélectionner un ticket"
                             value={selectedTicket}
                             onChange={handleTicketChange}
-                            className="rounded-md border border-gray-300 shadow focus:ring focus:ring-blue-500"
+                            className="rounded-md focus:ring focus:ring-blue-500"
                             size="large"
                         >
                             {event.tickets.map((ticket) => (
@@ -273,8 +267,8 @@ const Page = () => {
 
 
                     <Button
-                        type="primary"
-                        className="w-full py-4 mt-4 from-blue-500 blue-600 transition-all rounded-lg"
+                        type="default"
+                        className="w-full py-4 mt-4 bg-indigo-500 border border-indigo-500 hover:!bg-indigo-600 hover:!text-white hover:!border-none text-white font-semibold transition-all rounded-lg duration-300"
                         size="large"
                         onClick={handleCheckout}
                         disabled={!selectedTicket || processing} // Désactive le bouton si un ticket n'est pas sélectionné ou si on est en train de traiter
@@ -287,37 +281,7 @@ const Page = () => {
                     </Button>
                 </motion.div>
 
-                {/* Section de droite : Détails de l'événement */}
-                <motion.div
-                    className="w-full md:w-1/3 bg-white p-6 border border-gray-200 shadow-lg rounded-xl"
-                    initial={{ scale: 0.9 }}
-                    animate={{ scale: 1 }}
-                    transition={{ delay: 0.3 }}
-                >
-                    <h2 className="text-3xl font-bold mb-4 text-center text-gray-800">{event.title}</h2>
-                    <div className="overflow-hidden rounded-lg mb-6">
-                        {event.images.length > 0 && (
-                            <Image
-                            src={event.images[0]}
-                            alt={event.title}
-                            width={500}
-                            height={300}
-                            className="w-full h-auto object-cover transition-transform duration-500 hover:scale-105"
-                            />
-                        )}
-                    </div>
-
-                    <div className="flex flex-col gap-2 text-gray-600">
-                        <div className="flex items-center mb-2">
-                            <LuCalendarDays className="mr-2 text-blue-500" />
-                            <span>{formattedDate}</span>
-                        </div>
-                        <div className="flex items-center">
-                            <IoLocationOutline className="mr-2 text-green-500" />
-                            <span>{event.place}</span>
-                        </div>
-                    </div>
-                </motion.div>
+                <EventComponent eventId={eventId} participateButton={false} />
             </motion.div>
             <Footer />
         </>

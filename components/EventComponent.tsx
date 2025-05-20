@@ -4,8 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import { format } from "date-fns";
 import { FaShare } from "react-icons/fa6";
-import { LuCalendarDays } from "react-icons/lu";
-import { IoLocationOutline } from "react-icons/io5";
+import { IoCalendarNumberSharp } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 import { motion } from 'framer-motion';
 import { Event } from "@/types/types"; 
@@ -15,9 +14,10 @@ import { Spin } from "antd";
 import useFirebaseUser from "@/lib/useFirebaseUser";
 import Link from "next/link";
 import { safeTranslate } from "@/lib/utils";
-import { FaUser } from "react-icons/fa";
+import { HiUserGroup } from "react-icons/hi2";
 import ShareModal from "./ShareModal";
 import AnimatedLikeButton from "./ui/animated-like-button";
+import { FaMapLocationDot } from "react-icons/fa6";
 
 interface EventComponentProps {
     eventId: string,
@@ -173,12 +173,12 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
             <div className="p-4 flex flex-col justify-between">
                 <div className="flex justify-between items-center mb-2">
                     <h3 className="font-semibold text-xl text-gray-800 hover:text-indigo-600 transition-all">{event.title}</h3>
-                    <div className="border border-indigo-700 text-indigo-700 text-sm font-bold py-1 px-2 rounded flex items-center gap-1 whitespace-nowrap">
-                        {event.currentGuests !== undefined ? event.currentGuests : 0} / {event.guestLimit} <FaUser />
+                    <div className="bg-indigo-500 text-white text-sm font-bold py-[0.35rem] px-3 rounded flex items-center gap-1 whitespace-nowrap">
+                        {event.currentGuests !== undefined ? event.currentGuests : 0} / {event.guestLimit}<HiUserGroup className="text-white w-5 h-5" />
                     </div>
                 </div>
-                <p className="text-gray-600 text-start flex items-center"><LuCalendarDays className="mr-2" /> {formattedDate}</p>
-                <p className="text-gray-600 text-start flex items-center"><IoLocationOutline className="mr-2" /> {event.place}</p>
+                <p className="text-gray-600 text-start flex items-center"><IoCalendarNumberSharp className="text-indigo-500 mr-2 w-5 h-5" /> {formattedDate}</p>
+                <p className="text-gray-600 text-start flex items-center"><FaMapLocationDot className="text-indigo-500 mr-2 w-5 h-5" /> {event.place}</p>
                 <p className="text-gray-700 mt-2 text-sm">{event.description}</p>
 
                 {participateButton && (
@@ -204,7 +204,7 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
                         <div className="w-full flex items-center justify-between">
                             <motion.button
                                 className={`font-bold py-2 px-4 rounded-lg transition-all duration-200 transform flex items-center justify-center gap-2
-                                    ${isSubmitting || isPastEvent ? "bg-gray-200 text-gray-500 cursor-not-allowed" : "bg-indigo-600 text-white hover:bg-indigo-800"}
+                                    ${isSubmitting || isPastEvent ? "bg-gray-200 text-gray-500 cursor-not-allowed" : "bg-indigo-500 text-white hover:bg-indigo-800"}
                                 `}
                                 onClick={handleParticipateClick}
                                 disabled={isSubmitting || isPastEvent} 
