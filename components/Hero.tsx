@@ -50,7 +50,7 @@ const Hero = () => {
     <div className="relative min-h-screen sm:h-[70vh] md:h-[65vh] w-full mx-auto overflow-hidden flex flex-col items-center justify-center">
       {/* Blobs de fond */}
       <svg
-        className="overflow-visible absolute -top-32 -left-32 w-[400px] h-[400px] z-0"
+        className="overflow-visible absolute -top-32 -left-32 w-[400px] h-[350px] sm:w-[400px] sm:h-[400px] z-0"
         viewBox="0 0 400 400"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -63,7 +63,7 @@ const Hero = () => {
       </svg>
 
       <svg
-        className="absolute top-48 -right-32 w-[400px] h-[400px] z-0 pointer-events-none overflow-visible"
+        className="absolute top-48 -right-32 w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] z-0 pointer-events-none overflow-visible"
         viewBox="0 0 400 400"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -83,7 +83,7 @@ const Hero = () => {
       </svg>
 
       <svg
-        className="absolute bottom-[-10rem] left-1/2 -translate-x-1/2 w-[500px] h-[500px] z-0 pointer-events-none overflow-visible"
+        className="absolute bottom-[-10rem] left-1/2 -translate-x-1/2 w-[400px] h-[400px] z-0 pointer-events-none overflow-visible"
         viewBox="0 0 500 500"
         xmlns="http://www.w3.org/2000/svg"
       >
