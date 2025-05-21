@@ -9,7 +9,6 @@ import { FlipWords } from "./ui/flip-words";
 import useLanguage from "@/lib/useLanguage";
 import { useTranslation } from "@/app/i18n";
 import { i18n as I18nType } from "i18next";
-import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 
 
@@ -50,15 +49,59 @@ const Hero = () => {
   return (
     <div className="relative min-h-screen sm:h-[70vh] md:h-[65vh] w-full mx-auto overflow-hidden flex flex-col items-center justify-center">
       {/* Blobs de fond */}
-      <motion.div
-        className="hidden md:block absolute top-0 md:-top-32 left-24 md:-left-32 w-[400px] h-[400px] bg-indigo-400 opacity-20 rounded-full blur-3xl z-0"
-      />
-      <motion.div
-        className="hidden md:block absolute top-48 -right-32 w-[400px] h-[400px] bg-pink-400 opacity-20 rounded-full blur-3xl z-0"
-      />
-      <motion.div
-        className="absolute bottom-[-10rem] left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-purple-400 opacity-25 rounded-full blur-[120px] z-0"
-      />
+      <svg
+        className="overflow-visible absolute -top-32 -left-32 w-[400px] h-[400px] z-0"
+        viewBox="0 0 400 400"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <filter id="blur1" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="60" />
+          </filter>
+        </defs>
+        <circle cx="200" cy="200" r="200" fill="#6366f1" fillOpacity="0.2" filter="url(#blur1)" />
+      </svg>
+
+      <svg
+        className="absolute top-48 -right-32 w-[400px] h-[400px] z-0 pointer-events-none overflow-visible"
+        viewBox="0 0 400 400"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <filter id="blur2" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="60" />
+          </filter>
+        </defs>
+        <circle
+          cx="200"
+          cy="200"
+          r="200"
+          fill="#ec4899"
+          fillOpacity="0.2"
+          filter="url(#blur2)"
+        />
+      </svg>
+
+      <svg
+        className="absolute bottom-[-10rem] left-1/2 -translate-x-1/2 w-[500px] h-[500px] z-0 pointer-events-none overflow-visible"
+        viewBox="0 0 500 500"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <filter id="blur3" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="120" />
+          </filter>
+        </defs>
+        <circle
+          cx="250"
+          cy="250"
+          r="250"
+          fill="#a855f7"
+          fillOpacity="0.25"
+          filter="url(#blur3)"
+        />
+      </svg>
+
 
       {/* Contenu */}
       <div className="z-10 text-center px-4 sm:px-12 flex flex-col justify-center items-center gap-6 w-full">
