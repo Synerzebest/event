@@ -30,15 +30,10 @@ export default function RootLayout({ children, params: { lng } }: RootLayoutProp
         <meta name="google-adsense-account" content={GoogleAdsenseId} />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         {GoogleAdsenseId && (
-          <Script
-            async
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${GoogleAdsenseId}`}
-            crossOrigin="anonymous"
-          />
+          <Adsense pId={GoogleAdsenseId} />
         )}
       </head>
       <body className="antialiased">
-        <Adsense pId={GoogleAdsenseId} />
         {children}
       </body>
     </html>
