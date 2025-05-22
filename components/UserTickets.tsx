@@ -4,8 +4,6 @@ import type { CarouselRef } from 'antd/es/carousel';
 import { Event } from "@/types/types";
 import { format } from "date-fns";
 import Image from "next/image";
-import { LuCalendarDays } from "react-icons/lu";
-import { IoLocationOutline } from "react-icons/io5";
 import QRCode from 'qrcode';
 import { getAuth } from "firebase/auth";
 import useLanguage from "@/lib/useLanguage";
@@ -15,6 +13,8 @@ import Link from "next/link";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { motion } from "framer-motion";
 import type { TFunction } from "i18next";
+import { FaMapLocationDot } from "react-icons/fa6";
+import { IoCalendarNumberSharp } from "react-icons/io5";
 
 interface Ticket {
   id: string;
@@ -112,7 +112,7 @@ const UserTickets = () => {
   return (
     <div className="mb-12 relative">
       {tickets.length > 0 && !loading ? (
-        <div className="w-[97%] sm:w-full mx-auto bg-white border border-gray-200 p-6 rounded-2xl shadow-md overflow-hidden">
+        <div className="w-[97%] sm:w-full mx-auto">
           {isMobile ? (
             <>
               <Carousel dots={false} infinite={false} ref={carouselRef}>
@@ -196,16 +196,16 @@ const TicketCard = ({ ticket, event, onShowQRCode, t }: { ticket: Ticket; event?
           )}
         </div>
         <p className="flex items-center gap-2 text-sm sm:text-base">
-          <LuCalendarDays />
+          <IoCalendarNumberSharp className="text-indigo-500 mr-2 w-5 h-5" />
           {format(new Date(event.date), 'dd MMMM yyyy')}
         </p>
         <p className="flex items-center gap-2 text-sm sm:text-base">
-          <IoLocationOutline />
+          <FaMapLocationDot className="text-indigo-500 mr-2 w-5 h-5" />
           {event.place}
         </p>
-        <Button type="primary" onClick={() => onShowQRCode(ticket)}>
+        <button className="bg-indigo-500 text-white font-bold py-2 rounded-lg" onClick={() => onShowQRCode(ticket)}>
           {safeTranslate(t, 'show_qr_code')}
-        </Button>
+        </button>
       </div>
     </div>
   ) : (

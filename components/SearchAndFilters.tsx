@@ -122,7 +122,7 @@ const SearchAndFilters = () => {
     };
 
     return (
-        <div className="relative top-24 w-11/12 mx-auto p-4 rounded-2xl">
+        <div className="relative top-24 w-11/12 mx-auto rounded-2xl mb-8">
             <div className="w-full md:w-2/3 lg:w-1/2 flex items-center bg-white border border-gray-200 p-1.5 rounded-full shadow-md backdrop-blur-sm mx-auto transition-all duration-300">
                 <input
                     type="text"
@@ -181,7 +181,7 @@ const SearchAndFilters = () => {
                         </div>
                         )}
 
-                        <div className="w-full flex flex-row flex-wrap gap-4">
+                        <div className="w-full flex flex-row flex-wrap gap-4 justify-center md:justify-start">
                         {events.map((event) => (
                             <EventComponent key={event.id} eventId={event.id} userId={userId} participateButton={true} />
                         ))}

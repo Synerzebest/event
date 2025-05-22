@@ -7,7 +7,6 @@
   "suggestion": "Où souhaitez-vous sortir ?",
   "hero_button": "Explorer les événements",
   "subhero_title": "Découvrez les fonctionnalités d'EaseEvent",
-  "subhero_subtitle": "Rationalisez votre processus de planification d’événements grâce à nos outils puissants conçus pour être efficaces et faciles à utiliser.",
   "features": [
     {
       "title": "Gestion d'événements",
@@ -49,7 +48,7 @@
   "backups_subtitle": "Nous sauvegardons régulièrement toutes les données de vos événements. En cas de problème, vos événements sont stockés en toute sécurité et peuvent être restaurés immédiatement.",
   "support_title": "Assistance 24/7",
   "support_subtitle": "Notre équipe d'assistance est disponible 24h/24 et 7j/7 pour vous aider en cas de problème. Qu'il s'agisse d'un problème technique ou d'une simple question, nous sommes là pour vous aider au bon déroulement de vos événements.",
-  "choose_plan": "Choisissez votre abonnement",
+  "choose_plan": "Des plans adaptés à tous les besoins",
   "choose_plan_button": "S'abonner",
   "starter_plan_description": "Pour les événements en petit comité",
   "starter_plan_commission": "5% de commission sur chaque vente de ticket",

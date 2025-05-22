@@ -48,8 +48,7 @@ const SubHero = () => {
   return (
     <section className="py-16 bg-gradient-to-b from-white via-slate-50 to-slate-100 relative top-0">
       <div className="container mx-auto text-center">
-        <h2 className="text-4xl font-bold mb-8">{safeTranslate(t, "subhero_title")}</h2>
-        <p className="text-lg text-gray-600 mb-12 mx-4">{safeTranslate(t, "subhero_subtitle")}</p>
+        <h2 className="text-[1.7rem] sm:text-4xl font-bold mb-8">{safeTranslate(t, "subhero_title")}</h2>
 
         {/* Wrapper pour le scroll horizontal */}
         <div className="relative">

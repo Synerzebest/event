@@ -7,7 +7,6 @@
   "suggestion": "Where do you want to have fun ?",
   "hero_button": "Explore events",
   "subhero_title": "Discover the Features of EaseEvent",
-  "subhero_subtitle": "Streamline your event planning process with our powerful tools designed for efficiency and ease of use.",
   "learn_more": "Learn more",
   "features": [
     {
@@ -49,7 +48,7 @@
   "backups_subtitle": "We regularly back up all your event data to prevent any loss. In case of an issue, your events are securely stored and can be restored immediately.",
   "support_title": "24/7 Support",
   "support_subtitle": "Our support team is available 24/7 to assist you in case of any issues. Whether it's a technical problem or a simple question, we're here to ensure your events run smoothly.",
-  "choose_plan": "Choose Your Plan",
+  "choose_plan": "Plans adapted to all needs",
   "choose_plan_button": "Subscribe",
   "starter_plan_description": "For small-scale events",
   "starter_plan_commission": "5% commission on each ticket sale",

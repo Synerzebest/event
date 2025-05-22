@@ -30,7 +30,7 @@ const ReliabilitySection = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
                             objectFit="contain" 
                             className="mb-4"
                         />
-                        <h3 className="text-2xl font-bold">{safeTranslate(t,'data_title')}</h3>
+                        <h3 className="text-2xl font-bold text-indigo-500">{safeTranslate(t,'data_title')}</h3>
                         <p className="text-gray-600 mt-2 mx-4">
                             {safeTranslate(t,'data_subtitle')}
                         </p>
@@ -46,7 +46,7 @@ const ReliabilitySection = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
                             objectFit="contain" 
                             className="mb-4"
                         />
-                        <h3 className="text-2xl font-bold">{safeTranslate(t,'backups_title')}</h3>
+                        <h3 className="text-2xl font-bold text-indigo-500">{safeTranslate(t,'backups_title')}</h3>
                         <p className="text-gray-600 mt-2 mx-4">
                             {safeTranslate(t,'backups_subtitle')}
                         </p>
@@ -62,7 +62,7 @@ const ReliabilitySection = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
                             objectFit="contain" 
                             className="mb-4"
                         />
-                        <h3 className="text-2xl font-bold">{safeTranslate(t,'support_title')}</h3>
+                        <h3 className="text-2xl font-bold text-indigo-500">{safeTranslate(t,'support_title')}</h3>
                         <p className="text-gray-600 mt-2 mx-4">
                             {safeTranslate(t,'support_subtitle')}
                         </p>

@@ -124,7 +124,14 @@ const Hero = () => {
               value={location}
               onChange={(e) => setLocation(e.target.value)}
               onPressEnter={handleSearch}
-              suffix={<FiSearch className="text-gray-500 text-lg" />}
+              suffix={
+                <div
+                  onClick={handleSearch}
+                  className="cursor-pointer text-gray-500 text-lg hover:text-gray-700"
+                >
+                  <FiSearch />
+                </div>
+              }
             />
           </div>
         </div>

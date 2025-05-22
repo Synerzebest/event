@@ -17,9 +17,9 @@ const CreateEventButton: React.FC<CreateEventButtonProps> = ({ lng }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     return (
-        <div className="flex flex-col items-center gap-12 mt-8 relative top-36">
+        <div className="flex flex-col items-center gap-4 sm:gap-8 mt-8 relative top-24">
             <div className="text-center">
-                <p className="text-[2.5rem] sm:text-7xl font-bold bg-gradient-to-tr from-indigo-700 via-indigo-500 to-indigo-300 bg-clip-text text-transparent">
+                <p className="text-3xl sm:text-[2.5rem] sm:text-7xl font-bold bg-gradient-to-tr from-indigo-700 via-indigo-500 to-indigo-300 bg-clip-text text-transparent">
                 {safeTranslate(t, "create_your_event")}
                 </p>
             </div>

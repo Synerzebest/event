@@ -106,7 +106,7 @@ export default function Dashboard() {
         <div className="p-4">
           <div className="flex justify-between items-center mb-2">
             <h3 className="font-bold text-xl">{event.title}</h3>
-            <div className="border border-indigo-600 text-indigo-600 text-sm font-bold py-1 px-2 rounded flex items-center gap-1 whitespace-nowrap">
+            <div className="bg-indigo-500 text-white text-sm font-bold py-[0.35rem] px-3 rounded flex items-center gap-1 whitespace-nowrap">
               {event.currentGuests ?? 0} / {event.guestLimit} <FaUser />
             </div>
           </div>
@@ -131,13 +131,13 @@ export default function Dashboard() {
 
   return (
     <div className="relative top-44 container mx-auto">
-      <section className="py-16">
+      <section>
         <h2 className="text-3xl sm:text-2xl text-center sm:text-start font-bold mb-8">{safeTranslate(t,'my_tickets')}</h2>
         <UserTickets />
 
         <h2 className="text-3xl sm:text-2xl text-center sm:text-start font-bold mb-8">{safeTranslate(t,'my_events')}</h2>
 
-        <div className="w-[97%] sm:w-full mx-auto bg-white border border-gray-200 p-6 rounded-2xl shadow-md overflow-hidden">
+        <div className="w-[97%] sm:w-full mx-auto">
           {loading ? (
             <div className="flex gap-4">
               {Array.from({ length: 3 }).map((_, index) => (

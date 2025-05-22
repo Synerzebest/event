@@ -53,7 +53,7 @@ const Testimonials = ({ lng }: TestimonialsProps) => {
   }
 
   return (
-    <div className="relative top-56 bg-gray-50 py-12 z-10">
+    <div className="relative top-4 bg-gray-50 py-12 z-10">
       <h2 className="text-center text-4xl font-bold mb-12">{safeTranslate(t,'testimonials_title')}</h2>
           
       <div className="max-w-4xl w-full mx-auto overflow-x-hidden">
