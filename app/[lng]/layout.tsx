@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { dir } from "i18next";
 import { languages } from "../i18n/settings";
-import Script from "next/script";
 import Adsense from "@/components/Adsense"; 
 
 const GoogleAdsenseId = process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_ID || "";
