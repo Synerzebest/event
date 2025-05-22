@@ -19,6 +19,7 @@ import { safeTranslate } from "@/lib/utils";
 import ScrollToTopButton from "./ScrollToTopButton";
 import ShareModal from "./ShareModal";
 import LikedEvents from "./LikedEvents";
+import { AnimatePresence } from "framer-motion";
 
 const no_event_image = "/images/no-event.png";
 
@@ -194,7 +195,9 @@ export default function Dashboard() {
       </section>
 
       {editEvent && <EditEventPopup event={editEvent} onClose={handleCloseEditPopup} onUpdateEvent={updateEvent} />}
-      {selectedEvent && <EventPopup event={selectedEvent} onClose={handleClosePopup} />}
+      <AnimatePresence>
+        {selectedEvent && <EventPopup event={selectedEvent} onClose={handleClosePopup} />}
+      </AnimatePresence>
       {shareModalEvent && (
         <ShareModal
             open={true}

@@ -5,11 +5,12 @@ import Image from "next/image";
 import { Spin, Popconfirm, notification } from 'antd';
 import QRCodeScanner from "./QRCodeScanner";
 import { motion } from "framer-motion";
-import { FaUser } from "react-icons/fa";
-import { LuCalendarDays } from "react-icons/lu";
-import { IoLocationOutline } from "react-icons/io5";
+import { HiUserGroup } from "react-icons/hi2";
 import { format } from "date-fns";
 import { getAuth } from "firebase/auth";
+import { BsQrCode } from "react-icons/bs";
+import { FaMapLocationDot } from "react-icons/fa6";
+import { IoCalendarNumberSharp } from "react-icons/io5";
 
 
 interface EventPopupProps {
@@ -276,18 +277,17 @@ const EventPopup: React.FC<EventPopupProps> = ({ event, onClose }) => {
     const formattedDate = format(new Date(event.date), 'dd MMMM yyyy');
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
+        <div className="fixed inset-0 flex items-end justify-center z-[9999]">
             <div 
-                className="absolute inset-0 bg-gray-800 opacity-50" 
+                className="absolute inset-0 bg-black/50 backdrop-blur-sm z-0" 
                 onClick={onClose} 
-                style={{ backdropFilter: 'blur(5px)' }}
             ></div>
             <motion.div
-                className="bg-white rounded-lg shadow-lg z-10 p-6 w-[95%] sm:w-full max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl relative overflow-y-scroll h-[90vh] no-scrollbar"
-                initial={{ opacity: 0, y: 100 }}
+                className="bg-white rounded-t-2xl shadow-2xl p-6 z-10 w-full max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl relative overflow-y-scroll h-[90vh] no-scrollbar"
+                initial={{ opacity: 0, y: "100%" }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 100 }}
-                transition={{ duration: 0.3 }}
+                exit={{ opacity: 0, y: "100%" }}
+                transition={{ duration: 0.2, ease: "easeInOut" }}
             >
                 <button className="absolute top-2 right-2 text-gray-600 hover:text-gray-900" onClick={onClose}>
                     <IoMdClose size={24} />
@@ -296,9 +296,9 @@ const EventPopup: React.FC<EventPopupProps> = ({ event, onClose }) => {
                 {/* Scan Ticket Button */}
                 <motion.button
                     onClick={() => setShowScanner(true)}
-                    className="absolute left-1/2 -translate-x-1/2 text-white bg-indigo-500 border border-indigo-500 font-bold p-3 rounded-lg shadow-lg mt-[-0.5rem] sm:mt-4 hover:bg-indigo-600 transition-all"
+                    className="absolute left-1/2 -translate-x-1/2 text-white bg-indigo-500 border border-indigo-500 font-bold p-3 rounded-lg shadow-lg mt-[-0.5rem] sm:mt-4 hover:bg-indigo-600 transition-all flex items-center gap-2"
                 >
-                    Scan Ticket
+                    <BsQrCode className="text-white" />Scan Ticket
                 </motion.button>
 
                 {showScanner && (
@@ -318,15 +318,23 @@ const EventPopup: React.FC<EventPopupProps> = ({ event, onClose }) => {
                 )}
 
                 {/* Event Title */}
-                <div className="mt-12">
-                    <h2 className="text-3xl font-extrabold text-gray-900 my-4">{event.title}</h2>
+                <div className="mt-16">
+                    <h2 className="text-3xl font-extrabold text-gray-900 my-4"> 
+                        {event.title.charAt(0).toUpperCase() + event.title.slice(1)}
+                    </h2>
 
-                    <div className="border border-indigo-600 text-indigo-600 text-sm font-bold py-1 px-2 rounded inline-flex items-center gap-1 whitespace-nowrap">
-                        {event.currentGuests !== undefined ? event.currentGuests : 0} / {event.guestLimit} <FaUser />
+                    <p className="text-gray-600 text-start flex items-center my-2">
+                        <IoCalendarNumberSharp className="text-indigo-500 mr-2 w-5 h-5" /> 
+                        {formattedDate}</p>
+                    <p className="text-gray-600 text-start flex items-center">
+                        <FaMapLocationDot className="text-indigo-500 mr-2 w-5 h-5" /> 
+                        {event.place}
+                    </p>
+
+                    <div className="mt-4 bg-indigo-500 text-white text-sm font-bold py-[0.35rem] px-3 rounded flex items-center gap-1 whitespace-nowrap w-fit">
+                        {event.currentGuests !== undefined ? event.currentGuests : 0} / {event.guestLimit} <HiUserGroup className="text-white w-5 h-5" />
                     </div>
 
-                    <p className="text-gray-600 text-start flex items-center my-2"><LuCalendarDays className="mr-2" /> {formattedDate}</p>
-                    <p className="text-gray-600 text-start flex items-center"><IoLocationOutline className="mr-2" /> {event.place}</p>
                     <p className="text-gray-700 mt-4">{event.description}</p>
                     
                 </div>
