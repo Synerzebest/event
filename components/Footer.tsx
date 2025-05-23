@@ -11,7 +11,7 @@ const Footer = () => {
     const date = new Date();
     const year = date.getFullYear();
     return (
-        <footer className="relative top-64 bg-white text-gray-700 py-12 px-6 w-full mt-24 border-t border-gray-200">
+        <footer className="relative top-24 bg-white text-gray-700 py-12 px-6 w-full mt-24 border-t border-gray-200">
             <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center md:items-start gap-12">
                 {/* Section 1: Company Logo and Info */}
                 <div className="flex flex-col items-center md:items-start text-center md:text-left space-y-4">

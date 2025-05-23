@@ -49,7 +49,7 @@ const LikedEvents: React.FC<LikedEventsProps> = ({ userId }) => {
         {safeTranslate(t, 'favorite_events')}
       </h2>
 
-      <div className="w-[97%] sm:w-full mx-auto bg-white border border-gray-200 p-6 rounded-2xl shadow-md overflow-hidden">
+      <div className="w-full mx-auto p-6 overflow-hidden">
         {loading ? (
           <div className="flex gap-4">
             {[...Array(3)].map((_, i) => (

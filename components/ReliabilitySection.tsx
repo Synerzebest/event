@@ -10,7 +10,7 @@ const support = "/images/support.png";
 const ReliabilitySection = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
     const { t } = useTranslation(lng, "common");
     return (
-        <section className="py-16 relative top-64">
+        <section className="py-16 relative top-12">
             <div className="container mx-auto">
                 {/* Title */}
                 <h2 className="text-4xl font-bold text-center mb-8">{safeTranslate(t,'security_title')}</h2>
