@@ -3,20 +3,13 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Button } from "antd";
 import Link from "next/link";
-import {
-  FaLink,
-  FaFacebookF,
-  FaWhatsapp,
-  FaEnvelope,
-  FaLinkedinIn,
-} from "react-icons/fa";
+import { FaLink, FaFacebookF, FaWhatsapp, FaEnvelope, FaLinkedinIn } from "react-icons/fa";
 import { SiX } from "react-icons/si";
-import {
-  motion,
-  AnimatePresence,
-  useMotionValue,
-  useTransform,
-} from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
+import { useTranslation } from "@/app/i18n";
+import { safeTranslate } from "@/lib/utils";
+import useLanguage from "@/lib/useLanguage";
+import toast from "react-hot-toast";
 
 // Hook mobile
 const useIsMobile = (breakpoint = 640) => {
@@ -41,22 +34,18 @@ const ShareModal: React.FC<ShareModalProps> = ({
   open,
   onClose,
   eventUrl,
-  eventTitle,
+  eventTitle
 }) => {
   const isMobile = useIsMobile();
   const encodedTitle = encodeURIComponent(eventTitle);
   const encodedUrl = encodeURIComponent(eventUrl);
-
-  const [showToast, setShowToast] = useState(false);
-  const showCopyToast = () => {
-    setShowToast(true);
-    setTimeout(() => setShowToast(false), 2000);
-  };
+  const lng = useLanguage();
+  const { t } = useTranslation(lng, "common");
 
   const y = useMotionValue(0);
   const dynamicHeight = useTransform(y, (value) => Math.max(-value, 0));
 
-  // 👇 Si le modal descend trop → onClose()
+  // Si le modal descend trop → onClose()
   useEffect(() => {
     const unsubscribe = y.on("change", (latestY) => {
       if (latestY > window.innerHeight * 0.4) {
@@ -68,11 +57,11 @@ const ShareModal: React.FC<ShareModalProps> = ({
 
   const options = [
     {
-      label: "Copier le lien",
+      label: safeTranslate(t, "copy_event_link"),
       icon: <FaLink className="text-white" size={20} />,
       onClick: () => {
         navigator.clipboard.writeText(eventUrl);
-        showCopyToast();
+        toast.success(safeTranslate(t, "link_copied"));
       },
     },
     {
@@ -101,19 +90,13 @@ const ShareModal: React.FC<ShareModalProps> = ({
       href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
     },
   ];
-
   // Desktop
   if (!isMobile) {
     return (
       <Modal
-        title="Partager cet événement"
         open={open}
         onCancel={onClose}
-        footer={[
-          <Button key="close" onClick={onClose}>
-            Fermer
-          </Button>,
-        ]}
+        footer={null}
         centered
       >
         <div className="grid grid-cols-3 gap-4 justify-items-center">
@@ -126,7 +109,7 @@ const ShareModal: React.FC<ShareModalProps> = ({
                 rel="noopener noreferrer"
                 className="flex flex-col items-center gap-2 text-center"
               >
-                <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-4 rounded-full">
+                <div className="bg-indigo-500 p-4 rounded-full">
                   {option.icon}
                 </div>
                 <span className="text-sm font-medium text-gray-700">{option.label}</span>
@@ -137,7 +120,7 @@ const ShareModal: React.FC<ShareModalProps> = ({
                 onClick={option.onClick}
                 className="flex flex-col items-center gap-2 text-center"
               >
-                <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-4 rounded-full">
+                <div className="bg-indigo-500 p-4 rounded-full">
                   {option.icon}
                 </div>
                 <span className="text-sm font-medium text-gray-700">{option.label}</span>
@@ -193,7 +176,7 @@ const ShareModal: React.FC<ShareModalProps> = ({
                     rel="noopener noreferrer"
                     className="flex flex-col items-center gap-2 text-center"
                   >
-                    <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-4 rounded-full">
+                    <div className="bg-indigo-500 p-4 rounded-full">
                       {option.icon}
                     </div>
                     <span className="text-sm font-medium text-gray-700">{option.label}</span>
@@ -204,7 +187,7 @@ const ShareModal: React.FC<ShareModalProps> = ({
                     onClick={option.onClick}
                     className="flex flex-col items-center gap-2 text-center"
                   >
-                    <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-4 rounded-full">
+                    <div className="bg-indigo-500 p-4 rounded-full">
                       {option.icon}
                     </div>
                     <span className="text-sm font-medium text-gray-700">{option.label}</span>
@@ -214,24 +197,9 @@ const ShareModal: React.FC<ShareModalProps> = ({
             </div>
 
             <Button onClick={onClose} className="w-full mt-6" type="default" size="large">
-              Fermer
+              {safeTranslate(t, "close")}
             </Button>
           </motion.div>
-
-          {/* Toast */}
-          <AnimatePresence>
-            {showToast && (
-              <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 50 }}
-                transition={{ duration: 0.3 }}
-                className="fixed bottom-24 left-1/2 transform -translate-x-1/2 bg-black text-white px-4 py-2 rounded-xl text-sm z-[999]"
-              >
-                Lien copié !
-              </motion.div>
-            )}
-          </AnimatePresence>
         </>
       )}
     </AnimatePresence>

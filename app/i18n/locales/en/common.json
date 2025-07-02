@@ -118,7 +118,7 @@
   "past_events_show": "See past events",
   "past_events_hide": "Hide past events",
   "success_message": "Everything went well !",
-  "success_submessage": "You can now access your ticket in your eventlab page. We look forward to seeing you at the event!",
+  "success_submessage": "You can now access your ticket in your eventlab page. A confirmation email has also been sent to you.",
   "subscription_success_submessage": "You can now enjoy your subscription !",
   "subscription_tip": "You can cancel it anytime by clicking on your profile picture.",
   "event_details": "Event Details",
@@ -133,7 +133,8 @@
   "guest_limit": "Guest Limit",
   "public": "Public",
   "private": "Private",
-  "copy_event_link": "Copy Event Link",
+  "copy_event_link": "Copy Link",
+  "link_copied": "Link Copied!",
   "participate": "Participate",
   "search_placeholder": "Search...",
   "create_event_title": "Create Your Event",
@@ -196,5 +197,7 @@
   "first_name": "Firstname",
   "name_required": "Please enter your first and last name",
   "buy_ticket": "Get a ticket",
-  "choose_ticket": "Choose a ticket"
+  "choose_ticket": "Choose a ticket",
+  "eventlab_link": "Go to Eventlab page",
+  "trust": "Thanks for your trust"
 }

@@ -118,7 +118,7 @@
   "past_events_show": "Voir les événements passés",
   "past_events_hide": "Masquer les événements passés",
   "success_message": "Tout s'est bien passé !",
-  "success_submessage": "Vous pouvez maintenant voir votre ticket sur votre page eventlab. On vous attend à l'événement !",
+  "success_submessage": "Vous pouvez maintenant voir votre ticket sur votre page Eventlab. Un mail de confirmation vous a également été envoyé.",
   "subscription_success_submessage": "Profitez dès à présent de votre abonnement !",
   "subscription_tip": "Annulez le à tout moment en appuyant sur votre photo de profil.",
   "event_details": "Détails de l'événement",
@@ -134,6 +134,7 @@
   "public": "Publique",
   "private": "Privé",
   "copy_event_link": "Copier le lien",
+  "link_copied": "Lien Copié!",
   "participate": "Participer",
   "search_placeholder": "Chercher...",
   "create_event_title": "Créez Votre Événement",
@@ -197,5 +198,7 @@
   "first_name": "Prénom",
   "name_required": "Veuillez entrer votre nom et votre prénom",
   "buy_ticket": "Acheter un ticket",
-  "choose_ticket": "Choisir un ticket"
+  "choose_ticket": "Choisir un ticket",
+  "eventlab_link": "Aller à la page Eventlab",
+  "trust": "Merci pour votre confiance"
 }

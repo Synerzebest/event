@@ -118,7 +118,7 @@
   "past_events_show": "Alles zien",
   "past_events_hide": "Verbergen",
   "success_message": "Alles ging goed !",
-  "success_submessage": "U hebt nu toegang tot uw ticket op uw eventlab-pagina. Wij zien u graag op het evenement!",
+  "success_submessage": "U hebt nu toegang tot uw ticket op uw eventlab-pagina. Er is ook een bevestigingsmail naar u verzonden.",
   "subscription_success_submessage": "U kunt nu genieten van uw abonnement!",
   "subscription_tip": "Je kunt het op elk gewenst moment annuleren door op je profielfoto te klikken.",
   "event_details": "Evenementdetails",
@@ -134,6 +134,7 @@
   "public": "Publiek",
   "private": "Privé",
   "copy_event_link": "Kopieer Link",
+  "link_copied": "Link Gekopieerd!",
   "participate": "Deelnemen",
   "search_placeholder": "Zoeken...",
   "create_event_title": "Maak Uw Evenement",
@@ -196,5 +197,7 @@
   "first_name": "Voornaam",
   "name_required": "Vul uw voor- en achternaam in",
   "buy_ticket": "Ticket kopen",
-  "choose_ticket": "Ticket kiezen"
+  "choose_ticket": "Ticket kiezen",
+  "eventlab_link": "Ga naar Eventlab",
+  "trust": "Bedankt voor uw vertrouwen"
 }

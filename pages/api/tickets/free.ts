@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { firestore } from '@/lib/firebaseAdmin';
-
+import { sendConfirmationEmail } from "@/lib/email";
 
 interface Ticket {
     name: string;
@@ -14,9 +14,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(405).json({ message: 'Méthode non autorisée' });
     }
 
-    const { eventId, ticketName, userId, firstName, lastName } = req.body;
+    const { eventId, ticketName, userId, firstName, lastName, userEmail } = req.body;
 
-    if (!eventId || !ticketName || !userId) {
+    if (!eventId || !ticketName || !userId || !userEmail) {
         return res.status(400).json({ message: 'Les paramètres requis sont manquants.' });
     }
 
@@ -71,6 +71,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         // Enregistrement du ticket dans la collection "tickets"
         const ticketRef = firestore.collection('tickets').doc();
         await ticketRef.set(ticketData);
+
+        await sendConfirmationEmail({
+            email: userEmail,
+            firstName,
+            lastName,
+            eventName: eventId,
+            ticketId: ticketRef.id,
+            eventId: eventId
+        })
 
         return res.status(200).json({ message: 'Ticket gratuit réservé avec succès.' });
     } catch (error) {

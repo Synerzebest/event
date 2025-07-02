@@ -3,6 +3,7 @@ import { buffer } from 'micro';
 import Stripe from 'stripe';
 import { firestore } from '@/lib/firebaseAdmin';
 import { Ticket } from "@/types/types";
+import { sendConfirmationEmail } from '@/lib/email';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: '2024-12-18.acacia',
@@ -107,6 +108,16 @@ async function handleTicketPurchase(session: Stripe.Checkout.Session) {
 
       const ticketRef = firestore.collection('tickets').doc();
       await ticketRef.set(ticketData);
+      if (session.customer_details?.email) {
+        await sendConfirmationEmail({
+          email: session.customer_details.email,
+          firstName,
+          lastName,
+          eventName: eventId,
+          ticketId: ticketRef.id,
+          eventId: eventId
+        });
+      }
 
       console.log(`Ticket payé réservé pour l'événement ${eventId}.`);
     } catch (error: unknown) {

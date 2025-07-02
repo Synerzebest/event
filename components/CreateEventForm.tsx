@@ -5,19 +5,17 @@ import useFirebaseUser from "@/lib/useFirebaseUser";
 import { Input, DatePicker, Radio, InputNumber, Upload, Button, notification, Select, Alert, Checkbox } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { addDoc, collection } from "firebase/firestore";
-import { db, storage } from "@/lib/firebaseConfig";
+import { storage } from "@/lib/firebaseConfig";
 import { UploadFile } from "antd/es/upload/interface";
 import dayjs from 'dayjs';
-import { useTranslation } from "../app/i18n"
+import { useTranslation } from "../app/i18n";
 import useLanguage from "@/lib/useLanguage";
 import { categories } from "@/constants/constants";
 import { safeTranslate } from "@/lib/utils";
 import Link from 'next/link';
-
+import { getAuth } from "firebase/auth";
 
 const { TextArea } = Input;
-
 
 type Ticket = {
     name: string;
@@ -27,39 +25,27 @@ type Ticket = {
 };
 
 const CreateEventForm: React.FC = () => {
-
-    const getGuestLimit = (nickname: string | null | undefined): number => {
-        switch (nickname) {
-            case "pro":
-                return Infinity; // Unlimited
-            case "premium":
-                return 500;
-            default:
-                return 50; // Free subscription
-        }
-    };
-
     const lng = useLanguage();
     const { t } = useTranslation(lng, "common");
     const { user } = useFirebaseUser();
+    console.log(user?.subscriptionId)
+
+    const getGuestLimit = (nickname: string | null | undefined): number => {
+        console.log(nickname)
+        switch (nickname) {
+            case "pro": return Infinity;
+            case "standard": return 500;
+            default: return 50;
+        }
+    };
+
     const [fileList, setFileList] = useState<UploadFile[]>([]);
     const [uploading, setUploading] = useState(false);
     const [eventDate, setEventDate] = useState<dayjs.Dayjs | null>(null);
     const [tickets, setTickets] = useState<Ticket[]>([]);
-    const [maxGuestLimit, setMaxGuestLimit] = useState<number>(
-        getGuestLimit(user?.nickname)
-    );
+    const [maxGuestLimit, setMaxGuestLimit] = useState<number>(getGuestLimit(user?.nickname));
     const [guestLimit, setGuestLimit] = useState<number>(getGuestLimit(user?.nickname));
     const [acceptedTerms, setAcceptedTerms] = useState(false);
-
-    useEffect(() => {
-        if (user?.nickname) {
-            const newLimit = getGuestLimit(user.nickname);
-            setMaxGuestLimit(newLimit);
-            
-            setGuestLimit((prev) => (prev === 1 || prev > newLimit ? newLimit : prev));
-        }
-    }, [user?.nickname]);    
 
     const [formData, setFormData] = useState({
         title: '',
@@ -72,156 +58,119 @@ const CreateEventForm: React.FC = () => {
         organizers: [user?.uid]
     });
 
-    const addTicket = () => {
-        setTickets([...tickets, { name: "", price: 0, quantity: 1, sold: 0 }]);
+    useEffect(() => {
+        if (user?.nickname) {
+            const newLimit = getGuestLimit(user.nickname);
+            setMaxGuestLimit(newLimit);
+            setGuestLimit((prev) => (prev === 1 || prev > newLimit ? newLimit : prev));
+        }
+    }, [user?.nickname]);
+
+    const addTicket = () => setTickets([...tickets, { name: "", price: 0, quantity: 1, sold: 0 }]);
+
+    const updateTicket = (index: number, key: keyof Ticket, value: string | number | null) => {
+        const updated = [...tickets];
+        updated[index][key] = value as never;
+        setTickets(updated);
     };
 
-    const updateTicket = (index: number, key: "name" | "price" | "quantity", value: string | number | null) => {
-        const newTickets = [...tickets];
-        newTickets[index][key as keyof Ticket] = value as never;
-        setTickets(newTickets);
-    };
-
-    const removeTicket = (index: number) => {
-        const newTickets = tickets.filter((_, i) => i !== index);
-        setTickets(newTickets);
-    };
+    const removeTicket = (index: number) => setTickets(tickets.filter((_, i) => i !== index));
 
     const handleUpload = async (file: UploadFile) => {
-        if (!file.originFileObj) {
-            return Promise.reject("No file to upload");
-        }
-    
+        if (!file.originFileObj) return Promise.reject("No file");
         const storageRef = ref(storage, `events/${file.uid}`);
         const uploadTask = uploadBytesResumable(storageRef, file.originFileObj);
-    
+
         return new Promise<string>((resolve, reject) => {
-            uploadTask.on(
-                "state_changed",
-                () => {},
-                (error) => {
-                    console.error("Upload error:", error);
-                    reject(error);
-                },
-                async () => {
-                    const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-                    resolve(downloadURL);
-                }
-            );
+            uploadTask.on("state_changed", () => { }, reject, async () => {
+                const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+                resolve(downloadURL);
+            });
         });
     };
 
     const handleGuestsChange = (value: number | null) => {
         if (value !== null) {
-            setGuestLimit(Math.min(value, maxGuestLimit)); // Empêche de dépasser la limite sans alerte
-            setFormData((prev) => ({
-                ...prev,
-                guestLimit: Math.min(value, maxGuestLimit)
-            }));
+            setGuestLimit(Math.min(value, maxGuestLimit));
+            setFormData(prev => ({ ...prev, guestLimit: Math.min(value, maxGuestLimit) }));
         }
     };
 
     useEffect(() => {
-        setFormData((prev) => ({
-            ...prev,
-            guestLimit: guestLimit
-        }));
+        setFormData(prev => ({ ...prev, guestLimit }));
     }, [guestLimit]);
 
     const handleSubmit = async () => {
         setUploading(true);
         try {
             const isoDate = eventDate ? eventDate.toDate().toISOString() : null;
-    
-            // Validation des champs de formulaire
             if (!formData.title || !formData.description || !formData.place || !formData.category) {
-                notification.error({
-                    message: "Validation Error",
-                    description: "Please fill in all required fields.",
-                });
+                notification.error({ message: "Validation Error", description: "Please fill in all fields." });
                 setUploading(false);
                 return;
             }
-    
             if (fileList.length === 0) {
-                notification.error({
-                    message: "Photo Error",
-                    description: "Please provide a photo for the event."
-                });
+                notification.error({ message: "Photo Error", description: "Please add a photo." });
                 setUploading(false);
                 return;
             }
-    
             for (const ticket of tickets) {
                 if (!ticket.name || ticket.price === null || ticket.quantity === null) {
-                    notification.error({
-                        message: "Ticket Validation Error",
-                        description: "Please provide a name and price for all tickets.",
-                    });
+                    notification.error({ message: "Ticket Error", description: "Please complete all tickets." });
                     setUploading(false);
                     return;
                 }
             }
-    
+
             const imageURLs = await Promise.all(fileList.map((file) => handleUpload(file)));
-    
-            // Calcul du nombre total de places occupées
+
             const totalTickets = tickets.reduce((sum, ticket) => sum + ticket.quantity, 0);
-    
-            // Calcul du nombre de places restantes
             const remainingPlaces = guestLimit - totalTickets;
-    
-            // Vérifier si un ticket "Participant" doit être ajouté ou mis à jour
             const updatedTickets = [...tickets];
-    
+
             if (remainingPlaces > 0) {
-                const participantTicketIndex = updatedTickets.findIndex(ticket => ticket.name === "Participant");
-    
-                if (participantTicketIndex !== -1) {
-                    // Si un ticket "Participant" existe, on met à jour sa quantité
-                    updatedTickets[participantTicketIndex].quantity += remainingPlaces;
+                const idx = updatedTickets.findIndex(t => t.name === "Participant");
+                if (idx !== -1) {
+                    updatedTickets[idx].quantity += remainingPlaces;
                 } else {
-                    // Sinon, on l'ajoute
-                    updatedTickets.push({
-                        name: "Participant",
-                        price: 0,
-                        quantity: remainingPlaces,
-                        sold: 0,
-                    });
+                    updatedTickets.push({ name: "Participant", price: 0, quantity: remainingPlaces, sold: 0 });
                 }
             }
-    
-            // Créer l'événement dans Firestore avec les tickets et images
-            await addDoc(collection(db, "events"), {
-                ...formData,
-                date: isoDate,
-                images: imageURLs,
-                createdBy: user?.uid,
-                organizers: [user?.uid],
-                tickets: updatedTickets, // On utilise la liste de tickets mise à jour
+
+            const token = await getAuth().currentUser?.getIdToken();
+
+            const response = await fetch("/api/createEvent", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    ...formData,
+                    date: isoDate,
+                    images: imageURLs,
+                    tickets: updatedTickets,
+                    organizers: [user?.uid],
+                }),
             });
-    
-            notification.success({
-                message: "Event Created!",
-                description: "Your event has been successfully created.",
-            });
-    
+
+            if (!response.ok) {
+                throw new Error("API error");
+            }
+
+            notification.success({ message: "Event Created!" });
             setFileList([]);
             setTickets([]);
-        } catch (error) {
-            console.error("Error creating event:", error);
-            notification.error({
-                message: "Error",
-                description: "There was an error creating the event.",
-            });
+        } catch (err) {
+            console.error("Error:", err);
+            notification.error({ message: "Error creating event" });
         } finally {
             setUploading(false);
         }
     };
     
-
       return (
-        <div className="w-full sm:w-3/4 mx-auto relative top-12 flex flex-col gap-8 mb-24">    
+        <div className="w-full sm:w-3/4 mx-auto relative flex flex-col items-between">    
             <div className="w-full flex flex-col md:flex-row bg-white gap-8 sm:gap-0 ">
                 {/* Première colonne */}
                 <div className="w-full md:w-1/2 flex flex-col gap-4 pr-4">

@@ -171,7 +171,7 @@ export default function Dashboard() {
                   </div>
                 ))}
               </Carousel>
-              <div className="flex justify-center gap-4 mt-4">
+              <div className="flex justify-center gap-4 my-4">
                 <button onClick={() => eventCarouselRef.current?.prev()} className="bg-white text-black shadow p-2 rounded-full border border-gray-300 hover:shadow-md transition">
                   <FiChevronLeft size={24} />
                 </button>
@@ -191,6 +191,7 @@ export default function Dashboard() {
           )}
         </div>
 
+        <h2 className="text-3xl sm:text-2xl text-center sm:text-start font-bold mb-8">{safeTranslate(t,'favorite_events')}</h2>
         <LikedEvents userId={userId} />
       </section>
 

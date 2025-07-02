@@ -46,4 +46,17 @@ export interface Transaction {
     description?: string;
     created: number;
 }
+
+export interface UserData {
+    uid: string;
+    name: string;
+    username: string;
+    bio?: string;
+    photoURL?: string;
+    createdAt?: Date;
+    eventsCreated?: number;
+    eventsParticipated?: number;
+    followers?: number;
+    following?: number;
+  }
   

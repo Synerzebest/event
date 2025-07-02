@@ -33,6 +33,7 @@ const Page = () => {
     const [lastName, setLastName] = useState("");
     const { user } = useFirebaseUser();
     const userId = user?.uid || "";
+    const userEmail = user?.email || "";
     const router = useRouter();
     const [processing, setProcessing] = useState<boolean>(false);
     const lng = useLanguage();
@@ -79,7 +80,8 @@ const Page = () => {
                         ticketName: selectedTicketData.name,
                         userId,
                         firstName,
-                        lastName
+                        lastName,
+                        userEmail
                     }),
                 });
     
@@ -123,7 +125,7 @@ const Page = () => {
                     userId,
                     eventId,
                     firstName,
-                    lastName
+                    lastName,
                 }),
             });
     

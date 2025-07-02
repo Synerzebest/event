@@ -153,7 +153,6 @@ const UserTickets = () => {
       )}
 
       <Modal
-        title="QR Code"
         open={isModalVisible}
         onCancel={handleCloseModal}
         footer={[<Button key="close" onClick={handleCloseModal}>{safeTranslate(t, 'close')}</Button>]}

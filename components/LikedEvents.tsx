@@ -12,6 +12,17 @@ import { safeTranslate } from '@/lib/utils';
 
 const no_event_image = "/images/no_favorite.png";
 
+function useIsMobile(breakpoint = 640): boolean {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const update = () => setIsMobile(window.innerWidth < breakpoint);
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, [breakpoint]);
+  return isMobile;
+}
+
 interface LikedEventsProps {
   userId: string;
 }
@@ -22,6 +33,7 @@ const LikedEvents: React.FC<LikedEventsProps> = ({ userId }) => {
   const carouselRef = useRef<CarouselRef>(null);
   const lng = useLanguage();
   const { t } = useTranslation(lng, 'common');
+  const isMobile: boolean = useIsMobile();
 
   useEffect(() => {
     if (!userId) return;
@@ -37,6 +49,7 @@ const LikedEvents: React.FC<LikedEventsProps> = ({ userId }) => {
         console.error("Error fetching liked events:", err);
       } finally {
         setLoading(false);
+        console.log(likedEventIds)
       }
     };
 
@@ -44,12 +57,8 @@ const LikedEvents: React.FC<LikedEventsProps> = ({ userId }) => {
   }, [userId]);
 
   return (
-    <section className="py-16">
-      <h2 className="text-3xl font-bold mb-8 text-center sm:text-start">
-        {safeTranslate(t, 'favorite_events')}
-      </h2>
-
-      <div className="w-full mx-auto p-6 overflow-hidden">
+    <>
+      <div className="w-full mx-auto overflow-hidden">
         {loading ? (
           <div className="flex gap-4">
             {[...Array(3)].map((_, i) => (
@@ -75,43 +84,33 @@ const LikedEvents: React.FC<LikedEventsProps> = ({ userId }) => {
               {safeTranslate(t, 'no_favorite_events')}
             </p>
           </div>
-        ) : (
+        ) : isMobile ? (
           <>
             <Carousel
               dots={false}
               infinite={false}
               ref={carouselRef}
-              slidesToShow={1}
-              responsive={[
-                { breakpoint: 640, settings: { slidesToShow: 1 } },
-                { breakpoint: 768, settings: { slidesToShow: 2 } },
-                { breakpoint: 1024, settings: { slidesToShow: 3 } },
-              ]}
             >
               {likedEventIds.map((id) => (
-                <div key={id} className="px-2 mb-2">
-                  <EventComponent eventId={id} userId={userId} participateButton={true} />
-                </div>
+                <EventComponent key={id} eventId={id} userId={userId} participateButton={true} />
               ))}
             </Carousel>
-            <div className="flex justify-center gap-4 mt-4">
-              <button
-                onClick={() => carouselRef.current?.prev()}
-                className="bg-white text-black shadow p-2 rounded-full border hover:shadow-md transition"
-              >
-                <FiChevronLeft size={24} />
-              </button>
-              <button
-                onClick={() => carouselRef.current?.next()}
-                className="bg-white text-black shadow p-2 rounded-full border hover:shadow-md transition"
-              >
-                <FiChevronRight size={24} />
-              </button>
-            </div>
+            <div className="flex justify-center gap-4 my-4">
+                <button onClick={() => carouselRef.current?.prev()} className="bg-white text-black shadow p-2 rounded-full border border-gray-300 hover:shadow-md transition">
+                  <FiChevronLeft size={24} />
+                </button>
+                <button onClick={() => carouselRef.current?.next()} className="bg-white text-black shadow p-2 rounded-full border border-gray-300 hover:shadow-md transition">
+                  <FiChevronRight size={24} />
+                </button>
+              </div>
           </>
+        ) : (
+          <div className="flex gap-4 overflow-x-auto no-scrollbar pb-2">
+            {likedEventIds}
+          </div>
         )}
       </div>
-    </section>
+    </>
   );
 };
 
