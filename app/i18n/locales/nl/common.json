@@ -199,5 +199,13 @@
   "buy_ticket": "Ticket kopen",
   "choose_ticket": "Ticket kiezen",
   "eventlab_link": "Ga naar Eventlab",
-  "trust": "Bedankt voor uw vertrouwen"
+  "trust": "Bedankt voor uw vertrouwen",
+  "event_created": "Evenement gemaakt",
+  "required_fields": "Vul alle velden in alstublieft",
+  "missing_photo": "Voeg een photo toe",
+  "ticket_error": "Onvolledige tickets",
+  "error_creating_event": "Fout bij aanmaken evenement",
+  "wrong_event": "Dit ticket komt overeen met een ander evenement",
+  "error": "Fout",
+  "error_scanning_ticket": "Er is een fout opgetreden bij het scannen van het ticket"
 }

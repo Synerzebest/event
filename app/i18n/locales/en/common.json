@@ -199,5 +199,13 @@
   "buy_ticket": "Get a ticket",
   "choose_ticket": "Choose a ticket",
   "eventlab_link": "Go to Eventlab page",
-  "trust": "Thanks for your trust"
+  "trust": "Thanks for your trust",
+  "event_created": "Event created",
+  "required_fields": "Please fill in all the fields",
+  "missing_photo": "Please add a photo",
+  "ticket_error": "Please complete all tickets",
+  "error_creating_event": "An error while creating event",
+  "wrong_event": "This ticket corresponds to another event",
+  "error": "Error",
+  "error_scanning_ticket": "An error occured while scanning the ticket"
 }

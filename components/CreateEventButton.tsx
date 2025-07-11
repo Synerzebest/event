@@ -1,9 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button } from "antd";
-import { PlusOutlined } from "@ant-design/icons"; // Icône pour embellir le bouton
-import { motion } from "framer-motion"; // Ajout d'animations fluides
+import { PlusOutlined } from "@ant-design/icons";
+import { motion } from "framer-motion";
 import CreateEventModal from "./CreateEventModal";
 import { useTranslation } from "@/app/i18n";
 import { safeTranslate } from "@/lib/utils";
@@ -26,19 +25,16 @@ const CreateEventButton: React.FC<CreateEventButtonProps> = ({ lng }) => {
 
             {/* Bouton animé */}
             <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.97 }}
+                whileHover={{scale: 0.95}}
                 className="relative"
             >
-                <Button
-                type="default"
-                size="large"
+                <button
                 onClick={() => setIsModalOpen(true)}
-                className="flex items-center gap-3 bg-white text-gray-800 font-semibold text-lg py-5 px-10 rounded-full border border-gray-200 shadow-md hover:shadow-lg hover:text-indigo-600 transition-all duration-300 ease-in-out"
+                className="flex items-center gap-3 bg-indigo-500 text-white font-semibold text-lg py-2 px-10 rounded-full border border-gray-200 shadow-md hover:shadow-lg hover:bg-indigo-600 transition-all duration-300 ease-in-out"
                 >
                 <PlusOutlined />
                 {safeTranslate(t, "new_event")}
-                </Button>
+                </button>
             </motion.div>
 
             {/* Affichage du modal */}

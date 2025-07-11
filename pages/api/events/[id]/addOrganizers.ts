@@ -7,22 +7,31 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(405).json({ error: `Method ${req.method} not allowed.` });
     }
 
-    const { id } = req.query; // Récupérer l'ID de l'événement à partir des paramètres de la requête
-    const { organizers } = req.body; // Récupérer les organisateurs à ajouter depuis le corps de la requête
+    const { id } = req.query;
+    const { organizers } = req.body;
 
     try {
-        // Validation des données
         if (!Array.isArray(organizers) || organizers.length === 0) {
             return res.status(400).json({ error: 'No organizers provided' });
         }
 
-        // Mettre à jour l'événement en ajoutant les nouveaux organisateurs
-        const eventRef = doc(db, 'events', id as string); // Référence à l'événement
+        const eventRef = doc(db, 'events', id as string);
+
+        // 1. Ajouter les organisateurs à l'événement
         await updateDoc(eventRef, {
-            organizers: arrayUnion(...organizers) // Ajouter les organisateurs en utilisant arrayUnion
+            organizers: arrayUnion(...organizers),
         });
 
-        // Réponse de succès
+        // 2. Pour chaque organisateur, ajouter l'event à son profil
+        const updatePromises = organizers.map(async (organizerId) => {
+            const userRef = doc(db, 'users', organizerId);
+            await updateDoc(userRef, {
+                organizedEvents: arrayUnion(id),
+            });
+        });
+
+        await Promise.all(updatePromises);
+
         res.status(200).json({ message: "Organizers added successfully" });
     } catch (error) {
         console.error('Error adding organizers:', error);

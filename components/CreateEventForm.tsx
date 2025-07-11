@@ -14,6 +14,7 @@ import { categories } from "@/constants/constants";
 import { safeTranslate } from "@/lib/utils";
 import Link from 'next/link';
 import { getAuth } from "firebase/auth";
+import { toast } from "react-hot-toast";
 
 const { TextArea } = Input;
 
@@ -104,19 +105,21 @@ const CreateEventForm: React.FC = () => {
         setUploading(true);
         try {
             const isoDate = eventDate ? eventDate.toDate().toISOString() : null;
+            const date = eventDate?.toDate();
+            const timestamp = date ? date.getTime() : null; 
             if (!formData.title || !formData.description || !formData.place || !formData.category) {
-                notification.error({ message: "Validation Error", description: "Please fill in all fields." });
+                toast.error(safeTranslate(t, "required_fields"));
                 setUploading(false);
                 return;
             }
             if (fileList.length === 0) {
-                notification.error({ message: "Photo Error", description: "Please add a photo." });
+                toast.error(safeTranslate(t, "missing_photo"));
                 setUploading(false);
                 return;
             }
             for (const ticket of tickets) {
                 if (!ticket.name || ticket.price === null || ticket.quantity === null) {
-                    notification.error({ message: "Ticket Error", description: "Please complete all tickets." });
+                    toast.error(safeTranslate(t, "ticket_error"));
                     setUploading(false);
                     return;
                 }
@@ -148,6 +151,7 @@ const CreateEventForm: React.FC = () => {
                 body: JSON.stringify({
                     ...formData,
                     date: isoDate,
+                    dateTimestamp: timestamp,
                     images: imageURLs,
                     tickets: updatedTickets,
                     organizers: [user?.uid],
@@ -158,7 +162,7 @@ const CreateEventForm: React.FC = () => {
                 throw new Error("API error");
             }
 
-            notification.success({ message: "Event Created!" });
+            toast.success(safeTranslate(t, 'event_created'));
             setFileList([]);
             setTickets([]);
         } catch (err) {

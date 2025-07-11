@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
-import { Carousel, Skeleton } from 'antd';
+import { Carousel } from 'antd';
 import type { CarouselRef } from 'antd/es/carousel';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import EventComponent from './EventComponent';
@@ -62,13 +62,18 @@ const LikedEvents: React.FC<LikedEventsProps> = ({ userId }) => {
         {loading ? (
           <div className="flex gap-4">
             {[...Array(3)].map((_, i) => (
-              <div key={i} className="w-[350px] flex-shrink-0 bg-white p-4 rounded-lg">
-                <Skeleton.Image style={{ width: '100%', height: 200 }} />
-                <div className="mt-4">
-                  <Skeleton active paragraph={{ rows: 2 }} />
-                  <Skeleton.Button style={{ marginTop: 16 }} />
-                </div>
+              <div
+              key={i}
+              className="flex-shrink-0 w-full sm:w-[350px] rounded-lg shadow-lg bg-white overflow-hidden"
+            >
+              <div className="w-full h-[200px] bg-gray-200 animate-pulse" />
+              <div className="p-4">
+                <div className="h-4 bg-gray-200 rounded w-3/4 mb-3 animate-pulse" />
+                <div className="h-4 bg-gray-200 rounded w-2/3 mb-3 animate-pulse" />
+                <div className="h-4 bg-gray-200 rounded w-1/2 mb-4 animate-pulse" />
+                <div className="h-8 bg-gray-300 rounded w-[100px] animate-pulse" />
               </div>
+            </div>
             ))}
           </div>
         ) : likedEventIds.length === 0 ? (
@@ -106,7 +111,9 @@ const LikedEvents: React.FC<LikedEventsProps> = ({ userId }) => {
           </>
         ) : (
           <div className="flex gap-4 overflow-x-auto no-scrollbar pb-2">
-            {likedEventIds}
+            {likedEventIds.map((id) => (
+              <EventComponent key={id} eventId={id} participateButton={true} />
+            ))}
           </div>
         )}
       </div>

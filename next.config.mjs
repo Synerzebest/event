@@ -25,7 +25,7 @@ const nextConfig = {
                 ]
             },
             {
-                source: "/((?!ads.txt).*)", // 🔹 Exclure ads.txt des règles globales
+                source: "/((?!ads.txt).*)",
                 headers: [
                     {
                         key: "X-Robots-Tag",

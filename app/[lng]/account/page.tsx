@@ -14,9 +14,60 @@ const StripeOnboarding: React.FC = () => {
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const [loadingStatus, setLoadingStatus] = useState(true);
   const [stripeUrl, setStripeUrl] = useState<string | null>(null);
+  const [expressDashboardUrl, setExpressDashboardUrl] = useState<string | null>(null);
   const pathname = usePathname();
 
   const lng = pathname?.split("/")[1] || "en";
+
+  const handleConnect = async () => {
+    try {
+      const res = await fetch("/api/stripe/create-account-link", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ uid: user?.uid }),
+      });
+  
+      const data = await res.json();
+  
+      if (data.url) {
+        window.location.href = data.url; // redirection vers Stripe
+      } else {
+        alert("Failed to create onboarding link.");
+      }
+    } catch (error) {
+      console.error("Stripe connect error:", error);
+      alert("Error connecting to Stripe.");
+    }
+  };
+  
+
+  const handleDisconnect = async () => {
+    const confirmed = confirm("Are you sure you want to disconnect your Stripe account?");
+    if (!confirmed) return;
+  
+    try {
+      const res = await fetch("/api/stripe/disconnect", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ uid: user?.uid }),
+      });
+  
+      if (res.ok) {
+        // Rediriger ou recharger la page
+        location.reload();
+      } else {
+        alert("Failed to disconnect Stripe account.");
+      }
+    } catch (err) {
+      console.error("Stripe disconnect error:", err);
+      alert("An error occurred.");
+    }
+  };
+  
 
   useEffect(() => {
     const completeOnboarding = async () => {
@@ -41,6 +92,9 @@ const StripeOnboarding: React.FC = () => {
             chargesEnabled: account.charges_enabled,
             payoutsEnabled: account.payouts_enabled,
           });
+          // Générer le lien vers le Stripe Dashboard
+          const loginLink = await stripe.accounts.createLoginLink(accountId);
+          setExpressDashboardUrl(loginLink.url);
 
         } else {
           setStatusMessage("Your account is still under review or incomplete.");
@@ -86,7 +140,7 @@ const StripeOnboarding: React.FC = () => {
     <>
       <Navbar lng={lng} />
 
-      <div className="w-screen relative top-12 flex flex-col items-center  gap-4">
+      <div className="w-screen relative top-24 flex flex-col items-center  gap-4">
 
         {stripeUrl && (
           <Link
@@ -96,14 +150,44 @@ const StripeOnboarding: React.FC = () => {
             Complete Stripe Setup
           </Link>
         )}
+
+        {!user?.stripeAccountId && (
+          <button
+            onClick={handleConnect}
+            className="bg-indigo-500 hover:bg-indigo-600 text-white font-medium px-4 py-2 rounded-md transition"
+          >
+            Connect with Stripe
+          </button>
+        )}
       
         {statusMessage && <p className="text-[1.5rem] text-center sm:text-4xl font-bold bg-gradient-to-tl from-blue-800 via-blue-500 to-blue-500 bg-clip-text text-transparent">{statusMessage}</p>}
 
+        {expressDashboardUrl && (
+          <Link
+            href={expressDashboardUrl}
+            target="_blank"
+            className="bg-indigo-500 text-white px-4 py-2 rounded-md hover:bg-gray-900 transition"
+          >
+            Go to Stripe Dashboard
+          </Link>
+        )}
 
         <PaymentDashboard />
 
         <Transactions />
       </div>
+
+      <div className="w-full flex items-center justify-center relative top-48 py-12">
+        {user?.stripeAccountId && (
+          <button
+            onClick={handleDisconnect}
+            className="text-red-600 border border-red-200 hover:bg-red-50 font-medium px-4 py-2 rounded-md transition"
+          >
+            Disconnect Stripe Account
+          </button>
+        )}
+      </div>
+      
 
       <Footer />
     </>

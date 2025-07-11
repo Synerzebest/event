@@ -86,96 +86,102 @@ const StripeAccountDashboard: React.FC = () => {
 
   return (
     <motion.div
-      className="relative top-12 w-full flex flex-col items-center"
+      className="relative top-12 w-full flex justify-center px-4"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
       <motion.div
-        className="w-[97%] mx-auto max-w-4xl bg-white border border-gray-200 shadow-lg rounded-xl p-6 space-y-6"
-        initial={{ scale: 0.9 }}
+        className="w-full max-w-3xl bg-white border border-gray-100 shadow-xl rounded-2xl p-8 space-y-8"
+        initial={{ scale: 0.95 }}
         animate={{ scale: 1 }}
         transition={{ duration: 0.3 }}
       >
-        {/* Stripe Account Status */}
-        <div>
-          <h1 className="text-2xl font-semibold text-gray-800 text-center">Stripe Dashboard</h1>
-          <p className="text-sm text-gray-600 text-center mt-2">{statusMessage}</p>
-
-          <div className="mt-4 space-y-2">
-            <p className="text-sm text-gray-700">
-              <strong>Status:</strong>{" "}
-              {stripeStatus.detailsSubmitted ? "Details Submitted" : "Details Incomplete"}
-            </p>
-            <p className="text-sm text-gray-700">
-              <strong>Charges Enabled:</strong> {stripeStatus.chargesEnabled ? "Yes" : "No"}
-            </p>
-            <p className="text-sm text-gray-700">
-              <strong>Payouts Enabled:</strong> {stripeStatus.payoutsEnabled ? "Yes" : "No"}
-            </p>
-          </div>
-
-          {stripeUrl && (
-            <motion.div
-              className="mt-4"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-            >
-              <p className="text-sm text-gray-700 text-center">
-                Your account is incomplete. Please complete the setup below:
-              </p>
-              <Link
-                href={stripeUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block mt-2 text-center text-blue-500 hover:underline"
-              >
-                Complete Stripe Setup
-              </Link>
-            </motion.div>
-          )}
+        {/* Header */}
+        <div className="text-center">
+          <h1 className="text-3xl font-semibold text-indigo-500">Stripe Dashboard</h1>
+          <p className="text-sm text-gray-500 mt-1">{statusMessage}</p>
         </div>
 
+        {/* Stripe Status */}
+        <div className="space-y-2 text-sm text-gray-800">
+          <p>
+            <span className="font-medium text-gray-900">Status:</span>{" "}
+            <span className={stripeStatus.detailsSubmitted ? "text-indigo-500" : "text-red-500"}>
+              {stripeStatus.detailsSubmitted ? "Details Submitted" : "Details Incomplete"}
+            </span>
+          </p>
+          <p>
+            <span className="font-medium text-gray-900">Charges Enabled:</span>{" "}
+            <span className={stripeStatus.chargesEnabled ? "text-indigo-500" : "text-gray-400"}>
+              {stripeStatus.chargesEnabled ? "Yes" : "No"}
+            </span>
+          </p>
+          <p>
+            <span className="font-medium text-gray-900">Payouts Enabled:</span>{" "}
+            <span className={stripeStatus.payoutsEnabled ? "text-indigo-500" : "text-gray-400"}>
+              {stripeStatus.payoutsEnabled ? "Yes" : "No"}
+            </span>
+          </p>
+        </div>
+
+        {stripeUrl && (
+          <motion.div
+            className="text-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+          >
+            <p className="text-sm text-gray-600">
+              Your account is incomplete. Please complete the setup below:
+            </p>
+            <Link
+              href={stripeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block mt-2 text-indigo-500 font-medium hover:underline transition-colors"
+            >
+              Complete Stripe Setup
+            </Link>
+          </motion.div>
+        )}
+
         {/* Bank Account Details */}
-        <div className="bg-gray-100 p-4 rounded-lg">
-          <h2 className="text-lg font-semibold mb-2">Bank Account</h2>
+        <div className="bg-gray-50 p-6 rounded-xl border border-gray-100">
+          <h2 className="text-lg font-semibold text-indigo-500 mb-4">Bank Account</h2>
           {bankAccounts.length > 0 ? (
             <ul className="space-y-4">
               {bankAccounts.map((account) => (
                 <li
                   key={account.id}
-                  className="p-4 bg-white rounded-lg shadow flex flex-col space-y-2"
+                  className="bg-white p-4 rounded-xl shadow-sm border border-gray-100"
                 >
                   <p>
-                    <strong>Bank Name:</strong> {account.bank_name || "Unknown"}
+                    <span className="font-medium text-gray-900">Bank Name:</span>{" "}
+                    {account.bank_name || "Unknown"}
                   </p>
                   <p>
-                    <strong>Account Number:</strong> **** {account.last4}
+                    <span className="font-medium text-gray-900">Account Number:</span>{" "}
+                    **** {account.last4}
                   </p>
                   <p>
-                    <strong>Country:</strong> {account.country}
+                    <span className="font-medium text-gray-900">Country:</span>{" "}
+                    {account.country}
                   </p>
                   <p>
-                    <strong>Currency:</strong> {account.currency.toUpperCase()}
+                    <span className="font-medium text-gray-900">Currency:</span>{" "}
+                    {account.currency.toUpperCase()}
                   </p>
                 </li>
               ))}
             </ul>
           ) : (
-            <p className="text-sm text-gray-700">No bank accounts linked.</p>
+            <p className="text-sm text-gray-600">No bank accounts linked.</p>
           )}
         </div>
-
-        {/* Disconnect Button */}
-        {/* <button
-          className="w-full py-2 px-4 bg-red-500 text-white rounded-lg hover:bg-red-600"
-          onClick={() => console.log("Handle Stripe disconnection here.")}
-        >
-          Disconnect Stripe
-        </button> */}
       </motion.div>
     </motion.div>
+
   );
 };
 

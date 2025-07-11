@@ -7,6 +7,7 @@ type EventData = {
     city: string;
     place: string;
     date: string;
+    dateTimestamp: number;
     description: string;
     guestLimit: number;
     privacy: 'public' | 'private';
@@ -54,11 +55,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             city: eventData.city,
             place: eventData.place,
             date: eventData.date,
+            dateTimestamp: eventData.dateTimestamp,
             description: eventData.description,
             guestLimit: eventData.guestLimit,
             privacy: eventData.privacy,
             category: eventData.category,
-            organizers: [userId],  // toujours forcer organizer à l'utilisateur authentifié
+            organizers: [userId],
             tickets: eventData.tickets,
             images: eventData.images,
             createdAt: new Date().toISOString(),
@@ -70,7 +72,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         const userRef = firestore.collection("users").doc(userId);
         await userRef.set({
-            eventsCreated: admin.firestore.FieldValue.increment(1)
+            eventsCreated: admin.firestore.FieldValue.arrayUnion(eventRef.id)
         }, { merge: true });
 
         res.status(201).json({ message: "Event created successfully", eventId: eventRef.id });

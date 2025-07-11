@@ -86,7 +86,7 @@ const Page = () => {
                 });
     
                 if (response.ok) {
-                    message.success('Votre inscription pour cet événement gratuit a été confirmée.');
+                    message.success('Incsription confirmée');
                     router.push(`/success/${eventId}`);
                 } else {
                     const error = await response.json();
@@ -94,7 +94,7 @@ const Page = () => {
                 }
             } catch (error) {
                 console.error('Erreur lors de la gestion des tickets gratuits:', error);
-                message.error('Une erreur s\'est produite lors de la réservation du ticket gratuit.');
+                message.error('Une erreur s\'est produite lors de la réservation du ticket');
             }
             setProcessing(false);
             return;

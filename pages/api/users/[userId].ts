@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { auth } from "@/lib/firebaseAdmin";
-import { db } from "@/lib/firebaseConfig"; // Assure-toi que c’est bien ta config Firestore (client)
-import { doc, getDoc } from "firebase/firestore"; // depuis firebase/firestore (client SDK)
+import { db } from "@/lib/firebaseConfig"; 
+import { doc, getDoc } from "firebase/firestore"; 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== "GET") {

@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import useFirebaseUser from "@/lib/useFirebaseUser";
 import { motion } from "framer-motion";
 import { Transaction } from "@/types/types";
+import { Spin } from 'antd';
 
 const Transactions: React.FC = () => {
   const { user } = useFirebaseUser();
@@ -70,11 +71,12 @@ const Transactions: React.FC = () => {
   if (loading) {
     return (
       <motion.div
-        className="flex items-center justify-center min-h-screen bg-gray-50"
+        className="w-full max-w-3xl relative top-24 px-8 rounded-lg flex flex-col items-center justify-center gap-4 h-[300px] bg-gray-50"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
+        <Spin />
         <p className="text-gray-700">Loading your account details...</p>
       </motion.div>
     );
@@ -95,50 +97,53 @@ const Transactions: React.FC = () => {
 
   return (
     <motion.div
-        className="relative top-24 w-[97%] mx-auto border border-gray-200 shadow-lg rounded-xl flex flex-col items-center w-full max-w-4xl px-4 py-6"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
+      className="relative top-24 w-11/12 mx-auto sm:w-full max-w-3xl mx-auto px-4 py-6 border border-gray-100 shadow-xl rounded-2xl flex flex-col items-center bg-white space-y-6 mb-12"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
     >
-        <div className="w-full">
-            <section className="mb-6">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Account Balance</h2>
-            {balance !== null ? (
-                <p className="text-lg font-medium text-gray-700">
-                {balance} {currency}
-                </p>
-            ) : (
-                <p className="text-sm text-gray-600">Unable to fetch balance.</p>
-            )}
-            </section>
+      <div className="w-full space-y-8">
+        {/* Account Balance */}
+        <section>
+          <h2 className="text-xl font-semibold text-indigo-500 mb-2">Account Balance</h2>
+          {balance !== null ? (
+            <p className="text-2xl font-semibold text-gray-900">
+              {balance} {currency}
+            </p>
+          ) : (
+            <p className="text-sm text-gray-600">Unable to fetch balance.</p>
+          )}
+        </section>
 
-            <section>
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Transaction History</h2>
-            <div className="h-[400px] overflow-y-auto">
-                {transactions.length > 0 ? (
-                <ul className="divide-y divide-gray-200">
-                    {transactions.map((transaction) => (
-                    <li key={transaction.id} className="py-4 px-2">
-                        <div className="flex justify-between items-center">
-                        <p className="text-sm text-gray-700 font-medium">
-                            <strong>{transaction.description || "Payment"}</strong>
-                        </p>
-                        <p className="text-sm text-gray-500">
-                            {(transaction.amount / 100).toFixed(2)} {transaction.currency.toUpperCase()}
-                        </p>
-                        </div>
-                        <p className="text-sm text-gray-500">
-                        Date: {new Date(transaction.created * 1000).toLocaleDateString()}
-                        </p>
-                    </li>
-                    ))}
-                </ul>
-                ) : (
-                <p className="text-sm text-gray-600">No transactions found.</p>
-                )}
-            </div>
-            </section>
-        </div>
+        {/* Transaction History */}
+        <section>
+          <h2 className="text-xl font-semibold text-indigo-500 mb-2">Transaction History</h2>
+          <div className="h-[400px] overflow-y-auto bg-gray-50 rounded-xl border border-gray-100 p-4">
+            {transactions.length > 0 ? (
+              <ul className="divide-y divide-gray-200">
+                {transactions.map((transaction) => (
+                  <li key={transaction.id} className="py-3">
+                    <div className="flex justify-between items-center">
+                      <p className="text-sm text-gray-800 font-medium">
+                        {transaction.description || "Payment"}
+                      </p>
+                      <p className="text-sm text-gray-600 font-semibold">
+                        {(transaction.amount / 100).toFixed(2)}{" "}
+                        {transaction.currency.toUpperCase()}
+                      </p>
+                    </div>
+                    <p className="text-xs text-gray-500 mt-1">
+                      Date: {new Date(transaction.created * 1000).toLocaleDateString()}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-sm text-gray-600">No transactions found.</p>
+            )}
+          </div>
+        </section>
+      </div>
     </motion.div>
 
   );

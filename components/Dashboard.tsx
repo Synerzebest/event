@@ -2,12 +2,13 @@
 
 import Image from "next/image";
 import React, { useState, useEffect, useRef } from "react";
-import { Skeleton, Carousel } from "antd";
+import { Carousel } from "antd";
 import type { CarouselRef } from "antd/es/carousel";
 import useFirebaseUser from "@/lib/useFirebaseUser";
 import { Event } from '@/types/types';
 import EventPopup from "./EventPopup";
 import EditEventPopup from "./EditEventPopup";
+import QRCodeScanModal from "./QRCodeScanModal";
 import UserTickets from "./UserTickets";
 import { FaUser } from "react-icons/fa";
 import { FaShare } from "react-icons/fa6";
@@ -20,6 +21,7 @@ import ScrollToTopButton from "./ScrollToTopButton";
 import ShareModal from "./ShareModal";
 import LikedEvents from "./LikedEvents";
 import { AnimatePresence } from "framer-motion";
+import { MdQrCodeScanner } from "react-icons/md";
 
 const no_event_image = "/images/no-event.png";
 
@@ -37,12 +39,14 @@ function useIsMobile(breakpoint = 640): boolean {
 export default function Dashboard() {
   const [events, setEvents] = useState<Event[]>([]);
   const [myEvents, setMyEvents] = useState<Event[]>([]);
+  const [scannableEventIds, setScannableEventIds] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(true); 
   const [editEvent, setEditEvent] = useState<Event | null>(null); 
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [shareModalEvent, setShareModalEvent] = useState<Event | null>(null);
   const eventCarouselRef = useRef<CarouselRef>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [qrScanEventId, setQrScanEventId] = useState<string | null>(null);
   const lng = useLanguage();
   const { t } = useTranslation(lng, "common");
   const { user } = useFirebaseUser();
@@ -84,6 +88,21 @@ export default function Dashboard() {
     fetchUserEvents(userId);
   }, [userId]);
 
+  useEffect(() => {
+    if (!userId) return;
+    const fetchUserScannerEvents = async () => {
+      try {
+        const res = await fetch(`/api/getUserScannerEvents/${userId}`);
+        if (!res.ok) throw new Error("Failed to fetch user scanner access");
+        const data = await res.json();
+        setScannableEventIds(data.eventScanner || []);
+      } catch (error) {
+        console.error("Error fetching scanner access:", error);
+      }
+    };
+    fetchUserScannerEvents();
+  }, [userId]);  
+
   const handleManageEvent = async (eventId: string) => {
     const event = events.find((e) => e.id === eventId);
     if (event) setSelectedEvent(event);
@@ -119,13 +138,32 @@ export default function Dashboard() {
                 {safeTranslate(t, "more_info")}
               </button>
             </div>
-            {event.createdBy === userId && (
-              <button className="p-2 rounded-full hover:bg-gray-100 duration-300" onClick={() => handleEditEvent(event)}>
-                <IoIosSettings size={25} className="text-gray-500" />
-              </button>
-            )}
+            <div>
+              {event.createdBy === userId && (
+                <button className="p-2 rounded-full hover:bg-gray-100 duration-300" onClick={() => handleEditEvent(event)}>
+                  <IoIosSettings size={25} className="text-gray-500" />
+                </button>
+              )}
+              {(event.createdBy === userId || event.organizers?.includes(userId) || scannableEventIds.includes(event.id)) && (
+                <button
+                  className="p-2 rounded-full hover:bg-gray-100 duration-300"
+                  onClick={() => setQrScanEventId(event.id)}
+                  title="Scanner les tickets"
+                >
+                  <MdQrCodeScanner size={24} className="text-gray-600" />
+                </button>
+              )}
+            </div>
           </div>
         </div>
+        {qrScanEventId && (
+          <QRCodeScanModal
+            open={true}
+            onClose={() => setQrScanEventId(null)}
+            eventId={qrScanEventId}
+            lng={lng}
+          />
+        )}
       </div>
     );
   };
@@ -142,11 +180,16 @@ export default function Dashboard() {
           {loading ? (
             <div className="flex gap-4">
               {Array.from({ length: 3 }).map((_, index) => (
-                <div key={index} className="flex-shrink-0 w-full sm:w-[350px] rounded-lg shadow-lg bg-white">
-                  <Skeleton.Image style={{ width: '100%', height: 200 }} />
+                <div
+                  key={index}
+                  className="flex-shrink-0 w-full sm:w-[350px] rounded-lg shadow-lg bg-white overflow-hidden"
+                >
+                  <div className="w-full h-[200px] bg-gray-200 animate-pulse" />
                   <div className="p-4">
-                    <Skeleton active paragraph={{ rows: 2 }} />
-                    <Skeleton.Button active style={{ width: 100, marginTop: 16 }} />
+                    <div className="h-4 bg-gray-200 rounded w-3/4 mb-3 animate-pulse" />
+                    <div className="h-4 bg-gray-200 rounded w-2/3 mb-3 animate-pulse" />
+                    <div className="h-4 bg-gray-200 rounded w-1/2 mb-4 animate-pulse" />
+                    <div className="h-8 bg-gray-300 rounded w-[100px] animate-pulse" />
                   </div>
                 </div>
               ))}
@@ -191,7 +234,7 @@ export default function Dashboard() {
           )}
         </div>
 
-        <h2 className="text-3xl sm:text-2xl text-center sm:text-start font-bold mb-8">{safeTranslate(t,'favorite_events')}</h2>
+        <h2 className="text-3xl sm:text-2xl text-center sm:text-start font-bold mb-8 mt-12">{safeTranslate(t,'favorite_events')}</h2>
         <LikedEvents userId={userId} />
       </section>
 

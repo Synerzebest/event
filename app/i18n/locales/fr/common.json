@@ -200,5 +200,13 @@
   "buy_ticket": "Acheter un ticket",
   "choose_ticket": "Choisir un ticket",
   "eventlab_link": "Aller à la page Eventlab",
-  "trust": "Merci pour votre confiance"
+  "trust": "Merci pour votre confiance",
+  "event_created": "Événement créé",
+  "required_fields": "Veuillez renseigner tous les champs",
+  "missing_photo": "Photo manquante",
+  "ticket_error": "Tickets incomplets",
+  "error_creating_event": "Une erreur est survenue",
+  "wrong_event": "Ce ticket correspond à un autre événement",
+  "error": "Erreur",
+  "error_scanning_ticket": "Une erreur est survenue lors de la vérification du ticket"
 }
