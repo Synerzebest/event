@@ -208,5 +208,9 @@
   "error_creating_event": "Une erreur est survenue",
   "wrong_event": "Ce ticket correspond à un autre événement",
   "error": "Erreur",
-  "error_scanning_ticket": "Une erreur est survenue lors de la vérification du ticket"
+  "error_scanning_ticket": "Une erreur est survenue lors de la vérification du ticket",
+  "add_organizer": "Ajouter des organisateurs",
+  "creator": "Créateur",
+  "organizing_team": "Équipe organisatrice",
+  "no_organizer": "Pas encore d'organisateur"
 }

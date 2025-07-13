@@ -156,14 +156,6 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-        {qrScanEventId && (
-          <QRCodeScanModal
-            open={true}
-            onClose={() => setQrScanEventId(null)}
-            eventId={qrScanEventId}
-            lng={lng}
-          />
-        )}
       </div>
     );
   };
@@ -240,7 +232,7 @@ export default function Dashboard() {
 
       {editEvent && <EditEventPopup event={editEvent} onClose={handleCloseEditPopup} onUpdateEvent={updateEvent} />}
       <AnimatePresence>
-        {selectedEvent && <EventPopup event={selectedEvent} onClose={handleClosePopup} />}
+        {selectedEvent && <EventPopup event={selectedEvent} onClose={handleClosePopup} lng={lng} />}
       </AnimatePresence>
       {shareModalEvent && (
         <ShareModal
@@ -248,6 +240,14 @@ export default function Dashboard() {
             onClose={() => setShareModalEvent(null)}
             eventUrl={`${process.env.NEXT_PUBLIC_BASE_URL}/event/${shareModalEvent.id}`}
             eventTitle={shareModalEvent.title}
+        />
+      )}
+      {qrScanEventId && (
+        <QRCodeScanModal
+          open={true}
+          onClose={() => setQrScanEventId(null)}
+          eventId={qrScanEventId}
+          lng={lng}
         />
       )}
     </div>

@@ -207,5 +207,9 @@
   "error_creating_event": "An error while creating event",
   "wrong_event": "This ticket corresponds to another event",
   "error": "Error",
-  "error_scanning_ticket": "An error occured while scanning the ticket"
+  "error_scanning_ticket": "An error occured while scanning the ticket",
+  "add_organizer": "Add organizers",
+  "creator": "Creator",
+  "organizing_team": "Organizing Team",
+  "no_organizer": "No organizer yet"
 }

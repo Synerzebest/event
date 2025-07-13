@@ -36,7 +36,6 @@ const QRCodeScanModal: React.FC<QRCodeScanModalProps> = ({ open, onClose, eventI
       });
 
       const result = await res.json();
-      console.log("VALIDATION RESULT:", result, res.status);
 
       if (res.ok) {
         setStatus("success");
@@ -46,7 +45,7 @@ const QRCodeScanModal: React.FC<QRCodeScanModalProps> = ({ open, onClose, eventI
             setStatus("wrong_event")
             setMessage(safeTranslate(t, "wrong_event"))
           } else if (result.message === "already_used") {
-              const scannedAt = new Date(result.scannedAt).toLocaleTimeString();
+              const scannedAt = new Date(result.scannedAt).toLocaleString();
               setStatus("error")
               setMessage(`${safeTranslate(t, "already_used_ticket")} (${scannedAt})`)
           }
@@ -63,7 +62,7 @@ const QRCodeScanModal: React.FC<QRCodeScanModalProps> = ({ open, onClose, eventI
         setMessage(null);
         isProcessing.current = false;
         lastScanned.current = null;
-      }, 3000);
+      }, 3300);
     }
   };
 

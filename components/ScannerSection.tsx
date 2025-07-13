@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Spin, Skeleton } from 'antd';
-// import { getAuth } from 'firebase/auth';
 import { motion, AnimatePresence } from 'framer-motion';
 import toast from 'react-hot-toast';
 import { useTranslation } from "@/app/i18n";
@@ -24,6 +23,7 @@ interface User {
 interface Event {
   id: string;
   organizers: string[];
+  scanners: string[];
   createdBy: string;
 }
 
@@ -34,12 +34,11 @@ interface OrganizerSectionProps {
 
 const OrganizerSection: React.FC<OrganizerSectionProps> = ({ eventId, lng }) => {
   const [event, setEvent] = useState<Event | null>(null);
-  const [organizers, setOrganizers] = useState<Organizer[]>([]);
-  const [loadingOrganizers, setLoadingOrganizers] = useState(true);
+  const [scanners, setScanners] = useState<Organizer[]>([]);
+  const [loadingScanners, setLoadingScanners] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [users, setUsers] = useState<User[]>([]);
   const { t } = useTranslation(lng, "common");
-  // const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -52,19 +51,14 @@ const OrganizerSection: React.FC<OrganizerSectionProps> = ({ eventId, lng }) => 
     fetchEvent();
   }, [eventId]);
 
-  // useEffect(() => {
-  //   const auth = getAuth();
-  //   setCurrentUserId(auth.currentUser?.uid ?? null);
-  // }, []);
-
   useEffect(() => {
-    const fetchOrganizers = async () => {
+    const fetchScanners = async () => {
       if (!event) return;
-      setLoadingOrganizers(true);
+      setLoadingScanners(true);
 
-      if (Array.isArray(event.organizers) && event.organizers.length > 0) {
-        const organizerDetails = await Promise.all(
-          event.organizers.map(async (id) => {
+      if (Array.isArray(event.scanners) && event.scanners.length > 0) {
+        const scannerDetais = await Promise.all(
+          event.scanners.map(async (id) => {
             const response = await fetch(`/api/users/${id}`);
             if (response.ok) {
               const userData = await response.json();
@@ -74,24 +68,24 @@ const OrganizerSection: React.FC<OrganizerSectionProps> = ({ eventId, lng }) => 
           })
         );
 
-        setOrganizers(organizerDetails.filter(Boolean));
+        setScanners(scannerDetais.filter(Boolean));
       } else {
-        setOrganizers([]);
+        setScanners([]);
       }
 
-      setLoadingOrganizers(false);
+      setLoadingScanners(false);
     };
 
-    fetchOrganizers();
+    fetchScanners();
   }, [event]);
 
-  const handleAddOrganizer = async (userId: string) => {
+  const handleAddScanner = async (userId: string) => {
     if (!event) return;
     try {
-      const res = await fetch(`/api/events/${event.id}/addOrganizers`, {
+      const res = await fetch(`/api/events/${event.id}/addScanners`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ organizers: [userId] }),
+        body: JSON.stringify({ scanners: [userId] }),
       });
 
       if (!res.ok) throw new Error();
@@ -99,32 +93,32 @@ const OrganizerSection: React.FC<OrganizerSectionProps> = ({ eventId, lng }) => 
       const userRes = await fetch(`/api/users/${userId}`);
       if (!userRes.ok) throw new Error();
 
-      const newOrganizer = await userRes.json();
-      setOrganizers((prev) =>
-        [...prev, { id: userId, ...newOrganizer }].sort((a, b) => a.name.localeCompare(b.name))
+      const newScanner = await userRes.json();
+      setScanners((prev) =>
+        [...prev, { id: userId, ...newScanner }].sort((a, b) => a.name.localeCompare(b.name))
       );
 
-      toast.success('Organizer added!');
+      toast.success('Scanner added!');
     } catch {
-      toast.error('Failed to add organizer.');
+      toast.error('Failed to add scanner.');
     }
   };
 
-  const handleRemoveOrganizer = async (userId: string) => {
+  const handleRemoveScanner = async (userId: string) => {
     if (!event) return;
     try {
-      const res = await fetch(`/api/events/removeOrganizer`, {
+      const res = await fetch(`/api/events/removeScanner`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ eventId: event.id, organizerId: userId }),
+        body: JSON.stringify({ eventId: event.id, scannerId: userId }),
       });
 
       if (!res.ok) throw new Error();
 
-      setOrganizers((prev) => prev.filter((org) => org.id !== userId));
-      toast.success('Organizer removed!');
+      setScanners((prev) => prev.filter((scanner) => scanner.id !== userId));
+      toast.success('Scanner removed!');
     } catch {
-      toast.error('Failed to remove organizer.');
+      toast.error('Failed to remove scanner.');
     }
   };
 
@@ -146,23 +140,23 @@ const OrganizerSection: React.FC<OrganizerSectionProps> = ({ eventId, lng }) => 
 
   return (
     <motion.div className="py-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
-      <h3 className="text-xl font-bold text-gray-800 mb-4">{safeTranslate(t, "organizing_team")} ({organizers.length})</h3>
+      <h3 className="text-xl font-bold text-gray-800 mb-4">{safeTranslate(t, "organizing_team")} ({scanners.length})</h3>
 
-      {loadingOrganizers ? (
+      {loadingScanners ? (
         <div className="flex justify-center items-center my-4">
           <Spin />
         </div>
-      ) : organizers.length === 0 ? (
-        <p className="text-gray-600 mb-4">No organizers yet.</p>
+      ) : scanners.length === 0 ? (
+        <p className="text-gray-600 mb-4">No scanners yet.</p>
       ) : (
         <ul className="space-y-3 mb-4 max-h-60 overflow-y-auto pr-2">
           <AnimatePresence>
-            {organizers.map((org) => {
-              const isCreator = org.id === event.createdBy;
+            {scanners.map((scanner) => {
+              const isCreator = scanner.id === event.createdBy;
               // const isCurrentUser = org.id === currentUserId;
               return (
                 <motion.li
-                  key={org.id}
+                  key={scanner.id}
                   className="flex items-center justify-between text-gray-700"
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
@@ -170,15 +164,15 @@ const OrganizerSection: React.FC<OrganizerSectionProps> = ({ eventId, lng }) => 
                   transition={{ duration: 0.2 }}
                 >
                   <div className="flex items-center gap-3">
-                    <Image src={org.imageUrl} alt={org.name} width={30} height={30} className="rounded-full" />
-                    <span className="text-lg">{org.name}</span>
+                    <Image src={scanner.imageUrl} alt={scanner.name} width={30} height={30} className="rounded-full" />
+                    <span className="text-lg">{scanner.name}</span>
                   </div>
                   {isCreator ? (
                     <span className="text-gray-400 italic">{safeTranslate(t, "creator")}</span>
                   ) : (
                     <button
                       className="text-red-500 hover:text-red-700"
-                      onClick={() => handleRemoveOrganizer(org.id)}
+                      onClick={() => handleRemoveScanner(scanner.id)}
                     >
                       {safeTranslate(t, "remove")}
                     </button>
@@ -202,7 +196,7 @@ const OrganizerSection: React.FC<OrganizerSectionProps> = ({ eventId, lng }) => 
         {searchQuery && (
           <ul className="space-y-2 max-h-[300px] overflow-y-scroll">
             {users.map((user) => {
-              const isAlready = organizers.some((o) => o.id === user.uid);
+              const isAlready = scanners.some((s) => s.id === user.uid);
               return (
                 <li key={user.uid} className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
@@ -212,7 +206,7 @@ const OrganizerSection: React.FC<OrganizerSectionProps> = ({ eventId, lng }) => 
                   <button
                     className={`text-indigo-500 ${isAlready ? 'cursor-not-allowed text-gray-400' : ''}`}
                     disabled={isAlready}
-                    onClick={() => handleAddOrganizer(user.uid)}
+                    onClick={() => handleAddScanner(user.uid)}
                   >
                     {isAlready ? 'Added' : 'Add'}
                   </button>

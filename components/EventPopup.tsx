@@ -2,13 +2,15 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { IoMdClose } from 'react-icons/io';
 import { Event } from '@/types/types';
 import { motion } from "framer-motion";
-import OrganizerSection from "./OrganizerSection"
+import OrganizerSection from "./OrganizerSection";
+import ScannerSection from "./ScannerSection";
 import EventTicket from "./EventTicket";
 import EventRevenue from "./EventRevenue";
 
 interface EventPopupProps {
     event: Event;
     onClose: () => void;
+    lng: string;
 }
 
 interface TicketParticipant {
@@ -21,7 +23,7 @@ interface TicketParticipant {
     price: number;
     purchaseDate: string;
   }
-const EventPopup: React.FC<EventPopupProps> = ({ event, onClose }) => {
+const EventPopup: React.FC<EventPopupProps> = ({ event, onClose, lng }) => {
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [allTickets, setAllTickets] = useState<TicketParticipant[]>([]);
     const [filteredTickets, setFilteredTickets] = useState<TicketParticipant[]>([]);
@@ -76,7 +78,9 @@ const EventPopup: React.FC<EventPopupProps> = ({ event, onClose }) => {
                     <IoMdClose size={24} />
                 </button>
 
-                <OrganizerSection eventId={event.id} />
+                <OrganizerSection eventId={event.id} lng={lng} />
+
+                <ScannerSection eventId={event.id} lng={lng} />
 
                 <EventTicket ticketsSummary={ticketsSummary} />
 
