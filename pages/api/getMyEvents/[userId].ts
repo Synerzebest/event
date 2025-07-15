@@ -24,12 +24,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
 
         const userData = userDocSnap.data();
-        const eventIds: string[] = userData.eventsCreated || [];
+        const eventsCreated: string[] = userData.eventsCreated || [];
+        const organizedEvents: string[] = userData.organizedEvents || [];
+        const scannedEvents: string[] = userData.scannedEvents || [];
+
+        const allEventIds = Array.from(new Set([
+            ...eventsCreated,
+            ...organizedEvents,
+            ...scannedEvents
+        ]));
 
         // 2. Récupère les événements correspondants
         const eventsCollection = collection(db, "events");
 
-        const eventDocsPromises = eventIds.map(id => getDoc(doc(eventsCollection, id)));
+        const eventDocsPromises = allEventIds.map(id => getDoc(doc(eventsCollection, id)));
         const eventDocs = await Promise.all(eventDocsPromises);
 
         const userEvents = eventDocs

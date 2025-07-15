@@ -4,6 +4,7 @@ import Stripe from 'stripe';
 import { firestore } from '@/lib/firebaseAdmin';
 import { Ticket } from "@/types/types";
 import { sendConfirmationEmail } from '@/lib/email';
+import admin from "firebase-admin";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: '2024-12-18.acacia',
@@ -99,7 +100,7 @@ async function handleTicketPurchase(session: Stripe.Checkout.Session) {
         eventId: eventId,
         name: ticketName,
         price: ticketPrice,
-        purchaseDate: new Date().toISOString(),
+        purchaseDate: admin.firestore.Timestamp.now(),
         used: false, // Le ticket n'est pas utilisé par défaut
         userId: userId,
         firstName: firstName,

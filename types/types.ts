@@ -1,3 +1,5 @@
+import { Timestamp } from "firebase/firestore";
+
 export interface Participant {
     userId: string;
     timestamp: string; 
@@ -29,6 +31,14 @@ export interface Event {
     organizers: string[];
     imageUrl?: string;
     [key: string]: any; 
+    category: string;
+    createdAt: Timestamp;
+    createdBy: string;
+    currentGuests: number;
+    dateTimestamp: Timestamp;
+    guestLimit: number;
+    images: string[];
+    privacy: string;
 }
 
 export interface BankAccount {

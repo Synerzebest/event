@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { IoMdClose } from 'react-icons/io';
 import { Event } from '@/types/types';
 import { motion } from "framer-motion";
@@ -6,6 +6,7 @@ import OrganizerSection from "./OrganizerSection";
 import ScannerSection from "./ScannerSection";
 import EventTicket from "./EventTicket";
 import EventRevenue from "./EventRevenue";
+import EventParticipants from "./EventParticipants";
 
 interface EventPopupProps {
     event: Event;
@@ -13,37 +14,7 @@ interface EventPopupProps {
     lng: string;
 }
 
-interface TicketParticipant {
-    firstName: string;
-    lastName: string;
-    name: string;
-    userId: string;
-    eventId: string;
-    used: boolean;
-    price: number;
-    purchaseDate: string;
-  }
 const EventPopup: React.FC<EventPopupProps> = ({ event, onClose, lng }) => {
-    const [searchQuery, setSearchQuery] = useState<string>('');
-    const [allTickets, setAllTickets] = useState<TicketParticipant[]>([]);
-    const [filteredTickets, setFilteredTickets] = useState<TicketParticipant[]>([]);
-
-    useEffect(() => {
-        const fetchTickets = async () => {
-          try {
-            const res = await fetch(`/api/tickets/byEvent/${event.id}`);
-            if (res.ok) {
-              const tickets = await res.json();
-              setAllTickets(tickets);
-              setFilteredTickets(tickets);
-            }
-          } catch (err) {
-            console.error("Erreur lors du chargement des tickets:", err);
-          }
-        };
-      
-        if (event?.id) fetchTickets();
-    }, [event.id]);
 
     const ticketsSummary = useMemo(() => {
         if (!event?.tickets) return [];
@@ -86,46 +57,7 @@ const EventPopup: React.FC<EventPopupProps> = ({ event, onClose, lng }) => {
 
                 <EventRevenue ticketsSummary={ticketsSummary} totalRevenue={totalRevenue} />
 
-                <motion.div
-                    className="py-6"
-                >
-                    <h3 className="font-bold text-xl text-gray-800 mb-2">Participants ({filteredTickets.length})</h3>
-                    <input
-                        type="text"
-                        placeholder="Rechercher un nom ou prénom..."
-                        value={searchQuery}
-                        onChange={(e) => {
-                            const query = e.target.value.toLowerCase();
-                            setSearchQuery(query);
-                          
-                            if (query === "") {
-                              // Réaffiche tous les tickets si champ vidé
-                              setFilteredTickets(allTickets);
-                            } else {
-                              const filtered = allTickets.filter(
-                                (t) =>
-                                  t.firstName?.toLowerCase().includes(query) ||
-                                  t.lastName?.toLowerCase().includes(query)
-                              );
-                              setFilteredTickets(filtered);
-                            }
-                          }}
-                        className="border rounded-lg p-3 w-full bg-gray-100 mb-4 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                    />
-
-                    {filteredTickets.length === 0 ? (
-                        <p className="text-gray-600">Aucun participant trouvé.</p>
-                    ) : (
-                        <ul className="space-y-3 max-h-60 overflow-y-auto pr-2">
-                        {filteredTickets.map((ticket, index) => (
-                            <li key={index} className="flex items-center justify-between text-gray-700 border-b py-2">
-                            <span>{ticket.firstName} {ticket.lastName}</span>
-                            <span className="text-sm text-gray-500 italic">{ticket.name}</span>
-                            </li>
-                        ))}
-                        </ul>
-                    )}
-                </motion.div>
+                <EventParticipants eventId={event.id} />
             </motion.div>
         </div>
     );

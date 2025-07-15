@@ -134,9 +134,11 @@ export default function Dashboard() {
           <p className="text-gray-700 mt-2 line-clamp-3">{event.description}</p>
           <div className="flex justify-between items-center gap-4 mt-4">
             <div className="flex items-center gap-4">
-              <button className="bg-indigo-500 text-white font-bold py-2 px-4 rounded hover:bg-indigo-600" onClick={() => handleManageEvent(event.id)}>
-                {safeTranslate(t, "more_info")}
-              </button>
+              {(event.createdBy === userId || event.organizers?.includes(userId)) && (
+                <button className="bg-indigo-500 text-white font-bold py-2 px-4 rounded hover:bg-indigo-600" onClick={() => handleManageEvent(event.id)}>
+                  {safeTranslate(t, "more_info")}
+                </button>
+              )}
             </div>
             <div>
               {event.createdBy === userId && (
