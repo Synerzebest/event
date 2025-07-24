@@ -114,7 +114,6 @@ async function handleTicketPurchase(session: Stripe.Checkout.Session) {
           email: session.customer_details.email,
           firstName,
           lastName,
-          eventName: eventId,
           ticketId: ticketRef.id,
           eventId: eventId
         });

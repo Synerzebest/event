@@ -140,7 +140,7 @@ const OrganizerSection: React.FC<OrganizerSectionProps> = ({ eventId, lng }) => 
 
   return (
     <motion.div className="py-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
-      <h3 className="text-xl font-bold text-gray-800 mb-4">{safeTranslate(t, "organizing_team")} ({scanners.length})</h3>
+      <h3 className="text-xl font-bold text-gray-800 mb-4">{safeTranslate(t, "scanning_team")} ({scanners.length})</h3>
 
       {loadingScanners ? (
         <div className="flex justify-center items-center my-4">
@@ -185,7 +185,7 @@ const OrganizerSection: React.FC<OrganizerSectionProps> = ({ eventId, lng }) => 
       )}
 
       <div className="mt-6">
-        <h4 className="text-lg font-semibold mb-2">{safeTranslate(t, "add_organizer")}</h4>
+        <h4 className="text-lg font-semibold mb-2">{safeTranslate(t, "add_scanner")}</h4>
         <input
           type="text"
           placeholder="Search by name..."

@@ -1,0 +1,5 @@
+{
+    "account_payment_ready": "Your account is now ready to receive payments",
+    "account_payment_incomplete": "Your payment account is incomplete",
+    "account_not_linked": "Payment account not linked. Please connect your account."
+}

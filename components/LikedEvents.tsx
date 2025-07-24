@@ -49,7 +49,6 @@ const LikedEvents: React.FC<LikedEventsProps> = ({ userId }) => {
         console.error("Error fetching liked events:", err);
       } finally {
         setLoading(false);
-        console.log(likedEventIds)
       }
     };
 
@@ -112,7 +111,7 @@ const LikedEvents: React.FC<LikedEventsProps> = ({ userId }) => {
         ) : (
           <div className="flex gap-4 overflow-x-auto no-scrollbar pb-2">
             {likedEventIds.map((id) => (
-              <EventComponent key={id} eventId={id} participateButton={true} />
+              <EventComponent key={id} eventId={id} participateButton={true} userId={userId}/>
             ))}
           </div>
         )}

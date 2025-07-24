@@ -1,47 +1,42 @@
 "use client"
 
 import { useEffect, useState } from "react";
-import { stripe } from "@/lib/stripeConfig"; 
 import useFirebaseUser from "@/lib/useFirebaseUser";
-import { Navbar, PaymentDashboard, Transactions, Footer } from "@/components";
-import { db } from "@/lib/firebaseConfig"; 
-import { doc, updateDoc } from "firebase/firestore";
+import { Navbar, StripeDashboard, Footer } from "@/components";
 import { usePathname } from "next/navigation";
-import Link from "next/link";
 
 const StripeOnboarding: React.FC = () => {
   const { user, loading } = useFirebaseUser();
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const [loadingStatus, setLoadingStatus] = useState(true);
-  const [stripeUrl, setStripeUrl] = useState<string | null>(null);
-  const [expressDashboardUrl, setExpressDashboardUrl] = useState<string | null>(null);
   const pathname = usePathname();
 
   const lng = pathname?.split("/")[1] || "en";
 
   const handleConnect = async () => {
+    if (!user) return;
+  
     try {
       const res = await fetch("/api/stripe/create-account-link", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ uid: user?.uid }),
+        body: JSON.stringify({ uid: user.uid }),
       });
   
       const data = await res.json();
   
-      if (data.url) {
-        window.location.href = data.url; // redirection vers Stripe
+      if (res.ok && data.url) {
+        window.location.href = data.url; // redirige vers Stripe
       } else {
-        alert("Failed to create onboarding link.");
+        alert("Stripe onboarding failed.");
       }
     } catch (error) {
       console.error("Stripe connect error:", error);
       alert("Error connecting to Stripe.");
     }
   };
-  
 
   const handleDisconnect = async () => {
     const confirmed = confirm("Are you sure you want to disconnect your Stripe account?");
@@ -70,58 +65,40 @@ const StripeOnboarding: React.FC = () => {
   
 
   useEffect(() => {
-    const completeOnboarding = async () => {
-      if (!user || !user.stripeAccountId) {
-        setStatusMessage("No Stripe account linked or missing user data.");
+    const checkStripeStatus = async () => {
+      if (!user?.stripeAccountId) {
+        setStatusMessage("No Stripe account linked.");
         setLoadingStatus(false);
         return;
       }
-
-      const accountId = user.stripeAccountId;
-
+  
       try {
-        // Vérifier l'état du compte Stripe
-        const account = await stripe.accounts.retrieve(accountId);
-
-        if (account.charges_enabled && account.payouts_enabled) {
-          setStatusMessage("Your account is now ready to receive payments.");
-          
-          // Mettre à jour Firestore avec les informations du compte Stripe
-          await updateDoc(doc(db, "users", user.uid), {
-            accountStatus: "verified",
-            chargesEnabled: account.charges_enabled,
-            payoutsEnabled: account.payouts_enabled,
-          });
-          // Générer le lien vers le Stripe Dashboard
-          const loginLink = await stripe.accounts.createLoginLink(accountId);
-          setExpressDashboardUrl(loginLink.url);
-
+        const res = await fetch("/api/stripe/check-account-status", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ uid: user.uid }),
+        });
+  
+        const data = await res.json();
+  
+        if (res.ok) {
+          setStatusMessage(data.statusMessage);
         } else {
-          setStatusMessage("Your account is still under review or incomplete.");
-          
-          // Créer un lien d'onboarding si le compte est incomplet
-          const accountLink = await stripe.accountLinks.create({
-            account: accountId,
-            refresh_url: `${process.env.NEXT_PUBLIC_BASE_URL}/account`,  // URL à utiliser si l'utilisateur annule
-            return_url: `${process.env.NEXT_PUBLIC_BASE_URL}/account`,   // URL vers laquelle l'utilisateur sera redirigé après la vérification
-            type: 'account_onboarding',  // Type d'account link
-          });
-
-          setStripeUrl(accountLink.url); // Récupérer l'URL générée pour l'onboarding
+          setStatusMessage("Stripe status check failed.");
         }
-      } catch (error) {
-        console.error("Error retrieving account status from Stripe:", error);
-        setStatusMessage("There was an error processing your account setup.");
+      } catch (err) {
+        console.error("Error checking Stripe status:", err);
+        setStatusMessage("Error contacting Stripe.");
       }
-
+  
       setLoadingStatus(false);
     };
-
+  
     if (user) {
-      completeOnboarding();
+      checkStripeStatus();
     }
-
   }, [user]);
+  
 
   if (loading || loadingStatus) return(
     <>
@@ -140,16 +117,11 @@ const StripeOnboarding: React.FC = () => {
     <>
       <Navbar lng={lng} />
 
-      <div className="w-screen relative top-24 flex flex-col items-center  gap-4">
+      <div className="w-full flex justify-center items-center">
+        <p className="text-center">{statusMessage}</p>
+      </div>
 
-        {stripeUrl && (
-          <Link
-            href={stripeUrl}
-            className="bg-blue-600 text-white px-4 py-2 rounded-md"
-          >
-            Complete Stripe Setup
-          </Link>
-        )}
+      <div className="w-screen relative top-24 flex flex-col items-center  gap-4">
 
         {!user?.stripeAccountId && (
           <button
@@ -160,21 +132,7 @@ const StripeOnboarding: React.FC = () => {
           </button>
         )}
       
-        {statusMessage && <p className="text-[1.5rem] text-center sm:text-4xl font-bold bg-gradient-to-tl from-blue-800 via-blue-500 to-blue-500 bg-clip-text text-transparent">{statusMessage}</p>}
-
-        {expressDashboardUrl && (
-          <Link
-            href={expressDashboardUrl}
-            target="_blank"
-            className="bg-indigo-500 text-white px-4 py-2 rounded-md hover:bg-gray-900 transition"
-          >
-            Go to Stripe Dashboard
-          </Link>
-        )}
-
-        <PaymentDashboard />
-
-        <Transactions />
+        <StripeDashboard />
       </div>
 
       <div className="w-full flex items-center justify-center relative top-48 py-12">

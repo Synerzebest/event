@@ -272,7 +272,7 @@ const CreateEventForm: React.FC = () => {
                     {/* Tickets */}
                     <div className="w-full flex flex-col gap-4 mt-6">
                         <p className="text-2xl font-bold mb-2 text-indigo-500">Tickets</p>
-                        {user?.accountStatus === "verified" && user?.chargesEnabled && user?.payoutsEnabled ? (
+                        {user?.chargesEnabled && user?.payoutsEnabled ? (
                             <>
                                 {tickets.map((ticket, index) => (
                                     <div key={index} className="flex flex-col gap-2 border-b border-gray-300 pb-4 mb-4">

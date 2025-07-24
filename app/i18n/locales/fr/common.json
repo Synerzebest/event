@@ -212,5 +212,7 @@
   "add_organizer": "Ajouter des organisateurs",
   "creator": "Créateur",
   "organizing_team": "Équipe organisatrice",
-  "no_organizer": "Pas encore d'organisateur"
+  "no_organizer": "Pas encore d'organisateur",
+  "scanning_team": "Équipe de scan de ticket",
+  "add_scanner": "Ajouter un scanneur"
 }

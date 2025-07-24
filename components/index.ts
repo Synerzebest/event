@@ -12,10 +12,9 @@ import CreateEventButton from "./CreateEventButton";
 import Events from "./Events";
 import Countdown from "./Countdown";
 import EventComponent from "./EventComponent";
-import PaymentDashboard from "./PaymentDashboard";
-import Transactions from "./Transactions";
 import PetitePub from "./PetitePub";
 import Adsense from "./Adsense";
+import StripeDashboard from "./StripeDashboard";
 
 export {
     Navbar,
@@ -32,8 +31,7 @@ export {
     Events,
     Countdown,
     EventComponent,
-    PaymentDashboard,
-    Transactions,
+    StripeDashboard,
     PetitePub,
     Adsense
 }

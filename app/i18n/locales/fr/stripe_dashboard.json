@@ -1,0 +1,5 @@
+{
+    "account_payment_ready": "Votre compte peut recevoir des paiements",
+    "account_payment_incomplete": "Votre compte de paiement est incomplet",
+    "account_not_linked": "Aucun compte de paiement n'est lié. Veuillez vous connecter à votre compte de paiement."
+}

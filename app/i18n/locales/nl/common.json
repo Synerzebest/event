@@ -211,5 +211,7 @@
   "add_organizer": "Organisatoren toevoegen",
   "creator": "Schepper",
   "organizing_team": "Organiserend Team",
-  "no_organizer": "Nog geen organisator"
+  "no_organizer": "Nog geen organisator",
+  "scanning_team": "Scan Team",
+  "add_scanner": "Scanner toevoegen"
 }

@@ -211,5 +211,7 @@
   "add_organizer": "Add organizers",
   "creator": "Creator",
   "organizing_team": "Organizing Team",
-  "no_organizer": "No organizer yet"
+  "no_organizer": "No organizer yet",
+  "scanning_team": "Scanning Team",
+  "add_scanner": "Add Scanner"
 }

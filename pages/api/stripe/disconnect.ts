@@ -10,10 +10,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     await updateDoc(doc(db, "users", uid), {
-      stripeAccountId: null,
-      accountStatus: "disconnected",
       chargesEnabled: false,
       payoutsEnabled: false,
+      onboardingComplete: false,
     });
 
     return res.status(200).json({ success: true });

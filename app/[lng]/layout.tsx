@@ -4,6 +4,7 @@ import { dir } from "i18next";
 import { languages } from "../i18n/settings";
 import Adsense from "@/components/Adsense";
 import { Toaster } from "react-hot-toast";
+import { Analytics } from "@vercel/analytics/next"
 
 const GoogleAdsenseId = process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_ID || "";
 
@@ -36,6 +37,7 @@ export default function RootLayout({ children, params: { lng } }: RootLayoutProp
       <body className="antialiased">
         {children}
         <Toaster />
+        <Analytics />
       </body>
     </html>
   );

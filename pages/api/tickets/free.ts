@@ -77,7 +77,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             email: userEmail,
             firstName,
             lastName,
-            eventName: eventId,
             ticketId: ticketRef.id,
             eventId: eventId
         })
