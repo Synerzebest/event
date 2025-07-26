@@ -29,10 +29,8 @@ const CreateEventForm: React.FC = () => {
     const lng = useLanguage();
     const { t } = useTranslation(lng, "common");
     const { user } = useFirebaseUser();
-    console.log(user?.subscriptionId)
 
     const getGuestLimit = (nickname: string | null | undefined): number => {
-        console.log(nickname)
         switch (nickname) {
             case "pro": return Infinity;
             case "standard": return 500;

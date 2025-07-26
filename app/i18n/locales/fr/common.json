@@ -34,8 +34,8 @@
       "image": "/images/reminders.png"
     },
     {
-      "title": "Gestion de budget",
-      "description": "Gardez le contrôle de vos dépenses événementielles avec nos outils de gestion.",
+      "title": "Statistiques",
+      "description": "Restez au courant des statistiques de vos événements grâce à nos outils d'analyse.",
       "image": "/images/budget.png"
     }
   ],
