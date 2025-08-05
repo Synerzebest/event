@@ -60,7 +60,7 @@ const Signup = () => {
                 username: username,
                 email: email,
                 photoURL: user.photoURL || null,
-                eventsCreated: 0,
+                eventsCreated: [],
                 createdAt: new Date(),
                 stripeConfigured: false,
             });
@@ -95,7 +95,7 @@ const Signup = () => {
                     username: generatedUsername,
                     email: user.email,
                     photoURL: user.photoURL || null,
-                    eventsCreated: 0,
+                    eventsCreated: [],
                     createdAt: new Date(),
                     stripeConfigured: false,
                 });

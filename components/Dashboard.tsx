@@ -78,6 +78,13 @@ export default function Dashboard() {
       try {
         const response = await fetch(`/api/getMyEvents/${userId}`);
         const data = await response.json();
+
+        if (Array.isArray(data)) {
+          setMyEvents(data)
+        } else {
+          setMyEvents([])
+          console.warn("getMyEvents returned non-array:", typeof(data))
+        }
         setMyEvents(data);
       } catch (error) {
         console.error("Error fetching events:", error);

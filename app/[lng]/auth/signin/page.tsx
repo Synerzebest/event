@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { auth, googleProvider } from "@/lib/firebaseConfig";
+import { auth, googleProvider, db } from "@/lib/firebaseConfig";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { Input, Button, Alert, Typography, Divider } from "antd";
@@ -11,6 +11,7 @@ import { BackgroundLines } from "@/components/ui/background-lines";
 import useLanguage from "@/lib/useLanguage";
 import { useTranslation } from "@/app/i18n";
 import { safeTranslate } from "@/lib/utils";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 
 const { Title } = Typography;
@@ -18,9 +19,10 @@ const { Title } = Typography;
 const Signin = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState<string | null>(null);
     const router = useRouter();
     const lng = useLanguage();
+    const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
 
     const { t } = useTranslation(lng, "auth");
 
@@ -38,13 +40,39 @@ const Signin = () => {
     };
 
     const handleGoogleSignin = async () => {
+        setError(null);
+        setLoading(true);
+      
         try {
-            await signInWithPopup(auth, googleProvider);
-            router.push(`/${lng}/eventlab`);
+          const userCredential = await signInWithPopup(auth, googleProvider);
+          const user = userCredential.user;
+      
+          const userDocRef = doc(db, "users", user.uid);
+          const userSnapshot = await getDoc(userDocRef);
+      
+          if (!userSnapshot.exists()) {
+            const generatedUsername = "user-" + user.uid.substring(0, 6);
+      
+            await setDoc(userDocRef, {
+              uid: user.uid,
+              name: user.displayName || "",
+              username: generatedUsername,
+              email: user.email,
+              photoURL: user.photoURL || null,
+              eventsCreated: [],
+              createdAt: new Date(),
+              stripeConfigured: false,
+            });
+          }
+      
+          router.push(`/${lng}/eventlab`);
         } catch (err) {
-            setError((err as Error).message);
+          setError((err as Error).message);
+        } finally {
+          setLoading(false);
         }
-    };
+      };
+      
 
     return (
         <BackgroundLines className="flex items-center justify-center">                
@@ -91,6 +119,7 @@ const Signin = () => {
                         type="default"
                         className="w-full flex items-center justify-center space-x-2"
                         size="large"
+                        loading={loading}
                     >
                         <FcGoogle className="text-xl" />
                         <span>{safeTranslate(t, "signin_google")}</span>
