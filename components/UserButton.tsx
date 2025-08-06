@@ -11,40 +11,9 @@ import { safeTranslate } from "@/lib/utils";
 const UserButton: React.FC<{ lng: string }> = ({ lng }) => {
   const { user, loading } = useFirebaseUser();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const { t } = useTranslation(lng, "common");
-
-  const handleStripeConnect = async () => {
-    if (!user?.uid) return;
-    setIsLoading(true);
-
-    try {
-      const response = await fetch("/api/stripe/connect", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId: user.uid }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to set up Stripe Connect");
-      }
-
-      const data = await response.json();
-
-      if (data.url) {
-        window.location.href = data.url;
-      }
-    } catch (error) {
-      console.error("Error setting up Stripe Connect:", error);
-      alert("Failed to set up Stripe Connect. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const handleSignOut = async () => {
     await signOut(auth);
@@ -102,23 +71,12 @@ const UserButton: React.FC<{ lng: string }> = ({ lng }) => {
               {user.displayName || "User"}
             </p>
 
-            {/* Affichage conditionnel du bouton Stripe Connect */}
-            {!user.stripeAccountId ? (
-              <button
-                onClick={handleStripeConnect}
-                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                disabled={isLoading}
-              >
-                {isLoading ? `${t('setting_up_loading')}` : `${t('setting_up')}`}
-              </button>
-            ) : (
-              <Link
-                href={`/${lng}/account`}
-                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-              >
-                {safeTranslate(t,'payment_account')}
-              </Link>
-            )}
+            <Link
+              href={`/${lng}/account`}
+              className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+            >
+              {safeTranslate(t,'payment_account')}
+            </Link>
 
             {user.subscriptionId ? (
               <Link href={`/${lng}/cancel-subscription`} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">

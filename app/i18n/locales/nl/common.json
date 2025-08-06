@@ -127,7 +127,7 @@
   "quantity": "Hoeveelheid",
   "remove": "Verwijderen",
   "add_ticket": "Kaartje toevoegen",
-  "stripe_alert": "Om tickets te kunnen wijzigen (naam, aantal, prijs) moet u uw betaalaccount configureren.",
+  "stripe_alert": "Om tickets te kunnen wijzigen moet u uw betaalaccount configureren.",
   "free": "Gratis",
   "event_privacy_guests": "Evenementprivacy en gasten",
   "guest_limit": "Gastenlimiet",
@@ -213,5 +213,9 @@
   "organizing_team": "Organiserend Team",
   "no_organizer": "Nog geen organisator",
   "scanning_team": "Scan Team",
-  "add_scanner": "Scanner toevoegen"
+  "add_scanner": "Scanner toevoegen",
+  "configure": "Configureren",
+  "stripe_disconnect_info": "Met deze actie wordt de koppeling tussen je EaseEvent-account en Stripe verwijderd. Je Stripe-account wordt niet verwijderd.",
+  "stripe_disconnect_title": "Stripe link verwijderen",
+  "stripe_disconnect_confirm": "Weet u zeker dat u de link wilt verwijderen?"
 }

@@ -188,10 +188,10 @@ const Navbar = ({ lng }: NavbarProps) => {
           ) : (
             <>
               <Link href="/auth/signin" className="block w-full text-gray-800 font-semibold text-lg py-3 px-4 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all">
-                Signin
+                {safeTranslate(t, "signin")}
               </Link>
               <Link href="/auth/signup" className="block w-full text-gray-800 font-semibold text-lg py-3 px-4 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-all">
-                Signup
+                {safeTranslate(t, "signup")}
               </Link>
             </>
           )}

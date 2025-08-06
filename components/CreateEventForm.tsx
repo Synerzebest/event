@@ -170,6 +170,54 @@ const CreateEventForm: React.FC = () => {
             setUploading(false);
         }
     };
+    useEffect(() => {
+        const totalNonParticipant = tickets
+          .filter(t => t.name !== "Participant")
+          .reduce((sum, t) => sum + t.quantity, 0);
+      
+        const remainingPlaces = guestLimit - totalNonParticipant;
+      
+        setTickets(prev => {
+          const participantIndex = prev.findIndex(t => t.name === "Participant");
+          const hasParticipant = participantIndex !== -1;
+      
+          // S'il faut supprimer le ticket Participant
+          if (remainingPlaces <= 0 && hasParticipant) {
+            return prev.filter(t => t.name !== "Participant");
+          }
+      
+          // S'il faut l’ajouter
+          if (remainingPlaces > 0 && !hasParticipant) {
+            return [
+              ...prev,
+              {
+                name: "Participant",
+                price: 0,
+                quantity: remainingPlaces,
+                sold: 0,
+              },
+            ];
+          }
+      
+          // S'il existe et que la quantité est fausse → mise à jour
+          if (
+            hasParticipant &&
+            prev[participantIndex].quantity !== remainingPlaces
+          ) {
+            const updated = [...prev];
+            updated[participantIndex] = {
+              ...updated[participantIndex],
+              quantity: remainingPlaces,
+            };
+            return updated;
+          }
+      
+          return prev; // aucune modif
+        });
+      }, [guestLimit, tickets]);
+      
+      
+    
     
       return (
         <div className="w-full sm:w-3/4 mx-auto relative flex flex-col items-between">    
@@ -222,7 +270,6 @@ const CreateEventForm: React.FC = () => {
                         options={categories}
                     />
     
-                    {/* Déplacement du champ Guest Limit ici */}
                     <p className="text-xl font-bold mt-6 text-indigo-500">{safeTranslate(t,'guest_limit')}</p>
                     <div className="flex flex-col gap-2">
                         <Alert
@@ -272,57 +319,67 @@ const CreateEventForm: React.FC = () => {
                         <p className="text-2xl font-bold mb-2 text-indigo-500">Tickets</p>
                         {user?.chargesEnabled && user?.payoutsEnabled ? (
                             <>
-                                {tickets.map((ticket, index) => (
-                                    <div key={index} className="flex flex-col gap-2 border-b border-gray-300 pb-4 mb-4">
-                                        <div className="flex flex-col lg:flex-row lg:items-end lg:gap-4 gap-2">
-                                            <div className="flex flex-col w-full gap-2">
-                                                <label className="block text-sm font-medium text-gray-700">
-                                                    {safeTranslate(t, 'ticket_name')}
-                                                </label>
-                                                <Input 
-                                                    value={ticket.name} 
-                                                    onChange={(e) => updateTicket(index, "name", e.target.value)} 
-                                                    placeholder={`${safeTranslate(t, 'ticket_name')}`}
-                                                    required 
-                                                />
+                                {tickets.map((ticket, index) => {
+                                    const isParticipant = ticket.name === "Participant";
+
+                                    return (
+                                        <div key={index} className="flex flex-col gap-2 border-b border-gray-300 pb-4 mb-4">
+                                            <div className="flex flex-col lg:flex-row lg:items-end lg:gap-4 gap-2">
+                                                <div className="flex flex-col w-full gap-2">
+                                                    <label className="block text-sm font-medium text-gray-700">
+                                                        {safeTranslate(t, 'ticket_name')}
+                                                    </label>
+                                                    <Input
+                                                        value={ticket.name}
+                                                        disabled={isParticipant}
+                                                        onChange={(e) => updateTicket(index, "name", e.target.value)}
+                                                        placeholder={`${safeTranslate(t, 'ticket_name')}`}
+                                                        required
+                                                    />
+                                                </div>
+                                                <div className="flex flex-col w-full md:w-1/3 gap-2">
+                                                    <label className="block text-sm font-medium text-gray-700">
+                                                        {safeTranslate(t, 'price')} (€)
+                                                    </label>
+                                                    <InputNumber
+                                                        value={ticket.price}
+                                                        disabled={isParticipant}
+                                                        onChange={(value) => updateTicket(index, "price", value)}
+                                                        min={0}
+                                                        placeholder={`${safeTranslate(t, 'price')}`}
+                                                        required
+                                                        className="w-full"
+                                                    />
+                                                </div>
+                                                <div className="flex flex-col w-full md:w-1/3 gap-2">
+                                                    <label className="block text-sm font-medium text-gray-700">
+                                                        {safeTranslate(t, 'quantity')}
+                                                    </label>
+                                                    <InputNumber
+                                                        value={ticket.quantity}
+                                                        disabled={isParticipant}
+                                                        onChange={(value) => updateTicket(index, "quantity", value)}
+                                                        min={1}
+                                                        placeholder={`${safeTranslate(t, 'quantity')}`}
+                                                        required
+                                                        className="w-full"
+                                                    />
+                                                </div>
+                                                {!isParticipant && (
+                                                <Button
+                                                    type="dashed"
+                                                    danger
+                                                    onClick={() => removeTicket(index)}
+                                                    icon={<PlusOutlined />}
+                                                >
+                                                    {safeTranslate(t, 'remove')}
+                                                </Button>
+                                                )}
                                             </div>
-                                            <div className="flex flex-col w-full md:w-1/3 gap-2">
-                                                <label className="block text-sm font-medium text-gray-700">
-                                                    {safeTranslate(t, 'price')} (€)
-                                                </label>
-                                                <InputNumber
-                                                    value={ticket.price}
-                                                    onChange={(value) => updateTicket(index, "price", value)}
-                                                    min={0}
-                                                    placeholder={`${safeTranslate(t, 'price')}`}
-                                                    required
-                                                    className="w-full"
-                                                />
-                                            </div>
-                                            <div className="flex flex-col w-full md:w-1/3 gap-2">
-                                                <label className="block text-sm font-medium text-gray-700">
-                                                    {safeTranslate(t, 'quantity')}
-                                                </label>
-                                                <InputNumber
-                                                    value={ticket.quantity}
-                                                    onChange={(value) => updateTicket(index, "quantity", value)}
-                                                    min={1}
-                                                    placeholder={`${safeTranslate(t, 'quantity')}`}
-                                                    required
-                                                    className="w-full"
-                                                />
-                                            </div>
-                                            <Button 
-                                                type="dashed" 
-                                                danger 
-                                                onClick={() => removeTicket(index)} 
-                                                icon={<PlusOutlined />}
-                                            >
-                                                {safeTranslate(t, 'remove')}
-                                            </Button>
                                         </div>
-                                    </div>
-                                ))}
+                                    );
+                                })}
+
                                 <Button 
                                     type="dashed" 
                                     icon={<PlusOutlined />} 
@@ -335,10 +392,15 @@ const CreateEventForm: React.FC = () => {
                         ) : (
                             <>
                                 <Alert
-                                    message={safeTranslate(t, 'stripe_alert')}
-                                    type="error"
+                                    message={`${safeTranslate(t, 'stripe_alert')}`}
+                                    type="info"
                                     showIcon
                                     className="mb-4"
+                                    action={
+                                        <Link className="text-blue-500 underline cursor-pointer" href={`/${lng}/account`}>
+                                            {safeTranslate(t, "configure")}
+                                        </Link>
+                                    }
                                 />
                                 <div className="flex flex-col gap-2 border border-gray-300 p-4 rounded-md">
                                     <div className="flex flex-col lg:flex-row lg:items-end lg:gap-4 gap-2">

@@ -4,39 +4,42 @@ import { useEffect, useState } from "react";
 import useFirebaseUser from "@/lib/useFirebaseUser";
 import { Navbar, StripeDashboard, Footer } from "@/components";
 import { usePathname } from "next/navigation";
+import { Popconfirm, Button } from "antd";
+import { useTranslation } from "@/app/i18n";
+import { safeTranslate } from "@/lib/utils";
 
 const StripeOnboarding: React.FC = () => {
   const { user, loading } = useFirebaseUser();
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const [loadingStatus, setLoadingStatus] = useState(true);
   const pathname = usePathname();
-
   const lng = pathname?.split("/")[1] || "en";
+  const { t } = useTranslation(lng, "common");
+
 
   const handleConnect = async () => {
-    if (!user) return;
+    if (!user?.uid) return;
   
     try {
-      const res = await fetch("/api/stripe/create-account-link", {
+      const response = await fetch("/api/stripe/connect", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ uid: user.uid }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: user.uid }),
       });
   
-      const data = await res.json();
+      const data = await response.json();
   
-      if (res.ok && data.url) {
-        window.location.href = data.url; // redirige vers Stripe
+      if (response.ok && data.url) {
+        window.location.href = data.url;
       } else {
         alert("Stripe onboarding failed.");
       }
     } catch (error) {
-      console.error("Stripe connect error:", error);
+      console.error("Error setting up Stripe Connect:", error);
       alert("Error connecting to Stripe.");
     }
   };
+  
 
   const handleDisconnect = async () => {
     const confirmed = confirm("Are you sure you want to disconnect your Stripe account?");
@@ -134,17 +137,26 @@ const StripeOnboarding: React.FC = () => {
       
         <StripeDashboard />
       </div>
+        
+      {user?.stripeAccountId && (
+        <div className="w-full flex flex-col gap-8 items-center justify-center relative top-48 py-12">
+          <p className="text-sm text-gray-500 text-center">
+            {safeTranslate(t, "stripe_disconnect_info")}
+          </p>
 
-      <div className="w-full flex items-center justify-center relative top-48 py-12">
-        {user?.stripeAccountId && (
-          <button
-            onClick={handleDisconnect}
-            className="text-red-600 border border-red-200 hover:bg-red-50 font-medium px-4 py-2 rounded-md transition"
+          <Popconfirm
+            title={safeTranslate(t, "stripe_disconnect_title")}
+            description={safeTranslate(t, "stripe_disconnect_confirm")}
+            onConfirm={handleDisconnect}
+            okText="Oui"
+            cancelText="Annuler"
           >
-            Disconnect Stripe Account
-          </button>
-        )}
-      </div>
+            <Button danger>
+              {safeTranslate(t, "stripe_disconnect_title")}
+            </Button>
+          </Popconfirm>
+        </div>
+      )}
       
 
       <Footer />

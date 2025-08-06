@@ -32,6 +32,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (existingStripeAccountId) {
       // Si l'utilisateur a déjà un compte Stripe, on l'utilise
       stripeAccountId = existingStripeAccountId;
+
+      const account = await stripe.accounts.retrieve(stripeAccountId);
+  
+      await userDocRef.set(
+        {
+          payoutsEnabled: account.payouts_enabled,
+          chargesEnabled: account.charges_enabled,
+          accountStatus: account.requirements?.currently_due?.length == 0 ? 'verified' : 'pending'
+        },
+        { merge: true }
+      );
     } else {
       // Sinon, créer un nouveau compte Stripe
       const account = await stripe.accounts.create({

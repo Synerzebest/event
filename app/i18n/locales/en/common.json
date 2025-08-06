@@ -127,7 +127,7 @@
   "quantity": "Quantity",
   "remove": "Remove",
   "add_ticket": "Add ticket",
-  "stripe_alert": "You need to configure your payment account in order to modify the tickets (name, quantity, price).",
+  "stripe_alert": "You need to configure your payment account in order to customize the tickets.",
   "free": "Free",
   "event_privacy_guests": "Event Privacy & Guests",
   "guest_limit": "Guest Limit",
@@ -213,5 +213,9 @@
   "organizing_team": "Organizing Team",
   "no_organizer": "No organizer yet",
   "scanning_team": "Scanning Team",
-  "add_scanner": "Add Scanner"
+  "add_scanner": "Add Scanner",
+  "configure": "Configure",
+  "stripe_disconnect_info": "This action will remove the link between your EaseEvent account and Stripe. Your Stripe account will not be deleted.",
+  "stripe_disconnect_title": "Remove Stripe link",
+  "stripe_disconnect_confirm": "Are you sure to remove the link ?"
 }

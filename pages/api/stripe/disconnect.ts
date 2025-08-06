@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { db } from "@/lib/firebaseConfig";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc, deleteField } from "firebase/firestore";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") return res.status(405).end("Method Not Allowed");
@@ -10,6 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     await updateDoc(doc(db, "users", uid), {
+      stripeAccountId: deleteField(),
       chargesEnabled: false,
       payoutsEnabled: false,
       onboardingComplete: false,
