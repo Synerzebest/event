@@ -208,7 +208,7 @@ const TicketCard = ({ ticket, event, onShowQRCode, t }: { ticket: Ticket; event?
       </div>
     </div>
   ) : (
-    <div className="flex flex-col gap-4 px-4 py-6">
+    <div className="flex flex-col gap-4 px-4 py-6 border border-gray-300 rounded-lg">
       <Skeleton.Input active size="small" className="w-full" />
       <Skeleton active paragraph={{ rows: 2 }} className="w-full" />
       <Skeleton.Button active size="default" className="w-full" />

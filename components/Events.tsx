@@ -1,7 +1,8 @@
 "use client"
 
 import React, { useEffect, useState } from 'react';
-import { Skeleton, Button } from 'antd';
+import { Skeleton } from 'antd';
+// import { Button } from "antd";
 import useFirebaseUser from '@/lib/useFirebaseUser';
 import { EventComponent } from '.';
 import { useTranslation } from "../app/i18n";
@@ -14,7 +15,7 @@ const Events = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
     const userId = user?.uid || "";
     const [events, setEvents] = useState<Event[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const [showPastEvents, setShowPastEvents] = useState<boolean>(false);
+    // const [showPastEvents, setShowPastEvents] = useState<boolean>(false);
 
     useEffect(() => {
         const fetchEvents = async () => {
@@ -52,18 +53,19 @@ const Events = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
     const currentDate = new Date().getTime();
     const filteredEvents = events.filter((event) => {
         const eventDate = new Date(event.date).getTime();
-        return showPastEvents || eventDate >= currentDate;
+        // return showPastEvents || eventDate >= currentDate;
+        return eventDate >= currentDate;
     });
 
     return (
         <div className="relative top-28 sm:top-36 w-11/12 mx-auto flex flex-col">
             <div className="w-[95%] mx-auto sm:mx-none sm:w-full flex-col sm:flex-row flex items-center justify-start sm:justify-between">
                 <h2 className="text-2xl font-bold mb-8 text-center sm:text-start">{safeTranslate(t,'upcoming_events')}</h2>
-                <div className="mb-8">
+                {/* <div className="mb-8">
                     <Button color="primary" onClick={() => setShowPastEvents(!showPastEvents)}>
                         {showPastEvents ? safeTranslate(t,'past_events_hide') : safeTranslate(t,'past_events_show')}
                     </Button>
-                </div>
+                </div> */}
             </div>
             <div className="flex flex-wrap gap-4 justify-center md:justify-start">
                 {loading ? (

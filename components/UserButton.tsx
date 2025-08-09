@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebaseConfig";
 import useFirebaseUser from "@/lib/useFirebaseUser";
@@ -7,96 +7,197 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "@/app/i18n";
 import { safeTranslate } from "@/lib/utils";
+import { FiLogOut, FiCreditCard, FiUser } from "react-icons/fi";
+import { motion, AnimatePresence } from "framer-motion";
 
-const UserButton: React.FC<{ lng: string }> = ({ lng }) => {
+type Props = { lng: string };
+
+const UserButton: React.FC<Props> = ({ lng }) => {
   const { user, loading } = useFirebaseUser();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const btnRef = useRef<HTMLButtonElement>(null);
+  const firstItemRef = useRef<HTMLAnchorElement | HTMLButtonElement>(null);
   const router = useRouter();
   const { t } = useTranslation(lng, "common");
 
+  const closeMenu = useCallback(() => setOpen(false), []);
+
   const handleSignOut = async () => {
     await signOut(auth);
-    setIsMenuOpen(false);
-    router.push('/')
+    closeMenu();
+    router.push("/");
   };
 
-  // Fermer le menu lorsqu'on clique en dehors
+  // Clique extérieur + Escape
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsMenuOpen(false);
-      }
+    const onPointerDown = (e: PointerEvent) => {
+      const target = e.target as Node;
+      if (rootRef.current && !rootRef.current.contains(target)) closeMenu();
     };
-
-    document.addEventListener("mousedown", handleClickOutside);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeMenu();
+    };
+    document.addEventListener("pointerdown", onPointerDown, true);
+    document.addEventListener("keydown", onKey);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("pointerdown", onPointerDown, true);
+      document.removeEventListener("keydown", onKey);
     };
-  }, []);
+  }, [closeMenu]);
+
+  // Focus le 1er item à l’ouverture
+  useEffect(() => {
+    if (open && firstItemRef.current) firstItemRef.current.focus();
+  }, [open]);
+
+  const onButtonKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (e.key === "ArrowDown" || e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      setOpen(true);
+    }
+  };
 
   if (loading) {
-    return(
-      <div role="status" className="w-auto h-auto flex flex-col items-start justify-center">
-          <svg aria-hidden="true" className="w-8 h-8 text-white animate-spin dark:text-gray-200 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
-              <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
-          </svg>
-          <span className="sr-only">Loading...</span>
-      </div>
+    return <div className="h-8 w-8 rounded-full bg-gray-200 animate-pulse" aria-busy="true" />;
+  }
+
+  if (!user) {
+    return (
+      <Link
+        href="/auth/signin"
+        className="text-sm font-medium px-3 py-1.5 rounded-full bg-gray-900 text-white hover:opacity-90 transition"
+      >
+        {safeTranslate(t, "signin")}
+      </Link>
     );
   }
 
+  const initials =
+    user.displayName?.trim()?.split(/\s+/).map(s => s[0]?.toUpperCase()).slice(0, 2).join("") || "U";
+
   return (
-    <div className="relative inline-block text-left z-10" ref={menuRef}>
-      {user ? (
-        <div onClick={() => setIsMenuOpen((prev) => !prev)}>
-          <Image
-            src={user.photoURL || "/images/default-user.jpg"}
-            alt="User profile"
-            width={32}
-            height={32}
-            className="rounded-full cursor-pointer"
-            priority
-          />
-        </div>
-      ) : (
-        <p>Not signed in</p>
-      )}
+    <div ref={rootRef} className="relative z-[60]">
+      <button
+        ref={btnRef}
+        aria-haspopup="menu"
+        aria-expanded={open}
+        onClick={() => setOpen(v => !v)}
+        onKeyDown={onButtonKeyDown}
+        className="inline-flex items-center gap-2 rounded-full px-0 md:px-2 py-1.5 hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 transition"
+      >
+        {/* Avatar + fallback */}
+        <span className="relative inline-flex h-8 w-8 items-center justify-center">
+          {user.photoURL ? (
+            <Image
+              src={user.photoURL}
+              alt={user.displayName || "User"}
+              width={32}
+              height={32}
+              className="rounded-full object-cover"
+              priority
+            />
+          ) : (
+            <span className="h-8 w-8 rounded-full bg-gray-200 text-gray-700 grid place-items-center text-sm font-semibold">
+              {initials}
+            </span>
+          )}
+          <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-white" />
+        </span>
+        <span className="hidden md:block text-sm font-medium text-gray-800 max-w-[10rem] truncate">
+          {user.displayName || "User"}
+        </span>
+      </button>
 
-      {isMenuOpen && user && (
-        <div className="absolute md:right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-          <div className="py-1">
-            <p className="block px-4 py-2 text-sm text-gray-700">
-              {user.displayName || "User"}
-            </p>
+      {/* Menu animé Framer Motion */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            key="user-menu"
+            role="menu"
+            aria-label="User menu"
+            initial={{ opacity: 0, y: -6, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -6, scale: 0.98 }}
+            transition={{ duration: 0.16, ease: "easeOut" }}
+            className="
+              absolute origin-top
+              left-0 md:left-auto md:right-0
+              mt-1 md:mt-2
+              w-56 md:w-64
+              rounded-2xl bg-white shadow-lg ring-1 ring-black/5
+            "
+          >
+            <div className="p-2">
+              {/* Header user */}
+              <div className="flex items-center gap-3 px-2 py-2 rounded-xl">
+                <div className="relative inline-flex h-10 w-10 items-center justify-center">
+                  {user.photoURL ? (
+                    <Image
+                      src={user.photoURL}
+                      alt={user.displayName || "User"}
+                      width={40}
+                      height={40}
+                      className="rounded-full object-cover"
+                    />
+                  ) : (
+                    <span className="h-10 w-10 rounded-full bg-gray-200 text-gray-700 grid place-items-center text-sm font-semibold">
+                      {initials}
+                    </span>
+                  )}
+                </div>
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-gray-900 truncate">
+                    {user.displayName || "User"}
+                  </p>
+                  <p className="text-xs text-gray-500 truncate">{user.email}</p>
+                </div>
+              </div>
 
-            <Link
-              href={`/${lng}/account`}
-              className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-            >
-              {safeTranslate(t,'payment_account')}
-            </Link>
+              <div className="my-2 h-px bg-gray-100" />
 
-            {user.subscriptionId ? (
-              <Link href={`/${lng}/cancel-subscription`} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                {safeTranslate(t,'cancel_subscription')}
-              </Link>
-            ) : (
-              <>
-              </>
-            )}
+              {/* Items */}
+              <ul className="flex flex-col">
+                <li>
+                  <Link
+                    ref={firstItemRef as React.RefObject<HTMLAnchorElement>}
+                    href={`/${lng}/account`}
+                    className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-gray-700 hover:bg-gray-50 focus:outline-none duration-300"
+                    role="menuitem"
+                  >
+                    <FiCreditCard className="shrink-0" />
+                    <span className="truncate">{safeTranslate(t, "payment_account")}</span>
+                  </Link>
+                </li>
 
-            {/* Lien de déconnexion */}
-            <button
-              onClick={handleSignOut}
-              className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-            >
-              {safeTranslate(t,'sign_out')}
-            </button>
-          </div>
-        </div>
-      )}
+                {user.subscriptionId && (
+                  <li>
+                    <Link
+                      href={`/${lng}/cancel-subscription`}
+                      className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-gray-700 hover:bg-gray-50 focus:outline-none duration-300"
+                      role="menuitem"
+                    >
+                      <FiUser className="shrink-0" />
+                      <span className="truncate">{safeTranslate(t, "cancel_subscription")}</span>
+                    </Link>
+                  </li>
+                )}
+
+                <li>
+                  <button
+                    onClick={handleSignOut}
+                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-sm text-red-600 hover:bg-red-50 focus:outline-none"
+                    role="menuitem"
+                  >
+                    <FiLogOut className="shrink-0" />
+                    <span>{safeTranslate(t, "sign_out")}</span>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

@@ -51,25 +51,22 @@ const Navbar = ({ lng }: NavbarProps) => {
     function handleClickOutside(event: MouseEvent) {
       const target = event.target as Node;
   
-      const clickedOutsideDesktopDropdown = desktopDropdownRef.current && !desktopDropdownRef.current.contains(target);
-      const clickedOutsideMobileDropdown = mobileDropdownRef.current && !mobileDropdownRef.current.contains(target);
-      const clickedOutsideMobileMenu = mobileMenuRef.current && !mobileMenuRef.current.contains(target);
+      const dropdownRefs = [desktopDropdownRef.current, mobileDropdownRef.current]
+        .filter((r): r is HTMLDivElement => Boolean(r));
   
-      if (dropdownOpen && clickedOutsideDesktopDropdown && clickedOutsideMobileDropdown) {
-        setDropdownOpen(false);
-      }
+      const clickedOutsideAllDropdowns = dropdownRefs.every(ref => !ref.contains(target));
   
-      if (isOpen && clickedOutsideMobileMenu) {
+      if (dropdownOpen && clickedOutsideAllDropdowns) setDropdownOpen(false);
+  
+      if (isOpen && mobileMenuRef.current && !mobileMenuRef.current.contains(target)) {
         setIsOpen(false);
       }
     }
   
-    document.addEventListener("mousedown", handleClickOutside);
-  
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    document.addEventListener("pointerdown", handleClickOutside, true);
+    return () => document.removeEventListener("pointerdown", handleClickOutside, true);
   }, [dropdownOpen, isOpen]);
+  
   
 
   useEffect(() => {
@@ -197,7 +194,7 @@ const Navbar = ({ lng }: NavbarProps) => {
           )}
   
           {/* Language Dropdown for Mobile */}
-          <div className="relative z-50" ref={mobileDropdownRef}>
+          <div className="relative z-10 w-fit" ref={mobileDropdownRef}>
             <button onClick={toggleDropdown} className="text-gray-800 px-4 py-2 rounded-lg">
               <MdLanguage size={25} />
             </button>

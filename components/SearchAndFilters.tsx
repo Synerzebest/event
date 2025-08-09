@@ -118,7 +118,7 @@ const SearchAndFilters = () => {
     };
 
     const handleDropdownVisibleChange = (visible: boolean) => {
-        setDropdownVisible(visible); // Mettez à jour la visibilité du dropdown
+        setDropdownVisible(visible);
     };
 
     return (
@@ -177,7 +177,7 @@ const SearchAndFilters = () => {
                     <>
                         {hasSearched && (
                         <div className="w-full mt-4 text-2xl font-bold text-gray-800 sm:text-start text-center">
-                            {events.length} {events.length === 1 || events.length === 0 ? 'Event' : 'Events'} {safeTranslate(t, "found")}
+                            {safeTranslate(t, "search_result")} ({events.length})
                         </div>
                         )}
 
