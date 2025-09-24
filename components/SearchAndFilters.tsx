@@ -67,6 +67,15 @@ const SearchAndFilters = () => {
 
     // Handle event search
     const handleSearch = async (term?: string) => {
+        
+        const queryValue = term ?? searchTerm;
+
+        if (!queryValue.trim() && !category) {
+          setEvents([]);
+          setHasSearched(false);
+          return;
+        }
+
         setLoading(true);
         try {
           const queryParams = new URLSearchParams();

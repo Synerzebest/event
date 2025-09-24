@@ -218,5 +218,6 @@
   "configure": "Configurer",
   "stripe_disconnect_info": "Cette action supprimera la liaison entre votre compte EaseEvent et Stripe. Votre compte Stripe ne sera pas supprimé.",
   "stripe_disconnect_title": "Supprimer la liaison Stripe",
-  "stripe_disconnect_confirm": "Êtes-vous sûr de vouloir supprimer la liaison avec votre compte Stripe ?"
+  "stripe_disconnect_confirm": "Êtes-vous sûr de vouloir supprimer la liaison avec votre compte Stripe ?",
+  "selected": "Séléctionné"
 }

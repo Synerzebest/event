@@ -19,11 +19,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             events.push({
                 id: doc.id,
                 ...doc.data(),
-            } as Event); // Assurez-vous de caster chaque événement au type Event
+            } as Event);
         });
 
         // Filtrer par catégorie si spécifiée
-        let filteredEvents = events;
+        let filteredEvents = events.filter(event => event.privacy === "public");
         if (category) {
             filteredEvents = filteredEvents.filter(event => event.category === category);
         }
@@ -37,8 +37,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 event.city?.toLowerCase().includes(lowercasedTerm)
             );
         }
-        console.log("Query:", { searchTerm, category });
-        console.log("Filtered:", filteredEvents.map(e => e.city));
 
         res.status(200).json(filteredEvents);
     } catch (error) {

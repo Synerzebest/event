@@ -217,5 +217,6 @@
   "configure": "Configureren",
   "stripe_disconnect_info": "Met deze actie wordt de koppeling tussen je EaseEvent-account en Stripe verwijderd. Je Stripe-account wordt niet verwijderd.",
   "stripe_disconnect_title": "Stripe link verwijderen",
-  "stripe_disconnect_confirm": "Weet u zeker dat u de link wilt verwijderen?"
+  "stripe_disconnect_confirm": "Weet u zeker dat u de link wilt verwijderen?",
+  "selected": "Gekozen"
 }
