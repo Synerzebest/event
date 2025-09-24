@@ -240,7 +240,7 @@ const Page = () => {
             </label>
 
             <div className="flex flex-col gap-3">
-              {event.tickets.map((ticket, idx) => {
+              {event.tickets.map((ticket) => {
                 const soldOut = ticket.quantity <= 0;
                 const selected = selectedTicket === ticket.name;
 
