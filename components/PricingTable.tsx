@@ -6,11 +6,13 @@ import useFirebaseUser from "@/lib/useFirebaseUser";
 import { fetchStripeSubscriptionStatus } from "@/lib/stripe";
 import { useRouter } from "next/navigation";
 import { safeTranslate } from "@/lib/utils";
+
 import {
     HiUserGroup,
     HiChartBar,
     HiChatBubbleLeftRight,
     HiTicket,
+    HiBanknotes
 } from "react-icons/hi2";
 
 type PlanType = "STARTER" | "STANDARD" | "PRO";
@@ -111,6 +113,10 @@ const PricingTable = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
                                 </li>
                                 <li className="mb-2 flex items-center">
                                     <HiTicket className="text-indigo-500 mr-2 w-5 h-5" />
+                                    {safeTranslate(t, `${plan.toLowerCase()}_plan_custom_ticketing`)}
+                                </li>
+                                <li className="mb-2 flex items-center">
+                                    <HiBanknotes className="text-indigo-500 mr-2 w-5 h-5" />
                                     {safeTranslate(t, `${plan.toLowerCase()}_plan_commission`)}
                                 </li>
                                 <li className="mb-2 flex items-center">
@@ -124,69 +130,44 @@ const PricingTable = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
                             </ul>
 
                             {(() => {
-  const isSubscribed = activePlan !== "STARTER"; // user a payé
-  const isOtherPlan = planType !== activePlan;
+                                const isSubscribed = activePlan !== "STARTER"; // user a payé
+                                const isOtherPlan = planType !== activePlan;
 
-  const shouldDisable = isSubscribed && isOtherPlan;
+                                const shouldDisable = isSubscribed && isOtherPlan;
 
-  const baseClasses = "py-2 px-6 rounded-full text-lg font-semibold transition-all";
+                                const baseClasses = "py-2 px-6 rounded-full text-lg font-semibold transition-all";
 
-  // Si plan actif → bouton violet "Actif"
-  if (planType === activePlan) {
-    return (
-      <span className={`${baseClasses} bg-indigo-500 text-white`}>
-        {safeTranslate(t, "active_plan")}
-      </span>
-    );
-  }
+                                // Si plan actif → bouton violet "Actif"
+                                if (planType === activePlan) {
+                                    return (
+                                    <span className={`${baseClasses} bg-indigo-500 text-white`}>
+                                        {safeTranslate(t, "active_plan")}
+                                    </span>
+                                    );
+                                }
 
-  // Si plan inactif mais désactivé (autre que plan actif)
-  if (shouldDisable) {
-    return (
-      <button
-        disabled
-        className={`${baseClasses} bg-gray-300 text-gray-500 cursor-not-allowed`}
-      >
-        {safeTranslate(t, "choose_plan_button")}
-      </button>
-    );
-  }
+                                // Si plan inactif mais désactivé (autre que plan actif)
+                                if (shouldDisable) {
+                                    return (
+                                    <button
+                                        disabled
+                                        className={`${baseClasses} bg-gray-300 text-gray-500 cursor-not-allowed`}
+                                    >
+                                        {safeTranslate(t, "choose_plan_button")}
+                                    </button>
+                                    );
+                                }
 
-  // Cas normal : plan sélectionnable (ex : user est STARTER)
-  return (
-    <button
-      onClick={() => handleSubscribe(priceIds[planType]!)}
-      className={`${baseClasses} bg-indigo-500 text-white hover:bg-indigo-600`}
-    >
-      {safeTranslate(t, "choose_plan_button")}
-    </button>
-  );
-})()}
-
-
-                            {/* {planType === "STARTER" ? (
-                                <span className="py-2 px-6 rounded-full text-lg font-semibold bg-indigo-500 text-white">
-                                {safeTranslate(t, "default_plan")}
-                                </span>
-                            ) : isActive ? (
-                                <span className="py-2 px-6 rounded-full text-lg font-semibold bg-green-500 text-white">
-                                {safeTranslate(t, "active_plan")}
-                                </span>
-                            ) : (
-                                <button
+                                // Cas normal : plan sélectionnable (ex : user est STARTER)
+                                return (
+                                    <button
                                     onClick={() => handleSubscribe(priceIds[planType]!)}
-                                    disabled={activePlan !== "STARTER" && !isActive}
-                                    className={`py-2 px-6 rounded-full text-lg font-semibold transition-all ${
-                                        isActive
-                                        ? "bg-green-500 text-white"
-                                        : activePlan !== "STARTER"
-                                        ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                                        : "bg-indigo-500 text-white hover:bg-indigo-600"
-                                    }`}
-                                >
-                                    {isActive ? safeTranslate(t, "active_plan") : safeTranslate(t, "choose_plan_button")}
-                                </button>
-                            )} */}
+                                    className={`${baseClasses} bg-indigo-500 text-white hover:bg-indigo-600`}
+                                    >
+                                    {safeTranslate(t, "choose_plan_button")}
+                                    </button>
+                                );
+                                })()}
                         </div>
                     );
                 })}

@@ -58,16 +58,11 @@ const Events = ({ lng }: { lng: "en" | "fr" | "nl" }) => {
     });
 
     return (
-        <div className="relative top-28 sm:top-36 w-11/12 mx-auto flex flex-col">
-            <div className="w-[95%] mx-auto sm:mx-none sm:w-full flex-col sm:flex-row flex items-center justify-start sm:justify-between">
+        <div className="relative top-28 sm:top-36 w-full sm:w-11/12 mx-auto flex flex-col">
+            <div className="w-[95%] hidden sm:block mx-auto sm:mx-none sm:w-full flex-col sm:flex-row flex items-center justify-start sm:justify-between">
                 <h2 className="text-2xl font-bold mb-8 text-center sm:text-start">{safeTranslate(t,'upcoming_events')}</h2>
-                {/* <div className="mb-8">
-                    <Button color="primary" onClick={() => setShowPastEvents(!showPastEvents)}>
-                        {showPastEvents ? safeTranslate(t,'past_events_hide') : safeTranslate(t,'past_events_show')}
-                    </Button>
-                </div> */}
             </div>
-            <div className="flex flex-wrap gap-4 justify-center md:justify-start">
+            <div className="flex flex-col gap-0 sm:gap-4 md:flex-row md:flex-wrap md:gap-4 md:justify-start">
                 {loading ? (
                     Array.from({ length: 3 }).map((_, index) => (
                         <div

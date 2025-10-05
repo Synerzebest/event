@@ -134,17 +134,22 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
     // On vérifie si l'événement est chargé avant d'afficher les informations
     if (loading || !event) {
         return (
-            <div className="flex-1 min-w-[300px] max-w-[350px] rounded-lg overflow-hidden shadow-lg bg-white">
-                {/* Afficher un squelette ou placeholder en attendant */}
-                <div className="h-[200px] bg-gray-300 animate-pulse"></div>
-                <div className="p-4">
-                    <div className="w-full h-6 bg-gray-300 animate-pulse mb-2"></div>
-                    <div className="w-2/3 h-4 bg-gray-300 animate-pulse mb-2"></div>
-                    <div className="w-1/2 h-4 bg-gray-300 animate-pulse"></div>
+            <div className="w-full flex justify-center px-4">
+                <div className="w-full max-w-[350px] rounded-lg overflow-hidden shadow-lg bg-white border-t border-b border-gray-200 sm:border sm:rounded-xl">
+                    {/* Image placeholder */}
+                    <div className="h-[200px] bg-gray-300 animate-pulse"></div>
+    
+                    {/* Texte placeholder */}
+                    <div className="p-4">
+                        <div className="w-full h-6 bg-gray-300 animate-pulse mb-2"></div>
+                        <div className="w-2/3 h-4 bg-gray-300 animate-pulse mb-2"></div>
+                        <div className="w-1/2 h-4 bg-gray-300 animate-pulse"></div>
+                    </div>
                 </div>
             </div>
         );
     }
+    
 
     const eventDate = new Date(event.date);
     const isPastEvent = eventDate < new Date();
@@ -152,78 +157,99 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
 
     return (
         <motion.div 
-            className="relative flex-1 min-w-[320px] max-w-[350px] rounded-xl shadow-md bg-white"
+            className="relative flex-1 w-full sm:min-w-[320px] sm:max-w-[350px] bg-white border-l-0 border-r-0 border-t border-b sm:border border-gray-200 shadow-sm overflow-hidden rounded-none sm:rounded-md"
             transition={{ type: 'spring', stiffness: 300 }}
         >
-            <Image
-                src={event.images[0]}
-                alt={event.title}
-                width={350}
-                height={250}
-                className="object-cover w-full h-[250px] max-h-[250px] mx-auto border-0 border-b rounded-t-xl"
-            />
-
-            <button
-                className="absolute top-2 right-2 p-2 rounded-full hover:bg-gray-800 hover:bg-opacity-20 focus:outline-none duration-300"
-                onClick={() => setShareModalEvent(event)}
-            >
-                <FaShare className="w-4 h-4 text-white" />
-            </button>
-
+            {/* --- BARRE SUPÉRIEURE (titre + bouton share) --- */}
+            <div className="flex justify-between items-center px-4 py-3 bg-white/80">
+                <h3 className="font-semibold text-lg text-gray-800 truncate">{event.title}</h3>
+                <button
+                    className="p-2 rounded-full hover:bg-gray-100 active:scale-95 transition-all duration-200"
+                    onClick={() => setShareModalEvent(event)}
+                >
+                    <FaShare className="w-4 h-4 text-indigo-500" />
+                </button>
+            </div>
+    
+            {/* --- IMAGE --- */}
+            <div className="relative">
+                <Image
+                    src={event.images[0]}
+                    alt={event.title}
+                    width={350}
+                    height={250}
+                    className="object-cover w-full h-[250px] max-h-[250px] border-0"
+                />
+            </div>
+    
+            {/* --- CONTENU --- */}
             <div className="p-4 flex flex-col justify-between">
-                <div className="flex justify-between items-center mb-2">
-                    <h3 className="font-semibold text-xl text-gray-800 hover:text-indigo-600 transition-all">{event.title}</h3>
-                    <div className="bg-indigo-500 text-white text-sm font-bold py-[0.35rem] px-3 rounded flex items-center gap-1 whitespace-nowrap">
-                        {event.currentGuests !== undefined ? event.currentGuests : 0} / {event.guestLimit}<HiUserGroup className="text-white w-5 h-5" />
+                <div className="flex flew-row-reverse justify-between items-start">
+                    {/* Détails */}
+                    <div className="flex flex-col gap-2">
+                        <p className="text-gray-600 text-start flex items-center">
+                            <IoCalendarNumberSharp className="text-indigo-500 mr-2 w-5 h-5" /> {formattedDate}
+                        </p>
+                        <p className="text-gray-600 text-start flex items-center">
+                            <FaMapLocationDot className="text-indigo-500 mr-2 w-5 h-5" /> {event.place}
+                        </p>
+                        <p className="text-gray-700 mt-2 text-sm">{event.description}</p>
+                    </div>
+
+                    {/* Nombre d’invités */}
+                    <div className="flex justify-between items-center mb-2">
+                        <div className="bg-indigo-500 text-white text-sm font-bold py-[0.35rem] px-3 rounded flex items-center gap-1 whitespace-nowrap">
+                            {event.currentGuests ?? 0} / {event.guestLimit}
+                            <HiUserGroup className="text-white w-5 h-5" />
+                        </div>
                     </div>
                 </div>
-                <p className="text-gray-600 text-start flex items-center"><IoCalendarNumberSharp className="text-indigo-500 mr-2 w-5 h-5" /> {formattedDate}</p>
-                <p className="text-gray-600 text-start flex items-center"><FaMapLocationDot className="text-indigo-500 mr-2 w-5 h-5" /> {event.place}</p>
-                <p className="text-gray-700 mt-2 text-sm">{event.description}</p>
-
+    
+                {/* Boutons de participation */}
                 {participateButton && (
                     <div className="flex gap-4 mt-4">
-                    {!user ? (
-                        isPastEvent ? (
-                            <motion.button
-                                className="font-bold py-2 px-4 rounded-lg transition-all duration-200 transform flex items-center justify-center gap-2 bg-gray-200 text-gray-500 cursor-not-allowed"
-                                disabled
-                            >
-                                {safeTranslate(t,'event_expired')}
-                            </motion.button>
-                        ) : (
-                            <Link href={`/${lng}/auth/signin`}>
+                        {!user ? (
+                            isPastEvent ? (
                                 <motion.button
-                                    className="font-bold py-2 px-4 rounded-lg transition-all duration-200 transform flex items-center justify-center gap-2 bg-indigo-600 text-white hover:bg-indigo-800"
+                                    className="font-bold py-2 px-4 rounded-lg transition-all duration-200 transform flex items-center justify-center gap-2 bg-gray-200 text-gray-500 cursor-not-allowed"
+                                    disabled
                                 >
-                                    {safeTranslate(t,'login_to_participate')}
+                                    {safeTranslate(t, 'event_expired')}
                                 </motion.button>
-                            </Link>
-                        )
-                    ) : (
-                        <div className="w-full flex items-center justify-between">
-                            <motion.button
-                                className={`font-bold py-2 px-4 rounded-lg transition-all duration-200 transform flex items-center justify-center gap-2
-                                    ${isSubmitting || isPastEvent ? "bg-gray-200 text-gray-500 cursor-not-allowed" : "bg-indigo-500 text-white hover:bg-indigo-800"}
-                                `}
-                                onClick={handleParticipateClick}
-                                disabled={isSubmitting || isPastEvent} 
-                            >
-                                {isSubmitting ? (
-                                    <>
-                                        {safeTranslate(t,'participate')} <Spin size="small" />
-                                    </>
-                                ) : (
-                                    isPastEvent ? safeTranslate(t,'event_expired') : safeTranslate(t,'participate')
-                                )}
-                            </motion.button>
-                            
-                            <AnimatedLikeButton liked={isLiked} onToggle={() => handleLike(event.id)} />
-                        </div>
-                    )}
-                </div>
+                            ) : (
+                                <Link href={`/${lng}/auth/signin`}>
+                                    <motion.button
+                                        className="font-bold py-2 px-4 rounded-lg transition-all duration-200 transform flex items-center justify-center gap-2 bg-indigo-600 text-white hover:bg-indigo-800"
+                                    >
+                                        {safeTranslate(t, 'login_to_participate')}
+                                    </motion.button>
+                                </Link>
+                            )
+                        ) : (
+                            <div className="w-full flex items-center justify-between">
+                                <motion.button
+                                    className={`font-bold py-2 px-4 rounded-lg transition-all duration-200 transform flex items-center justify-center gap-2
+                                        ${isSubmitting || isPastEvent ? "bg-gray-200 text-gray-500 cursor-not-allowed" : "bg-indigo-500 text-white hover:bg-indigo-800"}
+                                    `}
+                                    onClick={handleParticipateClick}
+                                    disabled={isSubmitting || isPastEvent}
+                                >
+                                    {isSubmitting ? (
+                                        <>
+                                            {safeTranslate(t, 'participate')} <Spin size="small" />
+                                        </>
+                                    ) : (
+                                        isPastEvent ? safeTranslate(t, 'event_expired') : safeTranslate(t, 'participate')
+                                    )}
+                                </motion.button>
+    
+                                <AnimatedLikeButton liked={isLiked} onToggle={() => handleLike(event.id)} />
+                            </div>
+                        )}
+                    </div>
                 )}
             </div>
+    
             {shareModalEvent && (
                 <ShareModal
                     open={true}
@@ -233,7 +259,7 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
                 />
             )}
         </motion.div>
-    );
+    );     
 };
 
 export default EventComponent;
