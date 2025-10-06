@@ -62,7 +62,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Récupérer les détails de l'organisateur
     const { stripeAccountId, subscriptionId } = await getOrganizerDetails(eventId);
 
-    let applicationFeePercentage = 0.05; // Par défaut pour 'starter'
+    let applicationFeePercentage = 0.07; // Par défaut pour 'starter'
 
     if (subscriptionId) {
       // Récupérer les détails de l'abonnement via Stripe
@@ -70,9 +70,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const plan = subscription.items.data[0].price.metadata.nickname || 'starter';
 
       if (plan.toLowerCase() === 'standard') {
-        applicationFeePercentage = 0.03; // Standard : 3%
+        applicationFeePercentage = 0.05; // Standard : 3%
       } else if (plan.toLowerCase() === 'pro') {
-        applicationFeePercentage = 0.01; // Pro : 1%
+        applicationFeePercentage = 0.03; // Pro : 1%
       }
     } else {
       console.log('Organizer has starter plan (no plan found).');
