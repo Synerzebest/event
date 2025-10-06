@@ -101,7 +101,7 @@ async function handleTicketPurchase(session: Stripe.Checkout.Session) {
         name: ticketName,
         price: ticketPrice,
         purchaseDate: admin.firestore.Timestamp.now(),
-        used: false, // Le ticket n'est pas utilisé par défaut
+        used: false,
         userId: userId,
         firstName: firstName,
         lastName: lastName,
