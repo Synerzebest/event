@@ -11,7 +11,7 @@ interface SubSection {
     subservice_title?: string;
     subresponsibility_title?: string;
     subservice_content?: string[];
-    subresponsibility_content?: string[];  // 👈 Il faut que ce soit un tableau de strings
+    subresponsibility_content?: string[];
 }
 
 type SectionContent = string | string[] | SubSection[];
@@ -85,14 +85,18 @@ const CGUPage: React.FC = () => {
                                                     </ul>
                                                 )}
 
-                                            {subsection.subresponsibility_content &&
-                                                Array.isArray(subsection.subresponsibility_content) &&
-                                                subsection.subresponsibility_content.length > 0 && (
+                                                {subsection.subresponsibility_content && (
+                                                Array.isArray(subsection.subresponsibility_content) ? (
                                                     <ul className="list-disc pl-6 space-y-1 text-gray-300">
-                                                        {subsection.subresponsibility_content.map((item, itemIdx) => (
-                                                            <li key={itemIdx}>{item}</li>
-                                                        ))}
+                                                    {subsection.subresponsibility_content.map((item, itemIdx) => (
+                                                        <li key={itemIdx}>{item}</li>
+                                                    ))}
                                                     </ul>
+                                                ) : (
+                                                    <p className="text-gray-300">
+                                                    {subsection.subresponsibility_content}
+                                                    </p>
+                                                )
                                                 )}
                                         </div>
                                     ))}
