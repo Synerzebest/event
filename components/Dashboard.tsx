@@ -10,7 +10,7 @@ import EventPopup from "./EventPopup";
 import EditEventPopup from "./EditEventPopup";
 import QRCodeScanModal from "./QRCodeScanModal";
 import UserTickets from "./UserTickets";
-import { FaUser } from "react-icons/fa";
+import { motion } from "framer-motion";
 import { FaShare } from "react-icons/fa6";
 import { IoIosSettings } from "react-icons/io";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
@@ -22,6 +22,9 @@ import ShareModal from "./ShareModal";
 import LikedEvents from "./LikedEvents";
 import { AnimatePresence } from "framer-motion";
 import { MdQrCodeScanner } from "react-icons/md";
+import { IoCalendarNumberSharp } from "react-icons/io5"
+import { FaMapLocationDot } from "react-icons/fa6"
+import { HiUserGroup } from "react-icons/hi"
 
 const no_event_image = "/images/no-event.png";
 
@@ -111,7 +114,7 @@ export default function Dashboard() {
   }, [userId]);  
 
   const handleManageEvent = async (eventId: string) => {
-    const event = events.find((e) => e.id === eventId);
+    const event = myEvents.find((e) => e.id === eventId) || events.find((e) => e.id === eventId);
     if (event) setSelectedEvent(event);
   };
 
@@ -124,50 +127,111 @@ export default function Dashboard() {
   };
 
   const renderEventCard = (event: Event) => {
+    const eventDate = new Date(event.date);
+    const formattedDate = eventDate.toLocaleDateString("fr-FR", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  
     return (
-      <div className="relative rounded-xl shadow-md bg-white">
-        <Image src={event.images[0]} alt={event.title} width={350} height={250} className="object-cover w-full h-[250px] max-h-[250px] mx-auto border-b rounded-t-xl" />
-        <button className="absolute top-2 right-2 p-2 rounded-full hover:bg-gray-800 hover:bg-opacity-20 focus:outline-none duration-300" onClick={() => setShareModalEvent(event)}>
-          <FaShare className="w-4 h-4 text-white" />
-        </button>
-        <div className="p-4">
-          <div className="flex justify-between items-center mb-2">
-            <h3 className="font-bold text-xl">{event.title}</h3>
-            <div className="bg-indigo-500 text-white text-sm font-bold py-[0.35rem] px-3 rounded flex items-center gap-1 whitespace-nowrap">
-              {event.currentGuests ?? 0} / {event.guestLimit} <FaUser />
+      <motion.div
+        className="relative flex-1 w-full sm:min-w-[320px] sm:max-w-[350px] bg-white border border-gray-200 shadow-sm overflow-hidden rounded-lg"
+        transition={{ type: "spring", stiffness: 300 }}
+      >
+        {/* --- BARRE SUPÉRIEURE (titre + bouton share) --- */}
+        <div className="flex justify-between items-center px-4 py-3 bg-white/80 border-b border-gray-100">
+          <h3 className="font-semibold text-lg text-gray-800 truncate">
+            {event.title}
+          </h3>
+          <button
+            className="p-2 rounded-full hover:bg-gray-100 active:scale-95 transition-all duration-200"
+            onClick={() => setShareModalEvent(event)}
+            title="Partager"
+          >
+            <FaShare className="w-4 h-4 text-indigo-500" />
+          </button>
+        </div>
+  
+        {/* --- IMAGE --- */}
+        <div className="relative">
+          <Image
+            src={event.images?.[0] || "/images/no-event.png"}
+            alt={event.title}
+            width={350}
+            height={250}
+            className="object-cover w-full h-[250px] border-0"
+          />
+        </div>
+  
+        {/* --- CONTENU --- */}
+        <div className="p-4 flex flex-col justify-between gap-3">
+          <div className="flex justify-between items-start">
+            {/* Infos principales */}
+            <div className="flex flex-col gap-2">
+              <p className="text-gray-600 flex items-center text-sm">
+                <IoCalendarNumberSharp className="text-indigo-500 mr-2 w-5 h-5" />
+                {formattedDate}
+              </p>
+              <p className="text-gray-600 flex items-center text-sm">
+                <FaMapLocationDot className="text-indigo-500 mr-2 w-5 h-5" />
+                {event.place} - {event.city}
+              </p>
+              <p className="text-gray-700 mt-2 text-sm line-clamp-3">
+                {event.description}
+              </p>
+            </div>
+  
+            {/* Nombre d’invités */}
+            <div className="bg-indigo-500 text-white text-sm font-bold py-[0.35rem] px-3 rounded flex items-center gap-1 whitespace-nowrap h-fit">
+              {event.currentGuests ?? 0} / {event.guestLimit}
+              <HiUserGroup className="text-white w-5 h-5" />
             </div>
           </div>
-          <p className="text-gray-600">{new Date(event.date).toLocaleDateString('fr-FR')} | {event.place}</p>
-          <p className="text-gray-700 mt-2 line-clamp-3">{event.description}</p>
-          <div className="flex justify-between items-center gap-4 mt-4">
-            <div className="flex items-center gap-4">
+  
+          {/* --- BOUTONS --- */}
+          <div className="flex justify-between items-center mt-4">
+            <div className="flex items-center gap-2">
               {(event.createdBy === userId || event.organizers?.includes(userId)) && (
-                <button className="bg-indigo-500 text-white font-bold py-2 px-4 rounded hover:bg-indigo-600" onClick={() => handleManageEvent(event.id)}>
+                <motion.button
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-indigo-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-indigo-600 transition-colors duration-200"
+                  onClick={() => handleManageEvent(event.id)}
+                >
                   {safeTranslate(t, "more_info")}
-                </button>
+                </motion.button>
               )}
             </div>
-            <div>
+  
+            <div className="flex items-center gap-2">
               {event.createdBy === userId && (
-                <button className="p-2 rounded-full hover:bg-gray-100 duration-300" onClick={() => handleEditEvent(event)}>
-                  <IoIosSettings size={25} className="text-gray-500" />
+                <button
+                  className="p-2 rounded-full hover:bg-gray-100 transition"
+                  title="Modifier"
+                  onClick={() => handleEditEvent(event)}
+                >
+                  <IoIosSettings size={22} className="text-gray-600" />
                 </button>
               )}
-              {(event.createdBy === userId || event.organizers?.includes(userId) || scannableEventIds.includes(event.id)) && (
+  
+              {(event.createdBy === userId ||
+                event.organizers?.includes(userId) ||
+                scannableEventIds.includes(event.id)) && (
                 <button
-                  className="p-2 rounded-full hover:bg-gray-100 duration-300"
-                  onClick={() => setQrScanEventId(event.id)}
+                  className="p-2 rounded-full hover:bg-gray-100 transition"
                   title="Scanner les tickets"
+                  onClick={() => setQrScanEventId(event.id)}
                 >
-                  <MdQrCodeScanner size={24} className="text-gray-600" />
+                  <MdQrCodeScanner size={22} className="text-gray-600" />
                 </button>
               )}
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     );
   };
+  
 
   return (
     <div className="relative top-44 container mx-auto">

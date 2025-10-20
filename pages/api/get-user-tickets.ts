@@ -1,7 +1,7 @@
 import { db } from "@/lib/firebaseConfig";
 import { collection, getDocs, query, where } from "@firebase/firestore";
 import { NextApiRequest, NextApiResponse } from "next";
-import { auth } from "@/lib/firebaseAdmin"; // Importer le service auth de firebaseAdmin
+import { auth } from "@/lib/firebaseAdmin";
 
 interface Ticket {
     id: string;

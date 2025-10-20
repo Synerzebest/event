@@ -191,7 +191,7 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
                             <IoCalendarNumberSharp className="text-indigo-500 mr-2 w-5 h-5" /> {formattedDate}
                         </p>
                         <p className="text-gray-600 text-start flex items-center">
-                            <FaMapLocationDot className="text-indigo-500 mr-2 w-5 h-5" /> {event.place}
+                            <FaMapLocationDot className="text-indigo-500 mr-2 w-5 h-5" /> {event.place} - {event.city}
                         </p>
                         <p className="text-gray-700 mt-2 text-sm">{event.description}</p>
                     </div>
