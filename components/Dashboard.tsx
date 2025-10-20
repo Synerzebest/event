@@ -12,7 +12,7 @@ import QRCodeScanModal from "./QRCodeScanModal";
 import UserTickets from "./UserTickets";
 import { motion } from "framer-motion";
 import { FaShare } from "react-icons/fa6";
-import { IoIosSettings } from "react-icons/io";
+import { FiEdit3 } from "react-icons/fi";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import useLanguage from "@/lib/useLanguage";
 import { useTranslation } from "@/app/i18n";
@@ -123,8 +123,20 @@ export default function Dashboard() {
   const handleCloseEditPopup = () => setEditEvent(null);
 
   const updateEvent = (updatedEvent: Event) => {
-    setEvents((prev) => prev.map((event) => event.id === updatedEvent.id ? { ...event, ...updatedEvent } : event));
+    setEvents((prev) =>
+      prev.map((event) =>
+        event.id === updatedEvent.id ? { ...event, ...updatedEvent } : event
+      )
+    );
+  
+    // MAJ immédiate de la section "Mes événements"
+    setMyEvents((prev) =>
+      prev.map((event) =>
+        event.id === updatedEvent.id ? { ...event, ...updatedEvent } : event
+      )
+    );
   };
+  
 
   const renderEventCard = (event: Event) => {
     const eventDate = new Date(event.date);
@@ -210,7 +222,7 @@ export default function Dashboard() {
                   title="Modifier"
                   onClick={() => handleEditEvent(event)}
                 >
-                  <IoIosSettings size={22} className="text-gray-600" />
+                  <FiEdit3 size={22} className="text-gray-600" />
                 </button>
               )}
   
