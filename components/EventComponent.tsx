@@ -12,7 +12,6 @@ import { useTranslation } from "app/i18n"
 import useLanguage from "@/lib/useLanguage";
 import { Spin } from "antd";
 import useFirebaseUser from "@/lib/useFirebaseUser";
-import Link from "next/link";
 import { safeTranslate } from "@/lib/utils";
 import { HiUserGroup } from "react-icons/hi2";
 import ShareModal from "./ShareModal";
@@ -118,18 +117,16 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
     const handleParticipateClick = async () => {
         setIsSubmitting(true);
         try {
-            if (userId) {
-                await new Promise((resolve) => setTimeout(resolve, 500));
-                await router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/event/${eventId}/participate`);
-            } else {
-                router.push('/auth/signin');
-            }
+          await new Promise((resolve) => setTimeout(resolve, 300));
+          const targetUrl = `/event/${eventId}/participate`
+          router.push(targetUrl);
         } catch (error) {
-            console.error("Error during participation:", error);
+          console.error("Error during participation:", error);
         } finally {
-            setIsSubmitting(false);
+          setIsSubmitting(false);
         }
     };
+      
 
     // On vérifie si l'événement est chargé avant d'afficher les informations
     if (loading || !event) {
@@ -208,46 +205,27 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
                 {/* Boutons de participation */}
                 {participateButton && (
                     <div className="flex gap-4 mt-4">
-                        {!user ? (
-                            isPastEvent ? (
-                                <motion.button
-                                    className="font-bold py-2 px-4 rounded-lg transition-all duration-200 transform flex items-center justify-center gap-2 bg-gray-200 text-gray-500 cursor-not-allowed"
-                                    disabled
-                                >
-                                    {safeTranslate(t, 'event_expired')}
-                                </motion.button>
+                        <div className="w-full flex items-center justify-between">
+                        <motion.button
+                            className={`font-bold py-2 px-4 rounded-lg transition-all duration-200 transform flex items-center justify-center gap-2
+                            ${isSubmitting || isPastEvent ? "bg-gray-200 text-gray-500 cursor-not-allowed" : "bg-indigo-500 text-white hover:bg-indigo-800"}
+                            `}
+                            onClick={handleParticipateClick}
+                            disabled={isSubmitting || isPastEvent}
+                        >
+                            {isSubmitting ? (
+                            <>
+                                {safeTranslate(t, 'participate')} <Spin size="small" />
+                            </>
                             ) : (
-                                <Link href={`/${lng}/auth/signin`}>
-                                    <motion.button
-                                        className="font-bold py-2 px-4 rounded-lg transition-all duration-200 transform flex items-center justify-center gap-2 bg-indigo-600 text-white hover:bg-indigo-800"
-                                    >
-                                        {safeTranslate(t, 'login_to_participate')}
-                                    </motion.button>
-                                </Link>
-                            )
-                        ) : (
-                            <div className="w-full flex items-center justify-between">
-                                <motion.button
-                                    className={`font-bold py-2 px-4 rounded-lg transition-all duration-200 transform flex items-center justify-center gap-2
-                                        ${isSubmitting || isPastEvent ? "bg-gray-200 text-gray-500 cursor-not-allowed" : "bg-indigo-500 text-white hover:bg-indigo-800"}
-                                    `}
-                                    onClick={handleParticipateClick}
-                                    disabled={isSubmitting || isPastEvent}
-                                >
-                                    {isSubmitting ? (
-                                        <>
-                                            {safeTranslate(t, 'participate')} <Spin size="small" />
-                                        </>
-                                    ) : (
-                                        isPastEvent ? safeTranslate(t, 'event_expired') : safeTranslate(t, 'participate')
-                                    )}
-                                </motion.button>
-    
-                                <AnimatedLikeButton liked={isLiked} onToggle={() => handleLike(event.id)} />
-                            </div>
-                        )}
+                            isPastEvent ? safeTranslate(t, 'event_expired') : safeTranslate(t, 'participate')
+                            )}
+                        </motion.button>
+
+                        <AnimatedLikeButton liked={isLiked} onToggle={() => handleLike(event.id)} />
+                        </div>
                     </div>
-                )}
+                    )}
             </div>
     
             {shareModalEvent && (

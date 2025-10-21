@@ -12,7 +12,7 @@ export const fetchStripeSubscriptionStatus = async (customerId: string): Promise
             [process.env.NEXT_PUBLIC_PRICE_ID_PRO!]: "PRO",
         };
 
-        // 🔹 Si aucun abonnement, on considère l'utilisateur comme STARTER
+        // Si aucun abonnement, on considère l'utilisateur comme STARTER
         return data.activePlan ? (priceIdToPlan[data.activePlan] || "STARTER") : "STARTER";
 
     } catch (error) {

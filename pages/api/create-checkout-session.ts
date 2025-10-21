@@ -2,9 +2,8 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
 import { firestore } from '@/lib/firebaseAdmin';
 
-async function getOrganizerDetails(eventId: string): Promise<{ stripeAccountId: string, subscriptionId: string }> {
+async function getOrganizerDetails(eventId: string): Promise<{ stripeAccountId: string; subscriptionId: string }> {
   try {
-    // Get event details
     const eventRef = firestore.collection('events').doc(eventId);
     const eventDoc = await eventRef.get();
 
@@ -13,25 +12,17 @@ async function getOrganizerDetails(eventId: string): Promise<{ stripeAccountId: 
     }
 
     const organizerUserId = eventDoc.data()?.createdBy;
+    if (!organizerUserId) throw new Error('Organizer user ID not found');
 
-    if (!organizerUserId) {
-      throw new Error('Organizer user ID not found');
-    }
-
-    // Get event organizer from users collection
     const userRef = firestore.collection('users').doc(organizerUserId);
     const userDoc = await userRef.get();
 
-    if (!userDoc.exists) {
-      throw new Error('User not found');
-    }
+    if (!userDoc.exists) throw new Error('User not found');
 
     const stripeAccountId = userDoc.data()?.stripeAccountId;
     const subscriptionId = userDoc.data()?.subscriptionId;
 
-    if (!stripeAccountId) {
-      throw new Error('Stripe account ID not found for the user');
-    }
+    if (!stripeAccountId) throw new Error('Stripe account ID not found for organizer');
 
     return { stripeAccountId, subscriptionId };
   } catch (error) {
@@ -49,39 +40,57 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ error: `Method ${req.method} not allowed.` });
   }
 
-  const { ticket, eventId, userId, firstName, lastName } = req.body;
+  const { ticket, eventId, userId, userEmail, firstName, lastName } = req.body;
 
   try {
+    if (!ticket || !eventId || !firstName || !lastName || !userEmail) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    // Si le ticket est gratuit → pas de paiement
     if (ticket.price === 0) {
-      // Pas de gestion Stripe pour les événements gratuits
       return res.status(200).json({
         message: 'This event is free. No payment session needed.',
       });
     }
 
-    // Récupérer les détails de l'organisateur
+    // --- Récupération des détails de l'organisateur ---
     const { stripeAccountId, subscriptionId } = await getOrganizerDetails(eventId);
 
-    let applicationFeePercentage = 0.07; // Par défaut pour 'starter'
-
+    // --- Calcul des frais selon le plan ---
+    let applicationFeePercentage = 0.07; // Starter par défaut
     if (subscriptionId) {
-      // Récupérer les détails de l'abonnement via Stripe
       const subscription = await stripe.subscriptions.retrieve(subscriptionId);
       const plan = subscription.items.data[0].price.metadata.nickname || 'starter';
-
       if (plan.toLowerCase() === 'standard') {
-        applicationFeePercentage = 0.05; // Standard : 3%
+        applicationFeePercentage = 0.05;
       } else if (plan.toLowerCase() === 'pro') {
-        applicationFeePercentage = 0.03; // Pro : 1%
+        applicationFeePercentage = 0.03;
       }
-    } else {
-      console.log('Organizer has starter plan (no plan found).');
     }
 
+    // --- Création ou réutilisation du customer Stripe ---
+    const customers = await stripe.customers.list({ email: userEmail, limit: 1 });
+    let customerId: string;
 
-    // Créer une session de paiement avec Stripe
+    if (customers.data.length > 0) {
+      customerId = customers.data[0].id;
+    } else {
+      const newCustomer = await stripe.customers.create({
+        email: userEmail,
+        name: `${firstName} ${lastName}`,
+        metadata: {
+          event_id: eventId,
+          is_guest: userId ? "false" : "true",
+        },
+      });
+      customerId = newCustomer.id;
+    }
+
+    // --- Création de la session Stripe Checkout ---
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
+      customer: customerId,
       line_items: [
         {
           price_data: {
@@ -98,14 +107,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         event_id: eventId,
         ticket_name: ticket.name,
         ticket_quantity: ticket.quantity,
-        user_id: userId,
+        user_id: userId || 'guest',
         first_name: firstName,
         last_name: lastName,
+        email: userEmail,
+        is_guest: userId ? "false" : "true",
       },
       payment_intent_data: {
         application_fee_amount: Math.round(ticket.price * 100 * applicationFeePercentage),
         transfer_data: {
-          destination: stripeAccountId, // ID du compte Stripe Connect de l'organisateur
+          destination: stripeAccountId,
         },
       },
       mode: 'payment',
@@ -113,10 +124,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/cancel`,
     });
 
-    res.status(200).json({ id: session.id });
+    return res.status(200).json({ id: session.id });
   } catch (error) {
     console.error('Error creating checkout session:', JSON.stringify(error, null, 2));
-    res.status(500).json({ error: 'An error occurred while creating the checkout session.' });
+    return res.status(500).json({ error: 'An error occurred while creating the checkout session.' });
   }
 }
-

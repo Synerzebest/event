@@ -89,43 +89,67 @@ async function handleTicketPurchase(session: Stripe.Checkout.Session) {
   const userId = session.metadata?.user_id;
   const firstName = session.metadata?.first_name || "";
   const lastName = session.metadata?.last_name || "";
+  const customerEmail = session.customer_details?.email || "";
 
   if (eventId && ticketName && ticketQuantity) {
     try {
-      // Mise à jour de l'événement et des quantités de tickets
+      // Mise à jour de l'événement et des quantités
       await updateEventAndTicketQuantities(eventId, ticketName);
 
-      // Création du ticket pour l'utilisateur
+      // Création du ticket Firestore
+      const ticketRef = firestore.collection('tickets').doc();
       const ticketData = {
-        eventId: eventId,
+        eventId,
         name: ticketName,
         price: ticketPrice,
         purchaseDate: admin.firestore.Timestamp.now(),
         used: false,
-        userId: userId,
-        firstName: firstName,
-        lastName: lastName,
+        userId: userId && userId !== 'guest' ? userId : null,
+        firstName,
+        lastName,
       };
-
-      const ticketRef = firestore.collection('tickets').doc();
       await ticketRef.set(ticketData);
-      if (session.customer_details?.email) {
+
+      // Si invité enregistrement dans "guests"
+      if (!userId || userId === 'guest') {
+        const guestRef = firestore.collection('guests').doc(customerEmail);
+
+        await guestRef.set(
+          {
+            email: customerEmail,
+            firstName,
+            lastName,
+            isGuest: true,
+            events: admin.firestore.FieldValue.arrayUnion({
+              eventId,
+              ticketId: ticketRef.id,
+              ticketName,
+              purchaseDate: admin.firestore.Timestamp.now(),
+              price: ticketPrice,
+            }),
+            lastUpdated: admin.firestore.Timestamp.now(),
+            createdAt: admin.firestore.Timestamp.now(),
+          },
+          { merge: true } // fusion si déjà existant
+        );
+
+        console.log(`Guest ${customerEmail} ajouté/mis à jour.`);
+      }
+
+      // Envoi de l'email de confirmation
+      if (customerEmail) {
         await sendConfirmationEmail({
-          email: session.customer_details.email,
+          email: customerEmail,
           firstName,
           lastName,
           ticketId: ticketRef.id,
-          eventId: eventId
+          eventId,
         });
       }
 
       console.log(`Ticket payé réservé pour l'événement ${eventId}.`);
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(`Erreur lors de la mise à jour des tickets ou de l'enregistrement du ticket : ${error.message}`);
-      } else {
-        console.error('Erreur inconnue lors de la mise à jour des tickets ou de l\'enregistrement du ticket');
-      }
+      console.error("❌ Erreur lors du traitement du ticket payé :", error);
     }
   }
 }

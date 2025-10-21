@@ -15,6 +15,7 @@ import { safeTranslate } from "@/lib/utils";
 import Link from 'next/link';
 import { getAuth } from "firebase/auth";
 import { toast } from "react-hot-toast";
+import { fetchStripeSubscriptionStatus } from "@/lib/stripe";
 
 const { TextArea } = Input;
 
@@ -25,15 +26,30 @@ type Ticket = {
     sold: number;
 };
 
+type PlanType = "STARTER" | "STANDARD" | "PRO";
+
 const CreateEventForm: React.FC = () => {
     const lng = useLanguage();
     const { t } = useTranslation(lng, "common");
     const { user } = useFirebaseUser();
 
-    const getGuestLimit = (nickname: string | null | undefined): number => {
-        switch (nickname) {
-            case "pro": return Infinity;
-            case "standard": return 500;
+    const [activePlan, setActivePlan] = useState<PlanType>("STARTER"); // STARTER par défaut
+
+    useEffect(() => {
+        const checkSubscriptionStatus = async () => {
+            if (user?.stripeCustomerId) {
+                const planType = await fetchStripeSubscriptionStatus(user.stripeCustomerId);
+                setActivePlan(planType); // Si pas d’abonnement, planType = "STARTER"
+            }
+        };
+        checkSubscriptionStatus();
+        console.log(activePlan)
+    }, [user]);
+
+    const getGuestLimit = () => {
+        switch (activePlan) {
+            case "PRO": return Infinity;
+            case "STANDARD": return 500;
             default: return 50;
         }
     };
@@ -42,8 +58,8 @@ const CreateEventForm: React.FC = () => {
     const [uploading, setUploading] = useState(false);
     const [eventDate, setEventDate] = useState<dayjs.Dayjs | null>(null);
     const [tickets, setTickets] = useState<Ticket[]>([]);
-    const [maxGuestLimit, setMaxGuestLimit] = useState<number>(getGuestLimit(user?.nickname));
-    const [guestLimit, setGuestLimit] = useState<number>(getGuestLimit(user?.nickname));
+    const [maxGuestLimit] = useState<number>(getGuestLimit());
+    const [guestLimit, setGuestLimit] = useState<number>(getGuestLimit());
     const [acceptedTerms, setAcceptedTerms] = useState(false);
 
     const [formData, setFormData] = useState({
@@ -56,14 +72,6 @@ const CreateEventForm: React.FC = () => {
         category: '',
         organizers: [user?.uid]
     });
-
-    useEffect(() => {
-        if (user?.nickname) {
-            const newLimit = getGuestLimit(user.nickname);
-            setMaxGuestLimit(newLimit);
-            setGuestLimit((prev) => (prev === 1 || prev > newLimit ? newLimit : prev));
-        }
-    }, [user?.nickname]);
 
     const addTicket = () => setTickets([...tickets, { name: "", price: 0, quantity: 1, sold: 0 }]);
 
@@ -216,9 +224,6 @@ const CreateEventForm: React.FC = () => {
         });
       }, [guestLimit, tickets]);
       
-      
-    
-    
       return (
         <div className="w-full sm:w-3/4 mx-auto relative flex flex-col items-between">    
             <div className="w-full flex flex-col md:flex-row bg-white gap-8 sm:gap-0 ">

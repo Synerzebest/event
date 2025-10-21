@@ -44,6 +44,9 @@ const Page = () => {
   const userId = user?.uid || "";
   const userEmail = user?.email || "";
 
+  const [guestEmail, setGuestEmail] = useState("");
+
+
   const router = useRouter();
   const [processing, setProcessing] = useState<boolean>(false);
 
@@ -108,6 +111,8 @@ const Page = () => {
         return;
       }
 
+      const finalEmail = user ? userEmail : guestEmail;
+
       // Tickets gratuits
       if (selectedTicketData.price === 0) {
         try {
@@ -120,7 +125,7 @@ const Page = () => {
               userId,
               firstName,
               lastName,
-              userEmail,
+              userEmail: finalEmail,
             }),
           });
 
@@ -158,6 +163,7 @@ const Page = () => {
           eventId,
           firstName,
           lastName,
+          userEmail: finalEmail
         }),
       });
 
@@ -318,78 +324,109 @@ const Page = () => {
             </div>
           </div>
 
-          {/* Formulaire prénom / nom + CTA */}
+          {/* Formulaire dynamique selon la connexion */}
           <Form layout="vertical" onFinish={handleCheckout} requiredMark={false} className="mb-2">
-            <div className="flex flex-col">
+
+          {/* Section invitée si pas de user */}
+          {!user && (
+            <>
+              <Alert
+                type="info"
+                showIcon
+                message="Vous participez en tant qu'invité. Un ticket vous sera envoyé par email."
+                className="mb-4"
+              />
+
               <Form.Item
-                label={safeTranslate(t, "last_name")}
+                label="Adresse email"
                 required
-                rules={[{ required: true, message: safeTranslate(t, "name_required") }]}
+                rules={[
+                  { required: true, message: "Email requis" },
+                  { type: "email", message: "Adresse email invalide" }
+                ]}
               >
                 <Input
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
+                  value={guestEmail}
+                  onChange={(e) => setGuestEmail(e.target.value)}
                   size="large"
                   className="rounded-md"
-                  placeholder={safeTranslate(t, "last_name")}
+                  placeholder="exemple@email.com"
                 />
               </Form.Item>
-              
-              <Form.Item
-                label={safeTranslate(t, "first_name")}
-                required
-                rules={[{ required: true, message: safeTranslate(t, "name_required") }]}
-              >
-                <Input
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  size="large"
-                  className="rounded-md"
-                  placeholder={safeTranslate(t, "first_name")}
-                />
-              </Form.Item>
-            </div>
+            </>
+          )}
 
-            {/* Résumé + bouton */}
-            <div className="mt-2 flex flex-col gap-3">
-              <div className="flex items-center justify-between rounded-lg bg-gray-50 px-4 py-3">
-                <span className="text-sm md:text-base text-gray-700">
-                  {selectedTicket
-                    ? `${safeTranslate(t, "selected")} : ${selectedTicket}`
-                    : safeTranslate(t, "choose_ticket")}
-                </span>
-                <span className="text-sm md:text-base font-semibold text-gray-900">
-                  {selectedTicketPrice !== null ? `${selectedTicketPrice.toFixed(2)} €` : "—"}
-                </span>
-              </div>
-
-              <Button
-                htmlType="submit"
-                type="default"
-                className="w-full py-3 md:py-4 mt-1 bg-indigo-600 border border-indigo-600 hover:!bg-indigo-700 hover:!text-white hover:!border-indigo-700 text-white font-semibold transition-all rounded-lg duration-300"
+          {/* Champs prénom / nom (communs) */}
+          <div className="flex flex-col">
+            <Form.Item
+              label={safeTranslate(t, "last_name")}
+              required
+              rules={[{ required: true, message: safeTranslate(t, "name_required") }]}
+            >
+              <Input
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
                 size="large"
-                onClick={(e) => {
-                    if (!selectedTicket) {
-                    e.preventDefault();
-                    message.error(safeTranslate(t, "select_ticket_first") || "Sélectionnez un ticket.");
-                    }
-                }}
-                disabled={!selectedTicket || processing}
-                >
-                {processing ? (
-                    <Spin size="small" />
-                ) : (
-                    <>
-                        {safeTranslate(t, "confirm_registration")}
-                        {selectedTicketPrice !== null && !processing && (
-                            ` (${selectedTicketPrice === 0
-                            ? safeTranslate(t, "free") || "Gratuit"
-                            : `${selectedTicketPrice.toFixed(2)} €`})`
-                        )}
-                    </>
-                )}
-               </Button>
+                className="rounded-md"
+                placeholder={safeTranslate(t, "last_name")}
+              />
+            </Form.Item>
+
+            <Form.Item
+              label={safeTranslate(t, "first_name")}
+              required
+              rules={[{ required: true, message: safeTranslate(t, "name_required") }]}
+            >
+              <Input
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                size="large"
+                className="rounded-md"
+                placeholder={safeTranslate(t, "first_name")}
+              />
+            </Form.Item>
+          </div>
+
+          {/* Résumé + bouton */}
+          <div className="mt-2 flex flex-col gap-3">
+            <div className="flex items-center justify-between rounded-lg bg-gray-50 px-4 py-3">
+              <span className="text-sm md:text-base text-gray-700">
+                {selectedTicket
+                  ? `${safeTranslate(t, "selected")} : ${selectedTicket}`
+                  : safeTranslate(t, "choose_ticket")}
+              </span>
+              <span className="text-sm md:text-base font-semibold text-gray-900">
+                {selectedTicketPrice !== null ? `${selectedTicketPrice.toFixed(2)} €` : "—"}
+              </span>
             </div>
+
+            <Button
+              htmlType="submit"
+              type="default"
+              className="w-full py-3 md:py-4 mt-1 bg-indigo-600 border border-indigo-600 hover:!bg-indigo-700 hover:!text-white hover:!border-indigo-700 text-white font-semibold transition-all rounded-lg duration-300"
+              size="large"
+              onClick={(e) => {
+                if (!selectedTicket) {
+                  e.preventDefault();
+                  message.error(safeTranslate(t, "select_ticket_first") || "Sélectionnez un ticket.");
+                }
+              }}
+              disabled={!selectedTicket || processing}
+            >
+              {processing ? (
+                <Spin size="small" />
+              ) : (
+                <>
+                  {safeTranslate(t, "confirm_registration")}
+                  {selectedTicketPrice !== null && !processing && (
+                    ` (${selectedTicketPrice === 0
+                      ? safeTranslate(t, "free") || "Gratuit"
+                      : `${selectedTicketPrice.toFixed(2)} €`})`
+                  )}
+                </>
+              )}
+            </Button>
+          </div>
           </Form>
         </motion.div>
 
