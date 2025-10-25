@@ -25,8 +25,6 @@ type Event = {
 const ticketVariants = {
   initial: { opacity: 0, y: 8 },
   animate: { opacity: 1, y: 0 },
-  hover: { scale: 1.01 },
-  tap: { scale: 0.995 },
 };
 
 const Page = () => {
@@ -36,6 +34,7 @@ const Page = () => {
 
   const [selectedTicket, setSelectedTicket] = useState<string | null>(null);
   const [selectedTicketPrice, setSelectedTicketPrice] = useState<number | null>(null);
+  const [singleFreeTicket, setSingleFreeTicket] = useState<boolean>(false);
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -71,6 +70,13 @@ const Page = () => {
         const data = await response.json();
         if (response.ok) {
           setEvent(data);
+          const tickets = data.tickets || [];
+          const freeTickets = tickets.filter((t: Ticket) => t.price === 0);
+          if (freeTickets.length === 1 && tickets.length === 1) {
+            setSelectedTicket(freeTickets[0].name);
+            setSelectedTicketPrice(0);
+            setSingleFreeTicket(true);
+          }
         } else {
           console.error("Event not found or error:", data.error);
         }
@@ -227,7 +233,7 @@ const Page = () => {
           transition={{ delay: 0.1 }}
         >
           <h3 className="text-2xl md:text-3xl font-semibold mb-4 md:mb-6 text-gray-900">
-            {safeTranslate(t, "buy_ticket")}
+            {safeTranslate(t, "participate")}
           </h3>
 
           {!event?.tickets?.length && (
@@ -240,6 +246,7 @@ const Page = () => {
           )}
 
           {/* Tickets – cartes custom (sans AntD Radio) */}
+          {!singleFreeTicket && (
           <div className="mb-6">
             <label className="block text-sm md:text-base font-medium text-gray-700 mb-2">
               {safeTranslate(t, "choose_ticket")}
@@ -261,27 +268,11 @@ const Page = () => {
                     whileTap={!soldOut ? "tap" : undefined}
                     transition={{ duration: 0.15 }}
                     onClick={() => !soldOut && handleTicketChange(ticket.name)}
-                    onKeyDown={(e) => {
-                      if (soldOut) return;
-                      if (e.key === "Enter" || e.key === " ") {
-                        e.preventDefault();
-                        handleTicketChange(ticket.name);
-                      }
-                      // navigation clavier ↑ ↓
-                      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
-                        e.preventDefault();
-                        const dir = e.key === "ArrowDown" ? 1 : -1;
-                        const enabled = event.tickets.filter(t => t.quantity > 0);
-                        const pos = enabled.findIndex(t => t.name === (selectedTicket ?? ""));
-                        const next = enabled[(pos + dir + enabled.length) % enabled.length];
-                        if (next) handleTicketChange(next.name);
-                      }
-                    }}
                     disabled={soldOut}
                     aria-pressed={selected}
                     aria-label={`${ticket.name} ${soldOut ? safeTranslate(t,"sold_out") : ""}`}
                     className={[
-                      "w-full text-left rounded-xl border px-4 py-3 md:px-5 md:py-4 transition focus:outline-none",
+                      "w-full flex items-center justify-between rounded-xl border px-4 py-3 md:px-5 md:py-4 transition focus:outline-none",
                       selected
                         ? "border-indigo-500 ring-2 ring-indigo-500/30 bg-indigo-50"
                         : "border-gray-200 hover:border-gray-300 bg-white",
@@ -289,23 +280,39 @@ const Page = () => {
                       "focus-visible:ring-2 focus-visible:ring-indigo-500/50"
                     ].join(" ")}
                   >
-                    <div className="flex items-center justify-between">
-                      <div className="min-w-0 flex items-center gap-3">
-                        <p className="text-sm md:text-base font-semibold text-gray-900 truncate">
-                          {ticket.name}
-                        </p>
-                        {ticket.price === 0 ? (
-                          <Tag color="green" className="text-sm md:text-base m-0 px-2 py-1 rounded-full">
-                            {safeTranslate(t, "free") || "Gratuit"}
-                          </Tag>
-                        ) : (
-                          <span className="text-sm md:text-base font-semibold text-gray-900">
-                            {ticket.price.toFixed(2)} €
+                    <div className="flex items-center gap-4 w-full">
+                      {/* --- bouton radio visible --- */}
+                      <div
+                        className={[
+                          "relative w-5 h-5 flex-shrink-0 rounded-full border transition",
+                          selected ? "border-indigo-600 bg-indigo-600" : "border-gray-400 bg-white"
+                        ].join(" ")}
+                      >
+                        {selected && (
+                          <span className="absolute inset-0 flex items-center justify-center">
+                            <span className="w-2.5 h-2.5 bg-white rounded-full" />
                           </span>
                         )}
                       </div>
-                      <div className="flex items-center gap-2">
-                      <p className="text-xs md:text-sm text-gray-500">
+
+                      {/* --- contenu du ticket --- */}
+                      <div className="flex-1 flex items-center justify-between">
+                        <div className="min-w-0 flex items-center gap-3">
+                          <p className="text-sm md:text-base font-semibold text-gray-900 truncate">
+                            {ticket.name}
+                          </p>
+                          {ticket.price === 0 ? (
+                            <Tag color="green" className="text-sm md:text-base m-0 px-2 py-1 rounded-full">
+                              {safeTranslate(t, "free") || "Gratuit"}
+                            </Tag>
+                          ) : (
+                            <span className="text-sm md:text-base font-semibold text-gray-900">
+                              {ticket.price.toFixed(2)} €
+                            </span>
+                          )}
+                        </div>
+
+                        <p className="text-xs md:text-sm text-gray-500 whitespace-nowrap">
                           {soldOut ? (
                             <span className="text-red-600 font-medium">
                               {safeTranslate(t, "sold_out")}
@@ -323,6 +330,7 @@ const Page = () => {
               })}
             </div>
           </div>
+        )}
 
           {/* Formulaire dynamique selon la connexion */}
           <Form layout="vertical" onFinish={handleCheckout} requiredMark={false} className="mb-2">
@@ -389,16 +397,18 @@ const Page = () => {
 
           {/* Résumé + bouton */}
           <div className="mt-2 flex flex-col gap-3">
-            <div className="flex items-center justify-between rounded-lg bg-gray-50 px-4 py-3">
-              <span className="text-sm md:text-base text-gray-700">
-                {selectedTicket
-                  ? `${safeTranslate(t, "selected")} : ${selectedTicket}`
-                  : safeTranslate(t, "choose_ticket")}
-              </span>
-              <span className="text-sm md:text-base font-semibold text-gray-900">
-                {selectedTicketPrice !== null ? `${selectedTicketPrice.toFixed(2)} €` : "—"}
-              </span>
-            </div>
+            {!singleFreeTicket && (
+              <div className="flex items-center justify-between rounded-lg bg-gray-50 px-4 py-3">
+                <span className="text-sm md:text-base text-gray-700">
+                  {selectedTicket
+                    ? `${safeTranslate(t, "selected")} : ${selectedTicket}`
+                    : safeTranslate(t, "choose_ticket")}
+                </span>
+                <span className="text-sm md:text-base font-semibold text-gray-900">
+                  {selectedTicketPrice !== null ? `${selectedTicketPrice.toFixed(2)} €` : "—"}
+                </span>
+              </div>
+            )}
 
             <Button
               htmlType="submit"
@@ -418,11 +428,6 @@ const Page = () => {
               ) : (
                 <>
                   {safeTranslate(t, "confirm_registration")}
-                  {selectedTicketPrice !== null && !processing && (
-                    ` (${selectedTicketPrice === 0
-                      ? safeTranslate(t, "free") || "Gratuit"
-                      : `${selectedTicketPrice.toFixed(2)} €`})`
-                  )}
                 </>
               )}
             </Button>
