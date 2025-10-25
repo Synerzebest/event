@@ -131,7 +131,7 @@ const EventComponent: React.FC<EventComponentProps> = ({ eventId, userId, partic
     // On vérifie si l'événement est chargé avant d'afficher les informations
     if (loading || !event) {
         return (
-            <div className="w-full flex justify-center px-4">
+            <div className="w-full min-w-[350px] flex justify-center px-4">
                 <div className="w-full max-w-[350px] rounded-lg overflow-hidden shadow-lg bg-white border-t border-b border-gray-200 sm:border sm:rounded-xl">
                     {/* Image placeholder */}
                     <div className="h-[200px] bg-gray-300 animate-pulse"></div>
