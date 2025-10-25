@@ -222,5 +222,11 @@
   "stripe_disconnect_info": "Cette action supprimera la liaison entre votre compte EaseEvent et Stripe. Votre compte Stripe ne sera pas supprimé.",
   "stripe_disconnect_title": "Supprimer la liaison Stripe",
   "stripe_disconnect_confirm": "Êtes-vous sûr de vouloir supprimer la liaison avec votre compte Stripe ?",
-  "selected": "Séléctionné"
+  "selected": "Séléctionné",
+  "about": "À propos",
+  "no_description": "Aucune description disponible.",
+  "participants": "participants",
+  "join_now": "Rejoignez l'événement dès maintenant",
+  "join_event_subtitle": "Découvre, partage et vis une expérience unique avec EaseEvent.",
+  "join_event_cta": "Réserver ma place"
 }

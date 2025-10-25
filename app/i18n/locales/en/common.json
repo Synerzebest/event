@@ -221,5 +221,11 @@
   "stripe_disconnect_info": "This action will remove the link between your EaseEvent account and Stripe. Your Stripe account will not be deleted.",
   "stripe_disconnect_title": "Remove Stripe link",
   "stripe_disconnect_confirm": "Are you sure to remove the link ?",
-  "selected": "Selected"
+  "selected": "Selected",
+  "about": "About",
+  "no_description": "No description available.",
+  "participants": "participants",
+  "join_now": "Join the event now",
+  "join_event_subtitle": "Discover, share and live a unique experience with EaseEvent.",
+  "join_event_cta": "Book my ticket"
 }

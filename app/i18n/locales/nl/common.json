@@ -221,5 +221,11 @@
   "stripe_disconnect_info": "Met deze actie wordt de koppeling tussen je EaseEvent-account en Stripe verwijderd. Je Stripe-account wordt niet verwijderd.",
   "stripe_disconnect_title": "Stripe link verwijderen",
   "stripe_disconnect_confirm": "Weet u zeker dat u de link wilt verwijderen?",
-  "selected": "Gekozen"
+  "selected": "Gekozen",
+  "about": "Over het evenement",
+  "no_description": "geen beschrijving beschikbaar.",
+  "participants": "deelnemers",
+  "join_now": "Doe nu mee aan het evenement",
+  "join_event_subtitle": "Ontdek, deel en beleef een unieke ervaring met EaseEvent.",
+  "join_event_cta": "Boek mijn ticket"
 }
